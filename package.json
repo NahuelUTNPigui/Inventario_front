@@ -1,0 +1,33 @@
+{
+	"name": "inv-app",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"idev": "vite dev --port 6264",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/adapter-static": "^3.0.10",
+		"@sveltejs/kit": "^2.57.0",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"daisyui": "^5.5.19",
+		"svelte": "^5.55.2",
+		"vite": "^8.0.7"
+	},
+	"dependencies": {
+		"@kuiper/svelte-scan-qrcode": "^0.0.5",
+		"@tailwindcss/vite": "^4.2.2",
+		"chart.js": "^4.5.1",
+		"html-to-image": "^1.11.13",
+		"pocketbase": "^0.26.8",
+		"svelte-qrcode": "^1.0.1",
+		"sweetalert2": "^11.26.24",
+		"tailwindcss": "^4.2.2",
+		"xlsx": "^0.18.5"
+	}
+}
