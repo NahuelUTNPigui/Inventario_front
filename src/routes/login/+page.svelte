@@ -36,7 +36,7 @@
             }
         } catch (err) {
             console.error(err)
-            alert(err)
+            
             Swal.fire("Error login", "Mal puestas las credenciales", "error");
             storageNivel.save({ nivel: -1 });
         }
