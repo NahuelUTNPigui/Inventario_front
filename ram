@@ -1,0 +1,98 @@
+# Mejoras
+
+* preguntar antes de agregar clientes con el mismo nombre
+* En el exportar productos de cliente, agregar el nombre del cliente
+* Que no se cierren los dialogos cuando tengo un error de carga
+* corregir la variacion de altura de la tabla de stock en el cliente
+* Si se edita una cantidad, que se cree un movimiento y diga correccion de cantidad
+* Poder filtrar stock sin fecha de ingreso
+* Permito modificar la fecha de ingreso
+* Ordenar los movimientos por fecha y dentro por fecha de creación en el perfil de stock asi tienen sentido
+* Filtrar movimiento por stock?
+* Ordenes de movimiento. Movimientos potenciales
+* Permito editar productos y clientes en controles?
+* Exportar movimientos
+* Exportar detalle de movimiento
+# Tareas
+* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
+
+## Perfiles
+* cliente
+* stocl
+* movimentos
+* contoreles
+* productos
+* usaurio
+
+
+
+
+#  Listos
+
+* Que no se muera la aplicaicon cuando recargo la pagina en un perfil
+* No se puede ver y editar moviemientos en los celus
+* Procesar lote -> Procesar movimientos    
+* Falta la cantidad en el card de movimientos en el celu
+* Columna lote -> columna stock en movimiento
+* Card clientes en el celu se ve mal, quitar la palabra cleinte y poner los botones más arriba
+* No permitir stock sin cantidad, salvo 0
+* Cuando hago un procesar movimientos, la cantidad de actual de lotes no se actualiza
+* stock en pantallas medias se ve mal
+* controles en pantallas medias se ve mal
+## Paginas
+### Clientes
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Stock
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Historial
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Movimientos
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Controles
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Productos
+* Agregar cargando en los diferentes seleccion
+* Agregar limpiar filtross
+### Unidades
+* Agregar cargando en los diferentes seleccion
+### Usuarios
+* Agregar cargando en los diferentes seleccion
+
+## Eliminar lotes
+* Ocultar
+* Mantener la coherencia de los datos
+* Si en vez de eliminar el detalle o movimiento, lo que hago es crear un movimiento nuevo pero para que corrija la cantidad ( esta bien pero no)
+#Tareas 
+
+* Definir cual es el último movimiento del lote y poner lo arriba
+* Eliminar un movimiento rompe la coherencia de los datos
+# A la hora de eliminar movimentos
+* No se eliminan se ocultan, Eso se hace solo en el perfil de movimiento. Solo se pueden eliminar movimientos con detalles vacios. A modo de seguridad
+* Cuando voy a perfil stock ocultar los detalles eliminados 
+* Cuando voy a la lista de movimientos, ocultar los eliminados 
+* Cuando voy a perfil movimiento, ocultar los eliminados
+* Que pasa si es un detalle al medio? Nada se oculta
+* Que pasa si elimino al detallemovimento que última vez modifico, el lote deberia volver sobre sus pasos. Entonces  debería restar si es un ingreso y sumar si es un egreso. 
+* El lote conoce al último movimiento que lo modifico. 
+* Si edito la fecha de ingreso, deberia editar el primer movimiento?, Agregar primer movimiento Si lo amerita
+# Tareas
+* Tener a mano la base de datos
+# Tareas
+* se ve mal el filtro  de controles ( nose que pueede ser)
+
+# Tareas
+* Leer QR 
+
+* Que no se rompa en la recarga
+# Tareas
+* Ver el error de que no se actualizan productos y lotes en pantalla grande
+* Lo mismo que movimientos de lotes
+
+
+
+
