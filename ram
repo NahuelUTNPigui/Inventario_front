@@ -1,5 +1,25 @@
 # Mejoras
-
+* Agregar pedidos de clientes, son como movimientos pendientes
+* Guardar filtros de productos,stocks y movimientos
+* Los codigos son muy largos y confunden más que otra cosa
+* Borro stock y sus movimientos. Si borro el último movimiento borro el stock?Te pregunta
+* Guardar cliente del inicio
+* Remito en movimiento
+* Restricción Vencimiento anterior al día
+* Que no se cierre nada automaticamente
+* Carga múltiple de remitos / movimientos
+* No te guarda el código de movimiento que  pusiste
+* Pedidos de egreso
+* Stock con quiebre
+* Agrupar movimientos por producto / stock
+* En elegir el stock, te sale el codigo de stock, debería salir el código del producto y el lote
+* Avisar al usuario que se esta por crear un lote
+* exportar inicio
+* Remito asociado al movimiento no al stock
+* No le envias el excel
+* Llevarle el control al cliente
+* movimiento múltiple
+* El código de movimiento se repite
 * preguntar antes de agregar clientes con el mismo nombre
 * En el exportar productos de cliente, agregar el nombre del cliente
 * Que no se cierren los dialogos cuando tengo un error de carga
@@ -13,8 +33,16 @@
 * Permito editar productos y clientes en controles?
 * Exportar movimientos
 * Exportar detalle de movimiento
+# Tarifario
+* Precio por ingresar mercaderia. Valor por pale
+* Precio por picking. Valor por armar pedidos, pedido,lote,pale
+* Precio por almacenamiento. Valor por posicion de pale
+* Precio por out. Valor por palet de salida
+* Todo es un precio frio y seco
 # Tareas
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
+
+* Pregunta básica cuantos pales de papa hay?
 
 ## Perfiles
 * cliente
