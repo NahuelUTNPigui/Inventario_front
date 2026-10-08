@@ -1,4 +1,6 @@
 # Mejoras
+* Eliminacion muñtiple de stocks y movimeintos
+* guardar los datos de una ram
 * Agregar pedidos de clientes, son como movimientos pendientes
 * Guardar filtros de productos,stocks y movimientos
 * Los codigos son muy largos y confunden más que otra cosa

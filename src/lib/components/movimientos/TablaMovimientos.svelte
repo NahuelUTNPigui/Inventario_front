@@ -87,7 +87,16 @@
                     `}
                 >
                     <div class="flex flex-row justify-between uppercase">
-                        Stock
+                        Remito
+                    </div>
+                </th>
+                <th
+                    class={`
+                        ${estilos.tableth}   
+                    `}
+                >
+                    <div class="flex flex-row justify-between uppercase">
+                        Lote
                     </div>
                 </th>
                 <th class="text-base mx-1 px-1 text-center uppercase">
@@ -109,6 +118,9 @@
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.expand.movimiento.ingreso == 0 ? "Ingreso" : "Egreso"}`}
+                    </td>
+                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                        {t.remito || ""}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
                         {t.expand?.lote?.codigo || ""}

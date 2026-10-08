@@ -36,6 +36,7 @@
     let clientes = $state([]);
     let lotes = $state([]);
     let lotesrows = $state();
+    //storage
     let defaultlote = {
         id: "",
         codigo: "",
@@ -53,6 +54,20 @@
     };
     let detallelote = $state(defaultlote);
     let storageLote = createStorageProxy("detallelote", defaultlote);
+    let defaultFiltros = {
+        cliente:"",
+        codigo:"",
+        estado:"open",
+        fechadesde:"",
+        fechahasta:"",
+        fechadesdevenc:"",
+        fechahastavenc:"",
+        remito:"",
+        lote:""
+    }
+    let detalleFiltos = $state(defaultFiltros)
+    let storageFiltro = createStorageProxy("lotesFiltros",defaultFiltros)
+    //fin storage
     function limpiarFiltros() {
         buscar = "";
         cliente = "";
@@ -64,9 +79,20 @@
         fechahastavenc = "";
         remito = "";
         lote = "";
+        detalleFiltos  = defaultFiltros
         filterUpdate();
     }
     function filterUpdate() {
+        detalleFiltos.cliente = cliente
+        detalleFiltos.codigo = codigo
+        detalleFiltos.estado = estado
+        detalleFiltos.fechadesde = fechadesde
+        detalleFiltos.fechahasta = fechahasta
+        detalleFiltos.fechadesdevenc = fechadesdevenc
+        detalleFiltos.fechahastavenc = fechahastavenc
+        detalleFiltos.remito = remito
+        detalleFiltos.lote = lote
+        storageFiltro.save(detalleFiltos)
         lotesrows = lotes;
         if (buscar != "") {
             lotesrows = lotesrows.filter(
@@ -94,7 +120,7 @@
             );
         }
         if (cliente != "") {
-            lotesrows = lotesrows.filter((l) => l.cliente == cliente);
+            lotesrows = lotesrows.filter((lt) => lt.cliente == cliente);
         }
 
         if (estado != "todos") {
@@ -270,6 +296,16 @@
         );
     }
     onMount(async () => {
+        detalleFiltos = storageFiltro.load()
+        cliente = detalleFiltos.cliente  
+        codigo = detalleFiltos.codigo  
+        estado = detalleFiltos.estado  
+        fechadesde = detalleFiltos.fechadesde  
+        fechahasta = detalleFiltos.fechahasta  
+        fechadesdevenc = detalleFiltos.fechadesdevenc  
+        fechahastavenc = detalleFiltos.fechahastavenc  
+        remito = detalleFiltos.remito  
+        lote = detalleFiltos.lote  
         await getData();
         await getListas();
         filterUpdate();

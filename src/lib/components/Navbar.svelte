@@ -1,4 +1,5 @@
 <script>
+    import { shortcut } from "$lib/genericos/shortcut";
     import { slide } from "svelte/transition";
     import estilos from "$lib/estilos";
     import Oscuro from "./Oscuro.svelte";

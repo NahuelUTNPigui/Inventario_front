@@ -14,50 +14,66 @@
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
 
-    let cargado = $state(false)
-    let cargadoListas = $state(false)
+    let cargado = $state(false);
+    let cargadoListas = $state(false);
     //filtros
 
     let buscar = $state("");
     let clientes = $state([]);
-    let  tipos = [
+    let tipos = [
         { id: "todos", nombre: "Todos" },
         { id: "0", nombre: "Ingreso" },
         { id: "1", nombre: "Egreso" },
     ];
-     
+
     let cliente = $state("");
-    let tipo = $state("todos")
+    let tipo = $state("todos");
     let fechadesde = $state("");
-    let fechahasta = $state(""); 
-    
-    
+    let fechahasta = $state("");
+
     let movimientos = $state([]);
     let movimientosrows = $state([]);
+    //storage
     let defaultmovimiento = {
         id: "",
         codigo: "",
         fecha: "",
         observacion: "",
         ingreso: 0,
-        lote:"",
+        lote: "",
         edit: false,
-        cliente:""
+        cliente: "",
     };
     let detallemovimiento = $state(defaultmovimiento);
     let storageMovimiento = createStorageProxy(
         "detallemovimiento",
         defaultmovimiento,
     );
-    function limpiarFiltros(){
-        buscar = ""
-        cliente = ""
-        tipo = "todos"
-        fechadesde = ""
-        fechahasta = ""
-        filterUpdate()
+    let defaultFiltros = {
+        cliente: "",
+        tipo: "todos",
+        fechadesde: "",
+        fechahasta: "",
+    };
+    let detalleFiltos = $state(defaultFiltros);
+    let storageFiltro = createStorageProxy("movimientoFiltros", defaultFiltros);
+    //fin storage
+    function limpiarFiltros() {
+        buscar = "";
+        cliente = "";
+        tipo = "todos";
+        fechadesde = "";
+        fechahasta = "";
+        detalleFiltos = defaultFiltros;
+        storageFiltro.save(detalleFiltos);
+        filterUpdate();
     }
     function filterUpdate() {
+        detalleFiltos.cliente = cliente;
+        detalleFiltos.tipo = tipo;
+        detalleFiltos.fechadesde = fechadesde;
+        detalleFiltos.fechahasta = fechahasta;
+        storageFiltro.save(detalleFiltos);
         movimientosrows = movimientos;
         if (buscar != "") {
             movimientosrows = movimientosrows.filter(
@@ -70,24 +86,25 @@
             );
         }
         if (fechadesde != "") {
-
-            movimientosrows =movimientosrows.filter((l) =>
-                new Date(l.expand.movimiento.fecha) >= new Date(fechadesde)
+            movimientosrows = movimientosrows.filter(
+                (l) =>
+                    new Date(l.expand.movimiento.fecha) >= new Date(fechadesde),
             );
         }
         if (fechahasta != "") {
-            movimientosrows =movimientosrows.filter((l) =>
-                new Date(l.expand.movimiento.fecha) < new Date(fechahasta)
+            movimientosrows = movimientosrows.filter(
+                (l) =>
+                    new Date(l.expand.movimiento.fecha) < new Date(fechahasta),
             );
         }
         if (cliente != "") {
-            movimientosrows =movimientosrows.filter((l) =>
-                l.expand.producto.cliente == cliente
+            movimientosrows = movimientosrows.filter(
+                (l) => l.expand.producto.cliente == cliente,
             );
         }
         if (tipo != "todos") {
-            movimientosrows =movimientosrows.filter((l) =>
-                l.expand.movimiento.ingreso == tipo
+            movimientosrows = movimientosrows.filter(
+                (l) => l.expand.movimiento.ingreso == tipo,
             );
         }
     }
@@ -96,39 +113,36 @@
         goto("/movimientos/0");
     }
     function openEditModal(p_id) {
-        
         let c_idx = movimientos.findIndex((u) => u.movimiento == p_id);
-        
+
         if (c_idx != -1) {
             let m = movimientos[c_idx];
-            let c = m.expand.movimiento
+            let c = m.expand.movimiento;
             detallemovimiento = {
                 id: c.id,
                 codigo: c.codigo,
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
-                edit: true
+                edit: true,
             };
             storageMovimiento.save(detallemovimiento);
             goto("/movimientos/" + c.id);
         }
     }
     function openViewModal(p_id) {
-        
-        
         let c_idx = movimientos.findIndex((u) => u.movimiento == p_id);
-        
+
         if (c_idx != -1) {
             let m = movimientos[c_idx];
-            let c = m.expand.movimiento
+            let c = m.expand.movimiento;
             detallemovimiento = {
                 id: c.id,
                 codigo: c.codigo,
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
-                edit: false
+                edit: false,
             };
             storageMovimiento.save(detallemovimiento);
             goto("/movimientos/" + c.id);
@@ -143,12 +157,14 @@
                 .getFullList({
                     filter: `movimiento='${p_id}'`,
                 });
-            let dataeliminado = {eliminado:true}
+            let dataeliminado = { eliminado: true };
             for (let i = 0; i < detalles.length; i++) {
                 let fila = detalles[i];
-                await pb.collection("detallemovimientos").update(fila.id,dataeliminado);
+                await pb
+                    .collection("detallemovimientos")
+                    .update(fila.id, dataeliminado);
             }
-            await pb.collection("movimientos").update(p_id,dataeliminado);
+            await pb.collection("movimientos").update(p_id, dataeliminado);
             await getData();
             filterUpdate();
             Swal.fire(
@@ -180,86 +196,93 @@
     }
     async function getData() {
         const recordsm = await pb.collection("detallemovimientos").getFullList({
-            expand:"movimiento,producto,lote",
+            expand: "movimiento,producto,lote",
             filter: `movimiento.active = true && eliminado=false`,
-            sort:"-movimiento.fecha"
+            sort: "-movimiento.fecha",
         });
 
         movimientos = recordsm.map((c) => ({ ...c }));
-        cargado = true
+        cargado = true;
     }
     async function getListas() {
         clientes = [];
         const recordsc = await pb.collection("clientes").getFullList({
-            filter:"active = true",
-            sort:"nombre"
+            filter: "active = true",
+            sort: "nombre",
         });
 
         clientes = [{ id: "", nombre: "Todos" }].concat(
             recordsc.map((c) => ({ ...c })),
         );
-        cargadoListas = true
+        cargadoListas = true;
     }
     onMount(async () => {
-        await getListas()
+        detalleFiltos = storageFiltro.load()
+        cliente = detalleFiltos.cliente
+        tipo = detalleFiltos.tipo
+        fechadesde = detalleFiltos.fechadesde
+        fechahasta = detalleFiltos.fechahasta
+        await getListas();
         await getData();
         filterUpdate();
     });
 </script>
 
 <Navbar>
-{#if cargadoListas}
-    <Buscador 
-        bind:buscar {filterUpdate} nuevo={openNew} 
-        {limpiarFiltros}
-        bind:fechadesde
-        bind:fechahasta
-        bind:tipo
-        bind:cliente
-        {clientes}
-        {tipos}
-    />
+    {#if cargadoListas}
+        <Buscador
+            bind:buscar
+            {filterUpdate}
+            nuevo={openNew}
+            {limpiarFiltros}
+            bind:fechadesde
+            bind:fechahasta
+            bind:tipo
+            bind:cliente
+            {clientes}
+            {tipos}
+        />
     {:else}
-    <Cargando/>
+        <Cargando />
     {/if}
     {#if cargado}
-    <!--Tabla-->
-    <div
-        class={`
+        <!--Tabla-->
+        <div
+            class={`
                 hidden w-full xl:w-3/4 md:grid
                 mx-auto py-0 my-0 px-4 max-w-7xl  
             `}
-    >
-        <div
-            class={`
+        >
+            <div
+                class={`
                     py-0 my-0
                     overflow-hidden rounded-xl
                     border border-gray-300 dark:border-gray-700
                 `}
+            >
+                <TablaMovimientos
+                    {movimientosrows}
+                    {openDelModal}
+                    {openViewModal}
+                    {openEditModal}
+                />
+            </div>
+        </div>
+        <div
+            class={`
+            md:hidden
+            w-full grid grid-cols-1
+            mx-auto py-3 px-4 max-w-7xl
+        `}
         >
-            <TablaMovimientos
+            <ListaMovimientos
                 {movimientosrows}
                 {openDelModal}
                 {openViewModal}
                 {openEditModal}
             />
         </div>
-    </div>
-    <div
-        class={`
-            md:hidden
-            w-full grid grid-cols-1
-            mx-auto py-3 px-4 max-w-7xl
-        `}
-    >
-        <ListaMovimientos
-            {movimientosrows}
-            {openDelModal}
-            {openViewModal}
-            {openEditModal}
-        />
-    </div>
     {:else}
-        <Cargando/>
+        <Cargando />
     {/if}
 </Navbar>

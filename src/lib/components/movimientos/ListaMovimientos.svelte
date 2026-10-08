@@ -87,6 +87,14 @@
                 </div>
                 <div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
+                        Remito
+                    </span>
+                    <p class="font-medium">
+                        {t.remito ||""}
+                    </p>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
                         Stock
                     </span>
                     <p class="font-medium">

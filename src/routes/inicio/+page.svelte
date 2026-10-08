@@ -21,6 +21,7 @@
     import TablaStock from "$lib/components/inicio/TablaStock.svelte";
     import NuevoProducto from "$lib/components/NuevoProducto.svelte";
     import ListaStock from "$lib/components/inicio/ListaStock.svelte";
+    
     let buscar = $state("");
     let clientes = $state([]);
     let cliente = $state("");
@@ -30,7 +31,13 @@
     let stockrows = $state([]);
     let usuario = $state({ id: "-1" });
     let nivel = $state(0);
-
+    
+    //storage
+    
+    let defaultInicio = {cliente:""}
+    let detalleInicio = $state(defaultInicio)
+    let storageInicio = createStorageProxy("inicio",defaultInicio)
+    //fin storage
     //nuevo producto
     let nombre = $state("");
     let codigo = $state("");
@@ -316,7 +323,10 @@
         cargado = true
     }
     async function seleccionarCliente() {
+        detalleInicio.cliente = cliente
+        storageInicio.save(detalleInicio)
         if (cliente != "") {
+
             stock = [];
             await getStock();
             await getProductos()
@@ -335,8 +345,14 @@
             );
         }
     }
+    function getStorage(){
+        detalleInicio = storageInicio.load()
+        cliente = detalleInicio.cliente
+    }
     onMount(async () => {
+        getStorage()
         await getData();
+        await seleccionarCliente()
     });
 </script>
 

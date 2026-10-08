@@ -97,6 +97,7 @@
     let edit = $state(false);
     let add = $state(false);
     let cargado = $state(false);
+    let remitoMov = $state("")
 
     //productos
     //nuevo producto
@@ -622,6 +623,7 @@
             ingreso,
             codigo,
             precargado: false,
+            remito:remitoMov
         };
         if (ingreso == 0) {
             try {
@@ -667,7 +669,8 @@
                         unidad: fila.unidad,
                         active: true,
                         lote: filalote,
-                        cliente: fila.cliente
+                        cliente: fila.cliente,
+                        remito:remitoMov
                         
                     };
                     if (fila.conlote) {
@@ -732,6 +735,7 @@
                         lote: fila.idfila,
                         cliente: fila.cliente,
                         historial: fila.cantidadlote,
+                        remito:remitoMov
                     };
                     let recorddetalle = await pb
                         .collection("detallemovimientos")
@@ -780,6 +784,7 @@
                 bind:detalles
                 bind:edit
                 bind:cliente
+                bind:remito = {remitoMov}
                 {clientes}
                 {add}
                 {id}

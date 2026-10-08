@@ -14,6 +14,7 @@
         codigoproducto = $bindable(""),
         grupoproducto = $bindable(""),
         observacion = $bindable(""),
+        remito = $bindable(""),
         ingreso = $bindable(0),
         detalles = $bindable([]),
         productos = [],
@@ -135,6 +136,36 @@
                 class={`text-lg tracking-wide ${estilos.labelcolor} py-0 my-0 px-3`}
             >
                 {getDateCorrect(fecha)}
+            </label>
+        {/if}
+    </div><div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+        <label for="remito" class="label mb-0 pb-0">
+            <span
+                class="
+                    label-text tracking-wide
+                    text-md uppercase
+                    font-semibold dark:text-gray-400
+                    text-gray-500
+                "
+            >
+                Remito</span
+            >
+        </label>
+        {#if edit}
+            <label class="input-group">
+                <input
+                    id="remito"
+                    type="text"
+                    class={`input input-bordered w-full ${estilos.bgdark}`}
+                    bind:value={remito}
+                />
+            </label>
+        {:else}
+            <label
+                for="observacion"
+                class={`text-lg tracking-wide ${estilos.labelcolor} py-0 my-0 px-3`}
+            >
+                {shorterWord(remito)}
             </label>
         {/if}
     </div>
