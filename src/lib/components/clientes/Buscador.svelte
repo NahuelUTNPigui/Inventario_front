@@ -8,6 +8,14 @@
             STOCK:item.lotes
         };
     }
+    let botonRef = $state(null);
+    // Se ejecuta automáticamente cuando el componente se monta
+    // y botonRef ya está disponible en el DOM
+    $effect(() => {
+        if (botonRef) {
+            botonRef.focus();
+        }
+    });
 </script>
 
 <div class="container mx-auto py-1 px-4 max-w-7xl w-full xl:w-3/4">
@@ -94,6 +102,7 @@
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
                     onclick={nuevo}
+                    bind:this={botonRef}
                 >
                     <Plus size="size-4" />
                     Nuevo

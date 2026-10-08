@@ -12,6 +12,14 @@
         nuevoIngreso = () => {},
         nuevoLote=()=>{}
     } = $props();
+    let botonRef = $state(null);
+    // Se ejecuta automáticamente cuando el componente se monta
+    // y botonRef ya está disponible en el DOM
+    $effect(() => {
+        if (botonRef) {
+            botonRef.focus();
+        }
+    });
 </script>
 
 <div class="container mx-auto py-1 px-4 max-w-7xl w-full xl:w-3/4">
@@ -153,6 +161,7 @@
                         bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
+                    bind:this={botonRef}
                     onclick={nuevoLote}
                 >
                     <Plus size="size-4" />
