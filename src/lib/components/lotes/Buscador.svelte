@@ -59,6 +59,13 @@
             LOTE: item.lote,
         };
     }
+    let botonRef = $state(null);
+    
+    $effect(() => {
+        if (botonRef) {
+            botonRef.focus();
+        }
+    });
 </script>
 
 <div class={`container mx-auto py-1 max-w-7xl w-full `}>
@@ -146,6 +153,7 @@
                     `}
                     bind:this={buttonRef}
                     onclick={nuevo}
+                    bind:this={botonRef}
                 >
                     <Plus size="size-4" />
                     Nuevo

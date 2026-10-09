@@ -38,6 +38,9 @@
     let detalleInicio = $state(defaultInicio)
     let storageInicio = createStorageProxy("inicio",defaultInicio)
     //fin storage
+    let inputRef = $state(null);
+
+    
     //nuevo producto
     let nombre = $state("");
     let codigo = $state("");
@@ -223,6 +226,9 @@
         lotelote = "";
         vencimientolote = "";
         ingresolote = "";
+        if (inputRef) {
+            inputRef.focus();
+        }
         inicioStock.showModal();
     }
     function cerrarLote() {
@@ -452,6 +458,7 @@
                         type="text"
                         class={`input input-bordered w-full ${estilos.bgdark}`}
                         bind:value={codigolote}
+                        bind:this={inputRef}
                     />
                 </label>
             </div>

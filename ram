@@ -1,6 +1,17 @@
 # Mejoras
+
+* Filtar por remito en movientos
+* Delay en guardar registros por si se tardar el guardare
+* Sumar lotes por productos
+* Un boton especifico para cerrar onda como creciente fertil
+* No se guarda en local el remito
+* Poner numero de remito en detalle de stock en los movimientos
+* Historial de stock no funciona
+* Morixe y Clef en cero
+* Morixe Seco
+
 * Eliminacion muñtiple de stocks y movimeintos
-* guardar los datos de una ram
+
 * Agregar pedidos de clientes, son como movimientos pendientes
 * Guardar filtros de productos,stocks y movimientos
 * Los codigos son muy largos y confunden más que otra cosa
@@ -14,8 +25,6 @@
 * Pedidos de egreso
 * Stock con quiebre
 * Agrupar movimientos por producto / stock
-* En elegir el stock, te sale el codigo de stock, debería salir el código del producto y el lote
-* Avisar al usuario que se esta por crear un lote
 * exportar inicio
 * Remito asociado al movimiento no al stock
 * No le envias el excel
@@ -58,8 +67,13 @@
 
 
 #  Listos
-
+* Elegir producto 
+* guardar los datos de una ram
+* autofocus en los formularios
+* Preguntar si el cerrado automatico tiene sentido
 * Que no se muera la aplicaicon cuando recargo la pagina en un perfil
+* En elegir el stock, te sale el codigo de stock, debería salir el código del producto y el lote
+* Avisar al usuario que se esta por crear un lote
 * No se puede ver y editar moviemientos en los celus
 * Procesar lote -> Procesar movimientos    
 * Falta la cantidad en el card de movimientos en el celu

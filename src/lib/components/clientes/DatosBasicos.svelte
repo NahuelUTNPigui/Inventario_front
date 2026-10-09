@@ -11,6 +11,8 @@
         eliminar = () => {},
         volver = () => {},
     } = $props();
+    let inputRef = $state(null);
+
     let nombreViejo = $state(nombre);
     function openEditar() {
         nombreViejo = nombre;
@@ -20,6 +22,12 @@
         nombre = nombreViejo;
         edit = false;
     }
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
 </script>
 
 <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
@@ -43,6 +51,7 @@
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={nombre}
+                    bind:this={inputRef}
                 />
             </label>
         {:else}

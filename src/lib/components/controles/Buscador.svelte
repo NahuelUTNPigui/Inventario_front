@@ -5,7 +5,7 @@
     import { slide } from "svelte/transition";
     import estilos from "$lib/estilos";
     import Exportar from "../Exportar.svelte";
-    let buttonRef = $state(null);
+    
     let {
         buscar = $bindable(""),
         responsable = $bindable(""),
@@ -21,9 +21,14 @@
         usuarios = [],
         data = [],
     } = $props();
-    export function setFocus() {
-        buttonRef.focus();
-    }
+    let botonRef = $state(null);
+    // Se ejecuta automáticamente cuando el componente se monta
+    // y botonRef ya está disponible en el DOM
+    $effect(() => {
+        if (botonRef) {
+            botonRef.focus();
+        }
+    });
     let openFilter = $state(false);
     function prepararData(item) {
         return {
@@ -124,7 +129,7 @@
                         bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
-                    bind:this={buttonRef}
+                    bind:this={botonRef}
                     onclick={nuevo}
                 >
                     <Plus size="size-4" />

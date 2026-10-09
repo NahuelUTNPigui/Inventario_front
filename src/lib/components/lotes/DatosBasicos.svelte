@@ -31,6 +31,14 @@
         productos = [],
         unidades = [],
     } = $props();
+    let inputRef = $state(null);
+
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
     let clientesrows = $derived(
         add
             ? clientes
@@ -148,6 +156,7 @@
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={codigo}
+                    bind:this={inputRef}
                 />
             </label>
         {:else}

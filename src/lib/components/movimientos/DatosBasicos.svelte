@@ -11,6 +11,7 @@
         codigo = $bindable(""),
         cliente = $bindable(""),
         fecha = $bindable(""),
+        cerrarLotes = $bindable(false),
         codigoproducto = $bindable(""),
         grupoproducto = $bindable(""),
         observacion = $bindable(""),
@@ -26,9 +27,17 @@
         eliminar = () => {},
         volver = () => {},
         selectCliente = () => {},
+        onChangeCierre = () => {},
     } = $props();
 
-    
+    let inputRef = $state(null);
+
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
 </script>
 
 <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
@@ -52,6 +61,7 @@
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={codigo}
+                    bind:this={inputRef}
                 />
             </label>
         {:else}
@@ -101,6 +111,8 @@
             </label>
         {/if}
     </div>
+    
+    
     <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
         <label for="Fecha" class="label mb-0 pb-0">
             <span
@@ -138,7 +150,8 @@
                 {getDateCorrect(fecha)}
             </label>
         {/if}
-    </div><div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+    </div>
+    <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
         <label for="remito" class="label mb-0 pb-0">
             <span
                 class="
@@ -223,6 +236,21 @@
                     <option value={s.id}>{s.nombre}</option>
                 {/each}
             </select>
+        </div>
+    {/if}
+    {#if add && ingreso == 1}
+        <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+            <div class="mb-1 lg:mb-0 col-span-1 lg:col-span-2">
+                <label class="label">
+                    <input
+                        type="checkbox"
+                        bind:checked={cerrarLotes}
+                        class="checkbox"
+                        onchange={onChangeCierre}
+                    />
+                    Cerrar lotes
+                </label>
+            </div>
         </div>
     {/if}
 </div>

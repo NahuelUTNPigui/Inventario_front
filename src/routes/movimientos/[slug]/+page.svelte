@@ -27,6 +27,7 @@
     let innerWidth = $state(0);
     let innerHeight = $state(0);
     let esCelu = $derived(innerWidth <= 1250);
+    //storage
     let defaultmovimiento = {
         id: "",
         codigo: "",
@@ -43,6 +44,15 @@
         "detallemovimiento",
         defaultmovimiento,
     );
+    let defaultcierre = {
+        cerrarLotes : false
+    };
+    let detallecierre = $state(defaultcierre);
+    let storagecierre = createStorageProxy(
+        "detallecierre",
+        defaultcierre,
+    );
+    //fin storage
     let tab = $state("prod");
     let opciones = [
         //{ id: "grupo", nombre: "Grupos" },
@@ -92,13 +102,14 @@
     //Data
     let id = $state("");
     let codigo = $state("");
+    let cerrarLotes = $state(false)
     let observacion = $state("");
     let fecha = $state("");
     let ingreso = $state(0);
     let edit = $state(false);
     let add = $state(false);
     let cargado = $state(false);
-    let remitoMov = $state("")
+    let remitoMov = $state("");
 
     //productos
     //nuevo producto
@@ -154,7 +165,6 @@
             });
 
         detalles = res_detalles;
-        
     }
     async function getProductos() {
         productos = await pb.collection("productos").getFullList({
@@ -239,7 +249,7 @@
                     .update(fila.id, dataeliminar);
                 let lote = fila.expand.lote;
                 //Es decir este es el ultimo movimiento
-                
+
                 if (lote.detallemovimiento == fila.id) {
                     let antiingreso = ingreso == 0 ? -1 : 1;
                     let cantidaddetalle = fila.cantidad;
@@ -345,7 +355,6 @@
         }).then(async (result) => {
             if (result.value) {
                 await eliminar();
-                
             }
         });
     }
@@ -389,7 +398,13 @@
             return;
         }
     }
+    function onChangeCierre(){
+        detallecierre.cerrarLotes = cerrarLotes
+        storagecierre.save(detallecierre)
+    }
     onMount(async () => {
+        detallecierre = storagecierre.load()
+        cerrarLotes = detallecierre.cerrarLotes
         await getData();
     });
     function changeTab(p_tab) {
@@ -463,7 +478,10 @@
             Swal.fire("Error producto", "Debe seleccionar una unidad", "error");
             return;
         }
-
+        if(p_cantidad<0){
+            Swal.fire("Cantidad negativa", "La cantidad no puede ser negativa", "error");
+            return;
+        }
         if (producto != "") {
             let idx_prod = productos.findIndex((g) => g.id == producto);
             if (idx_prod != -1) {
@@ -522,6 +540,10 @@
         }
     }
     function seleccionarLoteMovimiento(p_cantidad) {
+        if(p_cantidad<0){
+            Swal.fire("Cantidad negativa", "La cantidad no puede ser negativa", "error");
+            return;
+        }
         if (selectedLote != "") {
             let idx_lote = stock.findIndex((s) => s.id == selectedLote);
 
@@ -570,40 +592,7 @@
             }
         }
     }
-    function agregarLoteEgreso(p_cantidad) {
-        if (idlote != "" && verificadolote) {
-            let idx_prod = productos.findIndex((p) => p.id == idproducto);
-
-            let p = productos[idx_prod];
-
-            let cantidadxgrupo = p_cantidad;
-            let idx_unidad = unidades.findIndex((u) => (u.id = unidad));
-            if (idx_unidad != -1) {
-                unidadnombre = unidades[idx_unidad].nombre;
-            }
-
-            let fila = {
-                idfila: idlote,
-                nombre: codigolote,
-                codigo: codigolote,
-                cantidad: cantidadxgrupo,
-                cantidadlote,
-                producto: p.id,
-                unidad,
-                unidadnombre,
-                fechavencimiento:
-                    fechavencimiento.length > 0
-                        ? fechavencimiento + " 03:00:00"
-                        : "",
-                fecha,
-                conlote: true,
-                lote: idlote,
-                nombrelote: codigolote,
-            };
-            detalles.push(fila);
-        }
-    }
-
+   
     function limpiarNombreLote() {
         idlote = "";
         codigolote = "";
@@ -618,6 +607,8 @@
             );
             return;
         }
+        
+        
         let movimiento = {
             active: true,
             fecha: fecha + " 03:00:00",
@@ -625,7 +616,7 @@
             ingreso,
             codigo,
             precargado: false,
-            remito:remitoMov
+            remito: remitoMov,
         };
         if (ingreso == 0) {
             try {
@@ -672,8 +663,7 @@
                         active: true,
                         lote: filalote,
                         cliente: fila.cliente,
-                        remito:remitoMov
-                        
+                        remito: remitoMov,
                     };
                     if (fila.conlote) {
                         detalle.historial = cantidadlote;
@@ -722,7 +712,7 @@
                     let lotedata = {
                         cantidad: fila.cantidadlote - fila.cantidad,
                     };
-                    if (lotedata.cantidad <= 0) {
+                    if (lotedata.cantidad <= 0 && cerrarLotes) {
                         lotedata.cerrado = 1;
                     }
                     let recordlote = await pb
@@ -737,7 +727,7 @@
                         lote: fila.idfila,
                         cliente: fila.cliente,
                         historial: fila.cantidadlote,
-                        remito:remitoMov
+                        remito: remitoMov,
                     };
                     let recorddetalle = await pb
                         .collection("detallemovimientos")
@@ -786,12 +776,14 @@
                 bind:detalles
                 bind:edit
                 bind:cliente
-                bind:remito = {remitoMov}
+                bind:cerrarLotes
+                bind:remito={remitoMov}
                 {clientes}
                 {add}
                 {id}
                 {volver}
                 {selectCliente}
+                {onChangeCierre}
             />
             {#if add}
                 {#if ingreso == 0}
@@ -833,6 +825,7 @@
                                 <SeleccionarLote
                                     {ingreso}
                                     {stockrows}
+                                    {productosrows}
                                     bind:selectedLote
                                     agregarLote={seleccionarLoteMovimiento}
                                 />
@@ -852,6 +845,7 @@
                             <SeleccionarLote
                                 {ingreso}
                                 {stockrows}
+                                {productosrows}
                                 bind:selectedLote
                                 agregarLote={seleccionarLoteMovimiento}
                             />
