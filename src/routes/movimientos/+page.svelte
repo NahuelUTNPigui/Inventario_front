@@ -43,6 +43,7 @@
         lote: "",
         edit: false,
         cliente: "",
+        remito:""
     };
     let detallemovimiento = $state(defaultmovimiento);
     let storageMovimiento = createStorageProxy(
@@ -124,6 +125,7 @@
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
+                remito:m.remito,
                 edit: true,
             };
             storageMovimiento.save(detallemovimiento);
@@ -142,6 +144,7 @@
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
+                remito:m.remito,
                 edit: false,
             };
             storageMovimiento.save(detallemovimiento);

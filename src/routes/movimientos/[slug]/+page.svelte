@@ -35,6 +35,7 @@
         ingreso: 0,
         lote: "",
         edit: false,
+        remito:"",
         cliente: "",
     };
     let detallemovimiento = $state(defaultmovimiento);
@@ -174,6 +175,7 @@
         cliente = detallemovimiento.cliente;
         ingreso = detallemovimiento.ingreso;
         observacion = detallemovimiento.observacion;
+        remitoMov=detallemovimiento.remito
         let slug = page.params.slug;
         grupos = await pb.collection("grupos").getFullList({
             filter: `active = true`,
