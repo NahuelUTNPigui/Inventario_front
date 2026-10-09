@@ -1,5 +1,16 @@
 # Mejoras
 * autofocus en los formularios
+* Preguntar si el cerrado automatico tiene sentido
+* Filtar por remito en movientos
+* Delay en guardar registros por si se tardar el guardare
+* Sumar lotes por productos
+* Un boton especifico para cerrar onda como creciente fertil
+* No se guarda en local el remito
+* Poner numero de remito en detalle de stock en los movimientos
+* Historial de stock no funciona
+* Morixe y Clef en cero
+* Morixe Seco
+* Elegir producto 
 * Eliminacion muñtiple de stocks y movimeintos
 * guardar los datos de una ram
 * Agregar pedidos de clientes, son como movimientos pendientes

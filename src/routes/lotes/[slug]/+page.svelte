@@ -23,6 +23,7 @@
     let innerWidth = $state(0);
     let innerHeight = $state(0);
     let esCelu = $derived(innerWidth <= 1250);
+    //storage
     let defaultlote = {
         id: "",
         codigo: "",
@@ -33,13 +34,15 @@
         cliente: "",
         vencimiento: "",
         ingreso: "",
-        cierre:"",
+        cierre: "",
         lote: "",
         remito: "",
         edit: false,
     };
     let detallelote = $state(defaultlote);
     let storageLote = createStorageProxy("detallelote", defaultlote);
+    //storage
+
     //listas
     let cargado = $state(false);
     let clientes = $state([]);
@@ -58,11 +61,11 @@
     let lote = $state("");
     let vencimiento = $state("");
     let ingreso = $state("");
-    let cierre = $state("")
+    let cierre = $state("");
     //Data viejo
-    
+
     let cerradoviejo = $state(0);
-    let cantidadviejo = $state(0)
+    let cantidadviejo = $state(0);
     //banderas
     let edit = $state(false);
     let add = $state(false);
@@ -70,7 +73,7 @@
     //nuevo producto
     let nombre = $state("");
     let codigoprod = $state("");
-    
+
     function nuevoProducto() {
         nombre = "";
 
@@ -140,8 +143,6 @@
         egresoLote.close();
     }
     async function guardarIngreso() {
-        console.log(cantidad)
-        
         if (fechamovimiento.length == 0) {
             Swal.fire("Error fecha", "Debe seleccionar una fecha", "error");
             return;
@@ -158,7 +159,7 @@
             let recordmov = await pb
                 .collection("movimientos")
                 .create(movimiento);
-            
+
             let detalle = {
                 movimiento: recordmov.id,
                 cantidad: cantidadmov,
@@ -167,15 +168,15 @@
                 active: true,
                 lote: id,
                 cliente: cliente,
-                historial:cantidad
+                historial: cantidad,
             };
-            
+
             let recorddetalle = await pb
                 .collection("detallemovimientos")
                 .create(detalle);
             let lotedata = {
                 cantidad: cantidad + cantidadmov,
-                detallemovimiento:recorddetalle.id
+                detallemovimiento: recorddetalle.id,
             };
             let recordlote = await pb.collection("lotes").update(id, lotedata);
             closeIngreso();
@@ -196,8 +197,6 @@
         }
     }
     async function guardarEgreso() {
-        console.log(cantidad)
-        
         if (fechamovimiento.length == 0) {
             Swal.fire("Error fecha", "Debe seleccionar una fecha", "error");
             return;
@@ -214,7 +213,7 @@
             let recordmov = await pb
                 .collection("movimientos")
                 .create(movimiento);
-            
+
             let detalle = {
                 movimiento: recordmov.id,
                 cantidad: cantidadmov,
@@ -223,15 +222,14 @@
                 active: true,
                 lote: id,
                 cliente: cliente,
-                historial:cantidad
+                historial: cantidad,
             };
             let recorddetalle = await pb
                 .collection("detallemovimientos")
                 .create(detalle);
             let lotedata = {
                 cantidad: cantidad - cantidadmov,
-                detallemovimiento:recorddetalle.id
-
+                detallemovimiento: recorddetalle.id,
             };
             let recordlote = await pb.collection("lotes").update(id, lotedata);
             closeEgreso();
@@ -253,14 +251,15 @@
         { id: "base", nombre: "Datos básicos" },
         { id: "mov", nombre: "Movimientos" },
         { id: "qr", nombre: "QR" },
+        { id: "cerrar", nombre: "Cerrar" },
     ];
     async function getProductos() {
         let recordp = await pb.collection("productos").getFullList({
-            filter:"active=true"
+            filter: "active=true",
         });
         productos = recordp;
     }
-    
+
     async function getData() {
         detallelote = storageLote.load();
 
@@ -284,14 +283,14 @@
         }
 
         let recordu = await pb.collection("unidades").getFullList({
-            filter:"active=true"
+            filter: "active=true",
         });
 
         let recordc = await pb.collection("clientes").getFullList({
-            filter:"active=true"
+            filter: "active=true",
         });
         await getProductos();
-        
+
         unidades = recordu;
 
         clientes = recordc;
@@ -300,11 +299,11 @@
     function volver() {
         goto("/lotes");
     }
-    function esCerrando(){
-        return cerradoviejo == 0 && cerrado == 1
+    function esCerrando() {
+        return cerradoviejo == 0 && cerrado == 1;
     }
-    function cambiarCantidad(){
-        return cantidadviejo != cantidad
+    function cambiarCantidad() {
+        return cantidadviejo != cantidad;
     }
     async function guardarLote() {
         if (unidad == "" || producto == "") {
@@ -319,22 +318,34 @@
             Swal.fire("Error datos", "Debe seleccionar un cliente", "error");
             return;
         }
-        if(cantidad == ""){
-            Swal.fire("Error datos", "Debe escribir alguna cantidad. Puede ser cero", "error");
+        if (cantidad === "") {
+            Swal.fire(
+                "Error datos",
+                "Debe escribir alguna cantidad. Puede ser cero",
+                "error",
+            );
             return;
         }
-        if(codigo == ""){
-            Swal.fire("Error datos", "Debe escribir algún código. Puede ser el nombre del producto", "error");
+        if (codigo == "") {
+            Swal.fire(
+                "Error datos",
+                "Debe escribir algún código. Puede ser el nombre del producto",
+                "error",
+            );
             return;
         }
         if (id.length > 0 && !add) {
             await editarLote();
         } else {
-            if(conmovimiento && ingreso.length==0){
-                Swal.fire("Error datos", "Para crear el movimiento debe seleccionar la fecha de ingreso", "error");
-            return;
+            if (conmovimiento && ingreso.length == 0) {
+                Swal.fire(
+                    "Error datos",
+                    "Para crear el movimiento debe seleccionar la fecha de ingreso",
+                    "error",
+                );
+                return;
             }
-            let nombreproducto = getNombreProducto()
+            let nombreproducto = getNombreProducto();
             let movimiento = {
                 active: true,
                 fecha: ingreso + " 03:00:00",
@@ -345,14 +356,13 @@
             };
 
             let detalle = {
-                
                 cantidad: cantidad,
                 cliente,
                 producto: producto,
                 unidad,
                 lote: "",
                 movimiento: "",
-                historial:0
+                historial: 0,
             };
             let data = {
                 codigo,
@@ -362,7 +372,7 @@
                 cantidad,
                 fechavencimiento:
                     vencimiento.length > 0 ? vencimiento + " 03:00:00" : "",
-                fechaingreso: ingreso.length>0? ingreso + " 03:00:00":"",
+                fechaingreso: ingreso.length > 0 ? ingreso + " 03:00:00" : "",
                 cliente,
                 remito,
                 lote,
@@ -379,8 +389,12 @@
                     let recorddetalle = await pb
                         .collection("detallemovimientos")
                         .create(detalle);
-                    let datalotedetalle = {detallemovimiento:recorddetalle.id}
-                    await pb.collection("lotes").update(recordc.id,datalotedetalle)
+                    let datalotedetalle = {
+                        detallemovimiento: recorddetalle.id,
+                    };
+                    await pb
+                        .collection("lotes")
+                        .update(recordc.id, datalotedetalle);
                 }
                 Swal.fire(
                     "Éxito guardar",
@@ -398,6 +412,21 @@
             }
         }
     }
+    async function cerrarLote() {
+        let data = {
+            cerrado:1,
+            fechacierre: new Date().toISOString().split("T")[0] + " 03:00:00",
+        };
+
+        try {
+            let recordc = await pb.collection("lotes").update(id, data);
+            Swal.fire("Éxito editar", `Se logró cerrar el lote`, "success");
+        } catch (err) {
+            Swal.fire("Error edición", `No se logró cerrar el lote`, "error");
+        } finally {
+            volver();
+        }
+    }
     async function editarLote() {
         let data = {
             codigo,
@@ -405,18 +434,20 @@
             cerrado,
             producto,
             cantidad,
-            fechavencimiento:vencimiento.length>0? vencimiento + " 03:00:00":"",
-            fechaingreso:ingreso.length>0? ingreso + " 03:00:00":"",
+            fechavencimiento:
+                vencimiento.length > 0 ? vencimiento + " 03:00:00" : "",
+            fechaingreso: ingreso.length > 0 ? ingreso + " 03:00:00" : "",
             cliente,
             remito,
             lote,
-            fechacierre:""
+            fechacierre: "",
         };
-        if(esCerrando()){
-            data.fechacierre = new Date().toISOString().split("T")[0]+" 03:00:00"
+        if (esCerrando()) {
+            data.fechacierre =
+                new Date().toISOString().split("T")[0] + " 03:00:00";
         }
-        if(cambiarCantidad()){
-            data.detallemovimiento=""
+        if (cambiarCantidad()) {
+            data.detallemovimiento = "";
         }
         try {
             let recordc = await pb.collection("lotes").update(id, data);
@@ -485,9 +516,7 @@
         }
     }
     onMount(async () => {
-        
         await getData();
-        
     });
 </script>
 
@@ -542,8 +571,40 @@
                     {openEgresoModal}
                     {openIngresoModal}
                 />
+            {:else if tab == "cerrar"}
+                <div
+                    class={`mt-6 flex space-x-3 justify-start dark:border-gray-800`}
+                >
+                    <label for="rp" class="label mb-0 pb-0">
+                        <span
+                            class="
+                                label-text tracking-wide
+                                text-md uppercase
+                                font-semibold text-gray-7 00 dark:text-gray-300
+                            "
+                        >
+                            {cerrado == 1
+                                ? "Ya esta cerrado"
+                                : "Si se cierra el lote, queda a modo de historial"}</span
+                        >
+                    </label>
+                    {#if cerrado == 0}
+                        <button
+                            class={`
+                            hover:cursor-pointer 
+                            mt-2 px-5 py-1 md:py-2 md:px-10 
+                            bg-[#115642] text-white font-medium rounded-full shadow-sm 
+                            hover:bg-green-700 transition-colors text-base
+                            
+                        `}
+                            onclick={cerrarLote}
+                        >
+                            Cerrar stock
+                        </button>
+                    {/if}
+                </div>
             {:else}
-                <Qr {codigo} idlote={id}/>
+                <Qr {codigo} idlote={id} />
             {/if}
         {/if}
     </DetalleLote>

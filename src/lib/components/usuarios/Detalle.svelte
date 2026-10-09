@@ -23,6 +23,14 @@
         eliminar = () => {},
         volver = () => {},
     } = $props();
+    let inputRef = $state(null);
+
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
     let nombreViejo = $state(nombre);
     let apellidoViejo = $state(apellido);
     let rolViejo = $state(rol);
@@ -92,6 +100,7 @@
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={nombre}
+                    bind:this={inputRef}
                 />
             </label>
         {:else}

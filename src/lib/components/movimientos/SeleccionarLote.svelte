@@ -2,10 +2,12 @@
     let {
         ingreso = 0,
         stockrows = [],
+        productosrows = [],
         selectedLote = $bindable(""),
 
         agregarLote = (p_cantidad) => {},
     } = $props();
+    let prodSelected = $state("");
     let cantidad = $state("");
     function agregar() {
         agregarLote(cantidad);
@@ -29,6 +31,11 @@
     }
     let cantidadActual = $derived(selectedLote == "" ? "" : selectCantidad());
     let nombreLote = $derived(selectedLote == "" ? "" : selectLote());
+    let stockFilter = $derived(
+        prodSelected == ""
+            ? stockrows
+            : stockrows.filter((s) => s.producto == prodSelected),
+    );
 </script>
 
 <!-- Agregar al Lote -->
@@ -36,28 +43,54 @@
     class="rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
 >
     <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        {ingreso == 0 ? `Agregar al Stock` : `Quitar del stock`}
+        {ingreso == 0
+            ? `Seleccionar stock al ingreso`
+            : `Seleccionar stock al egreso`}
     </h2>
     <div class="space-y-4">
         <div>
             <label
-                for="Producto"
+                for="prodSelected"
+                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+                Seleccionar producto
+            </label>
+            <select
+                class="
+                    w-full
+                    border
+                    bg-white dark:bg-slate-900
+                    border-gray-300 dark:border-gray-600
+                    rounded-md px-3 py-1.5 text-sm
+                    focus:outline-none focus:ring-1 focus:ring-gray-700 focus:border-green-700
+                "
+                bind:value={prodSelected}
+            >
+                <option value="">Todos</option>
+                {#each productosrows as s}
+                    <option value={s.id}>{s.codigo} - {s.nombre}</option>
+                {/each}
+            </select>
+        </div>
+        <div>
+            <label
+                for="stock"
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
                 Stock
             </label>
             <select
                 class="
-                w-full
-                border
-                bg-white dark:bg-slate-900
-                border-gray-300 dark:border-gray-600
-                rounded-md px-3 py-1.5 text-sm
-                focus:outline-none focus:ring-1 focus:ring-gray-700 focus:border-green-700
+                    w-full
+                    border
+                    bg-white dark:bg-slate-900
+                    border-gray-300 dark:border-gray-600
+                    rounded-md px-3 py-1.5 text-sm
+                    focus:outline-none focus:ring-1 focus:ring-gray-700 focus:border-green-700
                 "
                 bind:value={selectedLote}
             >
-                {#each stockrows as s}
+                {#each stockFilter as s}
                     <option value={s.id}>{s.codigo}</option>
                 {/each}
             </select>

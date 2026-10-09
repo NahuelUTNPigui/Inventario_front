@@ -29,4 +29,4 @@
 
 {@render children()}
 <!-- Command Palette disponible en todas las páginas -->
-    <CommandPalette isOpen={isCommandPaletteOpen} />
+<CommandPalette isOpen={isCommandPaletteOpen} />

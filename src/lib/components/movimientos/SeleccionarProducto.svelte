@@ -40,7 +40,7 @@
     class="rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
 >
     <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-        Agregar producto al movimiento
+        Crear nuevo stock
     </h2>
     <div class="space-y-4">
         

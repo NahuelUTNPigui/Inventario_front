@@ -60,6 +60,14 @@
     onMount(() => {
         setEditar();
     });
+    let inputRef = $state(null);
+
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
 </script>
 
 <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
@@ -109,6 +117,7 @@
                         ${estilos.bgdark2} 
                     `}
                 bind:value={fecha}
+                bind:this={inputRef}
             />
         {:else}
             <label
@@ -142,6 +151,7 @@
                 focus:outline-none focus:ring-1 focus:ring-gray-700 focus:border-gray-700
                 "
                 bind:value={cliente}
+                
             >
                 {#each clientesrows as s}
                     <option value={s.id}>{s.nombre}</option>

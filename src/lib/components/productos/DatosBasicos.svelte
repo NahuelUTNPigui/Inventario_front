@@ -16,6 +16,14 @@
         volver = () => {},
         clientes = []
     } = $props();
+    let inputRef = $state(null);
+
+    // Se ejecuta apenas el componente se monta y el input está disponible
+    $effect(() => {
+        if (inputRef) {
+            inputRef.focus();
+        }
+    });
     let clientesrows = $derived(add?clientes.filter(c=>c.active):clientes)
     let nombreViejo = $state("");
     let codigoViejo = $state("");
@@ -62,6 +70,7 @@
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={nombre}
+                    bind:this={inputRef}
                 />
             </label>
         {:else}

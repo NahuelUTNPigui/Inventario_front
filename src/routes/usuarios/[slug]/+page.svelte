@@ -17,6 +17,7 @@
     let innerWidth = $state(0);
     let innerHeight = $state(0);
     let esCelu = $derived(innerWidth <= 1250);
+    //Storage
     let defaultusuario = {
         id: "",
         nombre: "",
@@ -28,6 +29,8 @@
     };
     let detalleusuario = $state(defaultusuario);
     let storageUsuario = createStorageProxy("detalleusuario", defaultusuario);
+    //Storage
+    
     //Data
     let idmiusuario = $state("");
     let id = $state("");
@@ -68,7 +71,7 @@
     function volver() {
         goto("/usuarios");
     }
-    async function                                                 guardarContra() {
+    async function  guardarContra() {
         let data = {
             oldPassword: contraVieja,
             password: contraNueva,
