@@ -6,6 +6,7 @@
     import estilos from "$lib/estilos";
     let {
         buscar = $bindable(""),
+        remito = $bindable(""),
         cliente = $bindable(""),
         fechadesde = $bindable(""),
         fechahasta = $bindable(""),
@@ -262,16 +263,39 @@
                             {/each}
                         </select>
                     </div>
+                    <div>
+                        <label for="remito" class="label mb-0 pb-0">
+                            <span
+                                class="
+                                    label-text tracking-wide
+                                    text-md uppercase
+                                    font-semibold dark:text-gray-400
+                                    text-gray-500
+                                "
+                            >
+                                Remito</span
+                            >
+                        </label>
+                        <label class="input-group">
+                            <input
+                                id="remito"
+                                type="text"
+                                class={`input input-bordered w-full ${estilos.bgdark}`}
+                                oninput={filterUpdate}
+                                bind:value={remito}
+                            />
+                        </label>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 gap-x-4 gap-y-2 w-full mt-2 mb-1">
                     <div>
                         <button
                             class={`
-                        hover:cursor-pointer
-                        border rounded-full px-3 py-1 text-md flex items-center gap-1
-                        bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
-                        dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
-                    `}
+                                hover:cursor-pointer
+                                border rounded-full px-3 py-1 text-md flex items-center gap-1
+                                bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
+                                dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
+                            `}
                             onclick={limpiarFiltros}
                         >
                             <Limpiar size="size-4" />

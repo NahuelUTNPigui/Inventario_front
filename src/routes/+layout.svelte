@@ -7,7 +7,7 @@
 	 // Listener global para Ctrl+E (o Cmd+E en Mac)
     function handleGlobalKeydown(event) {
         // Detectar Ctrl+E o Cmd+E
-        if ((event.ctrlKey || event.metaKey) && event.key === 'e') {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'm') {
             event.preventDefault();
             isCommandPaletteOpen = !isCommandPaletteOpen;
         }

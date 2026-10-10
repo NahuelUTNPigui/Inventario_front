@@ -11,6 +11,7 @@
         buscar = $bindable(""),
         cliente = $bindable(""),
         codigo = $bindable(""),
+        
         estado = $bindable(""),
         fechadesde = $bindable(""),
         fechahasta = $bindable(""),

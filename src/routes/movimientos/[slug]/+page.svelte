@@ -90,7 +90,18 @@
     let producto = $state("");
     let remito = $state("");
     let lote = $state("");
+    let codigostock =$state("")
     let selectedLote = $state("");
+    function onSelectProducto(){
+        if(producto !=""){
+            let idx = productosrows.findIndex(p=>p.id == producto)
+            if(idx != -1){
+                let p = productosrows[idx]
+                codigostock = p.codigo 
+            }
+            
+        }
+    }
     //Feedback
     let malverificadogrupo = $state(false);
     let malverificadoproducto = $state(false);

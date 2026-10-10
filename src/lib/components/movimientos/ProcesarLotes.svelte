@@ -23,23 +23,7 @@
     {#if lote.length == 0}
         <!-- Estado vacío -->
         <div id="empty-batch" class="block text-center py-8">
-            <div
-                class="w-12 h-12 mx-auto bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center mb-4"
-            >
-                <svg
-                    class="w-6 h-6 text-gray-400 dark:text-gray-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5-5M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"
-                    ></path>
-                </svg>
-            </div>
+            
             <p class="text-gray-500 dark:text-gray-400 text-sm">
                 El movimiento está vacío
             </p>

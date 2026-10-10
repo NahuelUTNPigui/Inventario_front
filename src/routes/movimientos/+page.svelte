@@ -27,6 +27,7 @@
     ];
 
     let cliente = $state("");
+    let remito = $state("");
     let tipo = $state("todos");
     let fechadesde = $state("");
     let fechahasta = $state("");
@@ -85,6 +86,11 @@
                         .toLocaleLowerCase()
                         .includes(buscar.toLocaleLowerCase()),
             );
+        }
+        if(remito != ""){
+            movimientosrows = movimientosrows.filter(mov=>
+                mov.remito.includes(remito)
+            )
         }
         if (fechadesde != "") {
             movimientosrows = movimientosrows.filter(
@@ -242,6 +248,7 @@
             bind:fechahasta
             bind:tipo
             bind:cliente
+            bind:remito
             {clientes}
             {tipos}
         />

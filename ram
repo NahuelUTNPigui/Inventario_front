@@ -1,14 +1,10 @@
 # Mejoras
 
-* Filtar por remito en movientos
+* En el select de stock poner nombre del prodducto- lote y remito
+
 * Delay en guardar registros por si se tardar el guardare
-* Sumar lotes por productos
-* Un boton especifico para cerrar onda como creciente fertil
-* No se guarda en local el remito
-* Poner numero de remito en detalle de stock en los movimientos
+
 * Historial de stock no funciona
-* Morixe y Clef en cero
-* Morixe Seco
 
 * Eliminacion muñtiple de stocks y movimeintos
 
@@ -44,6 +40,7 @@
 * Permito editar productos y clientes en controles?
 * Exportar movimientos
 * Exportar detalle de movimiento
+* Devoluciones como ingreso
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -67,6 +64,14 @@
 
 
 #  Listos
+* Morixe y Clef en cero
+* Morixe Seco
+* Sumar lotes por productos
+* Filtar por remito en movientos
+* Un boton especifico para cerrar onda como creciente fertil
+* No se guarda en local el remito
+* Poner numero de remito en detalle de stock en los movimientos
+* Agrupar stock por producto
 * Elegir producto 
 * guardar los datos de una ram
 * autofocus en los formularios

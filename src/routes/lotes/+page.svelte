@@ -16,6 +16,8 @@
     let cargado = $state(false);
     let cargadoListas = $state(false);
     //filtros
+    let ordenVencimiento = $state(false);
+    let agrupado = $state(false);
     let buscar = $state("");
     let cliente = $state("");
     let codigo = $state("");
@@ -55,18 +57,18 @@
     let detallelote = $state(defaultlote);
     let storageLote = createStorageProxy("detallelote", defaultlote);
     let defaultFiltros = {
-        cliente:"",
-        codigo:"",
-        estado:"open",
-        fechadesde:"",
-        fechahasta:"",
-        fechadesdevenc:"",
-        fechahastavenc:"",
-        remito:"",
-        lote:""
-    }
-    let detalleFiltos = $state(defaultFiltros)
-    let storageFiltro = createStorageProxy("lotesFiltros",defaultFiltros)
+        cliente: "",
+        codigo: "",
+        estado: "open",
+        fechadesde: "",
+        fechahasta: "",
+        fechadesdevenc: "",
+        fechahastavenc: "",
+        remito: "",
+        lote: "",
+    };
+    let detalleFiltos = $state(defaultFiltros);
+    let storageFiltro = createStorageProxy("lotesFiltros", defaultFiltros);
     //fin storage
     function limpiarFiltros() {
         buscar = "";
@@ -79,20 +81,20 @@
         fechahastavenc = "";
         remito = "";
         lote = "";
-        detalleFiltos  = defaultFiltros
+        detalleFiltos = defaultFiltros;
         filterUpdate();
     }
     function filterUpdate() {
-        detalleFiltos.cliente = cliente
-        detalleFiltos.codigo = codigo
-        detalleFiltos.estado = estado
-        detalleFiltos.fechadesde = fechadesde
-        detalleFiltos.fechahasta = fechahasta
-        detalleFiltos.fechadesdevenc = fechadesdevenc
-        detalleFiltos.fechahastavenc = fechahastavenc
-        detalleFiltos.remito = remito
-        detalleFiltos.lote = lote
-        storageFiltro.save(detalleFiltos)
+        detalleFiltos.cliente = cliente;
+        detalleFiltos.codigo = codigo;
+        detalleFiltos.estado = estado;
+        detalleFiltos.fechadesde = fechadesde;
+        detalleFiltos.fechahasta = fechahasta;
+        detalleFiltos.fechadesdevenc = fechadesdevenc;
+        detalleFiltos.fechahastavenc = fechahastavenc;
+        detalleFiltos.remito = remito;
+        detalleFiltos.lote = lote;
+        storageFiltro.save(detalleFiltos);
         lotesrows = lotes;
         if (buscar != "") {
             lotesrows = lotesrows.filter(
@@ -251,9 +253,13 @@
         });
     }
     function reiniciar() {
+        ordenVencimiento = false;
+        agrupado = false
         filterUpdate();
     }
-    async function ordenarPorVencimiento() {
+    function ordenarPorVencimiento() {
+        ordenVencimiento = true;
+        agrupado = false
         filterUpdate();
         lotesrows = lotesrows.filter(
             (item) => item.fechavencimiento.length > 0,
@@ -273,6 +279,40 @@
                 return a.fechavencimiento > b.fechavencimiento ? 1 : -1;
             }
         });
+    }
+    function agruparPorProductos(){
+        agrupado = true
+        ordenVencimiento = false
+        filterUpdate()
+        let tablaProductos = {}
+        for(let i = 0;i<lotesrows.length;i++){
+            let fila = lotesrows[i]
+            if(tablaProductos[fila.producto]){
+                tablaProductos[fila.producto].cantidad += fila.cantidad
+            }
+            else{
+                tablaProductos[fila.producto]={
+                    codigo:"",
+                    id:fila.id,
+                    cantidad:fila.cantidad,
+                    expand:fila.expand,
+                    cerrado:"",
+                    fechavencimiento:"",
+                    fechaingreso:"",
+                    remito:"",
+                    lote:""
+                }
+            }
+        }
+        lotesrows = []
+        Object.values(tablaProductos).forEach(item=>{
+            lotesrows.push(item)
+        })
+    }
+    function reiniciarStocks(){
+        agrupado = false
+        ordenVencimiento = false
+        filterUpdate()
     }
     async function getData() {
         const recordsl = await pb.collection("lotes").getFullList({
@@ -296,16 +336,16 @@
         );
     }
     onMount(async () => {
-        detalleFiltos = storageFiltro.load()
-        cliente = detalleFiltos.cliente  
-        codigo = detalleFiltos.codigo  
-        estado = detalleFiltos.estado  
-        fechadesde = detalleFiltos.fechadesde  
-        fechahasta = detalleFiltos.fechahasta  
-        fechadesdevenc = detalleFiltos.fechadesdevenc  
-        fechahastavenc = detalleFiltos.fechahastavenc  
-        remito = detalleFiltos.remito  
-        lote = detalleFiltos.lote  
+        detalleFiltos = storageFiltro.load();
+        cliente = detalleFiltos.cliente;
+        codigo = detalleFiltos.codigo;
+        estado = detalleFiltos.estado;
+        fechadesde = detalleFiltos.fechadesde;
+        fechahasta = detalleFiltos.fechahasta;
+        fechadesdevenc = detalleFiltos.fechadesdevenc;
+        fechahastavenc = detalleFiltos.fechahastavenc;
+        remito = detalleFiltos.remito;
+        lote = detalleFiltos.lote;
         await getData();
         await getListas();
         filterUpdate();
@@ -335,28 +375,56 @@
     {/if}
     <div class={`container mx-auto py-1 max-w-7xl w-full `}>
         <div class="flex flex-wrap gap-2">
-            <button
-                class={`
+            {#if !ordenVencimiento}
+                <button
+                    class={`
                         hover:cursor-pointer
                         border rounded-full px-3 py-1 text-md flex items-center gap-1
                         bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
-                onclick={ordenarPorVencimiento}
-            >
-                Ordenar por vencimiento
-            </button>
-            <button
-                class={`
+                    onclick={ordenarPorVencimiento}
+                >
+                    Ordenar por vencimiento
+                </button>
+            {:else}
+                <button
+                    class={`
                         hover:cursor-pointer
                         border rounded-full px-3 py-1 text-md flex items-center gap-1
                         bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
-                onclick={reiniciar}
-            >
-                Limpiar
-            </button>
+                    onclick={reiniciar}
+                >
+                    Reiniciar orden
+                </button>
+            {/if}
+            {#if !agrupado}
+                <button
+                    class={`
+                        hover:cursor-pointer
+                        border rounded-full px-3 py-1 text-md flex items-center gap-1
+                        bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
+                        dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
+                    `}
+                    onclick={agruparPorProductos}
+                >
+                    Agrupar por producto
+                </button>
+            {:else}
+                <button
+                    class={`
+                        hover:cursor-pointer
+                        border rounded-full px-3 py-1 text-md flex items-center gap-1
+                        bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
+                        dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
+                    `}
+                    onclick={reiniciarStocks}
+                >
+                    Reiniciar grupos
+                </button>
+            {/if}
         </div>
     </div>
     {#if cargado}
