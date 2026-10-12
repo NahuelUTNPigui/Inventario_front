@@ -28,6 +28,7 @@
         volver = () => {},
         selectCliente = () => {},
         onChangeCierre = () => {},
+        onInputRemito = () => {},
     } = $props();
 
     let inputRef = $state(null);
@@ -170,6 +171,7 @@
                     id="remito"
                     type="text"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
+                    oninput={onInputRemito}
                     bind:value={remito}
                 />
             </label>

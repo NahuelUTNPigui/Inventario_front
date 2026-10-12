@@ -24,11 +24,21 @@
             {#each detalles as l}
                 <!-- Producto agregado -->
                 <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div class="flex justify-between items-start mb-2">
+                    <span
+                            class="text-sm font-semibold text-green-600 dark:text-green-400"
+                            >Producto: {getNombreLista(l.producto,productos)}</span
+                        >
+                </div>
                     <div class="flex justify-between items-start mb-2">
                         
                         <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
-                            >Cantidad: {l.cantidad} - {getNombreLista(l.producto,productos)}  Unidad: {getNombreLista(l.unidad,unidades)}</span
+                            >Cantidad: {l.cantidad}  Unidad: {getNombreLista(l.unidad,unidades)}</span
+                        >
+                        <span
+                            class="text-sm font-semibold text-green-600 dark:text-green-400"
+                            >Remito stock: {l.expand?.lote.remito} -  Numero de Lote: {l.expand?.lote.lote}</span
                         >
                     </div>
                     <div class="flex justify-end gap-2 mt-2">

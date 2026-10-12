@@ -12,7 +12,7 @@
         nombreunidad = $bindable(""),
         fechavencimiento = $bindable(""),
         lote = $bindable(""),
-        remito = $bindable(""),
+        remito = $bindable("")
     } = $props();
     let cantidad = $state("");
     function agregar() {

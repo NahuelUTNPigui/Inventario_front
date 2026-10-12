@@ -91,7 +91,7 @@
                 bind:value={selectedLote}
             >
                 {#each stockFilter as s}
-                    <option value={s.id}>{s.codigo}</option>
+                    <option value={s.id}>{s.expand?.producto.nombre} {s.lote.length>0?" - " + s.lote:""} {s.remito.length>0?" - " + s.remito:""} - {s.codigo}</option>
                 {/each}
             </select>
         </div>

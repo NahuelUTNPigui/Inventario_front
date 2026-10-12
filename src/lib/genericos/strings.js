@@ -26,6 +26,15 @@ export function makeid(length = 10) {
     }
     return result;
 }
+export function makenumber(length = 10) {
+    var result           = '';
+    var characters       = '0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 export function makecodigo(palabra,length = 5,confecha=false) {
     var result           = palabra+"-";
     var characters       = '01234567890123456789';

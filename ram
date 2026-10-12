@@ -1,6 +1,6 @@
 # Mejoras
 
-* En el select de stock poner nombre del prodducto- lote y remito
+
 
 * Delay en guardar registros por si se tardar el guardare
 
@@ -12,10 +12,8 @@
 * Guardar filtros de productos,stocks y movimientos
 * Los codigos son muy largos y confunden más que otra cosa
 * Borro stock y sus movimientos. Si borro el último movimiento borro el stock?Te pregunta
-* Guardar cliente del inicio
-* Remito en movimiento
+
 * Restricción Vencimiento anterior al día
-* Que no se cierre nada automaticamente
 * Carga múltiple de remitos / movimientos
 * No te guarda el código de movimiento que  pusiste
 * Pedidos de egreso
@@ -64,6 +62,8 @@
 
 
 #  Listos
+* Guardar cliente del inicio
+* En el select de stock poner nombre del prodducto- lote y remito
 * Morixe y Clef en cero
 * Morixe Seco
 * Sumar lotes por productos

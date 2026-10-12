@@ -3,6 +3,8 @@
         lote = $bindable([]),
         quitarLote = (id) => {},
         procesar = () => {},
+        procesando = false 
+        
     } = $props();
 </script>
 
@@ -98,13 +100,16 @@
             <!-- Botón procesar -->
             <button
                 onclick={procesar}
-                class="
-                    cursor-pointer w-full
+                class={`
+                    ${procesando?"cursor-wait":"cursor-pointer"}
+                     
+                    w-full
                     dark:bg-red-900 dark:hover:bg-red-800
                     bg-red-900 hover:bg-red-800
                     text-white font-medium py-3 px-4 rounded-lg
                     transition-colors duration-200
-                "
+                `}
+                disabled={procesando}
             >
                 Procesar stocks
             </button>

@@ -11,7 +11,7 @@
     import { goto } from "$app/navigation";
     import PocketBase from "pocketbase";
     import ProcesarLotes from "$lib/components/movimientos/ProcesarLotes.svelte";
-    import { makecodigo, makeid } from "$lib/genericos/strings";
+    import { makecodigo, makeid, makenumber, randomString } from "$lib/genericos/strings";
     import Swal from "sweetalert2";
     import ScannerLote from "$lib/components/movimientos/ScannerLote.svelte";
     import AgregarLote from "$lib/components/movimientos/AgregarLote.svelte";
@@ -109,7 +109,7 @@
     let verificadogrupo = $state(false);
     let verificadoproducto = $state(false);
     let verificadolote = $state(false);
-
+    let procesando = $state(false)
     //Data
     let id = $state("");
     let codigo = $state("");
@@ -171,7 +171,7 @@
         let res_detalles = await pb
             .collection("detallemovimientos")
             .getFullList({
-                //expand:"lote",
+                expand:"lote",
                 filter: `movimiento~'${id}' && eliminado=false`,
             });
 
@@ -184,6 +184,7 @@
     }
     async function getStocks() {
         stock = await pb.collection("lotes").getFullList({
+            expand:"producto",
             filter: `active = true && cerrado = 0`,
         });
     }
@@ -519,7 +520,7 @@
                     lote,
                     remito,
                     cliente,
-                    nombrelote: "",
+                    nombrelote:lote,
                 };
                 detalles.push(fila);
             }
@@ -603,7 +604,9 @@
             }
         }
     }
-   
+    function onInputRemito(){
+        remito = remitoMov
+    }
     function limpiarNombreLote() {
         idlote = "";
         codigolote = "";
@@ -618,7 +621,7 @@
             );
             return;
         }
-        
+        procesando = true
         
         let movimiento = {
             active: true,
@@ -639,11 +642,12 @@
                     let filalote = fila.lote;
                     let loteid = "";
                     if (!fila.conlote) {
+                        let pidx = productos.findIndex(p=>p.id==producto)
                         let lotedata = {
                             cantidad: fila.cantidad,
                             producto: fila.producto,
                             unidad: fila.unidad,
-                            codigo: fila.codigo,
+                            codigo: fila.lote.length>0?productos[pidx].codigo+"-"+fila.lote+"-"+fila.remito+"-"+makenumber(4):fila.codigo,
                             active: true,
                             fechaingreso: fecha + " 03:00:00",
                             fechavencimiento: fila.fechavencimiento,
@@ -713,6 +717,9 @@
                     "error",
                 );
             }
+            finally{
+                procesando = false
+            }
         } else {
             try {
                 let recordmov = await pb
@@ -771,6 +778,9 @@
                     "error",
                 );
             }
+            finally{
+                procesando = false
+            }
         }
     }
 </script>
@@ -795,6 +805,7 @@
                 {volver}
                 {selectCliente}
                 {onChangeCierre}
+                {onInputRemito}
             />
             {#if add}
                 {#if ingreso == 0}
@@ -847,6 +858,7 @@
                                 bind:lote={detalles}
                                 {quitarLote}
                                 {procesar}
+                                {procesando}
                             />
                         </div>
                     </div>
@@ -866,6 +878,7 @@
                                 bind:lote={detalles}
                                 {quitarLote}
                                 {procesar}
+                                {procesando}
                             />
                         </div>
                     </div>
