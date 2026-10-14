@@ -53,6 +53,7 @@
                     </div>
                 </th>
                 <th
+                    colspan="2"
                     class={`
                         ${estilos.tableth}   
                     `}
@@ -141,7 +142,9 @@
                         )}`}
                         
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td
+                        colspan="2" 
+                    class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${shorterWord(
                             t.expand ? t.expand.producto.nombre : "",
                             30,

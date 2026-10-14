@@ -120,6 +120,7 @@
     let codigomovimiento = $state("");
     let cantidadmov = $state(0);
     let tipomov = $state(0);
+    let remitomov = $state("")
     function openIngresoModal() {
         fechamovimiento = "";
         observacion = "";
@@ -153,6 +154,7 @@
             observacion,
             ingreso: 0,
             codigo: codigomovimiento,
+            remito:remitomov,
             precargado: false,
         };
         try {
@@ -168,6 +170,7 @@
                 active: true,
                 lote: id,
                 cliente: cliente,
+                remito:remitomov,
                 historial: cantidad,
             };
 
@@ -208,6 +211,7 @@
             ingreso: 1,
             codigo: codigomovimiento,
             precargado: false,
+            remito:remitomov,
         };
         try {
             let recordmov = await pb
@@ -223,6 +227,7 @@
                 lote: id,
                 cliente: cliente,
                 historial: cantidad,
+                remito:remitomov,
             };
             let recorddetalle = await pb
                 .collection("detallemovimientos")
@@ -353,6 +358,7 @@
                 ingreso: 0,
                 codigo: makecodigo("mov", 3, true),
                 precargado: false,
+                remito
             };
 
             let detalle = {
@@ -363,6 +369,7 @@
                 lote: "",
                 movimiento: "",
                 historial: 0,
+                remito
             };
             let data = {
                 codigo,
@@ -462,9 +469,21 @@
         let data = {
             active: false,
         };
-
+        let datamov = {
+            eliminado:true
+        }
         try {
+            let detalles = await pb.collection("detallemovimientos").getFullList({filter:`lote='${id}'`})
+            let setMov = new Set()
             let recordc = await pb.collection("lotes").update(id, data);
+            for(let i = 0;i<detalles.length;i++){
+                let fila = detalles[i]
+                setMov.add(fila.movimiento)
+                await pb.collection("detallemovimientos").update(fila.id,datamov)
+            }
+            for(const mov of setMov){
+                await pb.collection("movimientos").update(mov,datamov)
+            }
             Swal.fire("Éxito eliminar", `Se logró eliminar el lote`, "success");
             volver();
         } catch (err) {
@@ -674,6 +693,28 @@
                             text-gray-500
                         "
                     >
+                        Remito</span
+                    >
+                </label>
+                <label class="input-group">
+                    <input
+                        id="nombre"
+                        type="text"
+                        class={`input input-bordered w-full ${estilos.bgdark}`}
+                        bind:value={remitomov}
+                    />
+                </label>
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="nombre" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
                         Observacion</span
                     >
                 </label>
@@ -777,6 +818,28 @@
                     `}
                     bind:value={fechamovimiento}
                 />
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="nombre" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
+                        Remito</span
+                    >
+                </label>
+                <label class="input-group">
+                    <input
+                        id="nombre"
+                        type="text"
+                        class={`input input-bordered w-full ${estilos.bgdark}`}
+                        bind:value={remitomov}
+                    />
+                </label>
             </div>
             <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
                 <label for="nombre" class="label mb-0 pb-0">

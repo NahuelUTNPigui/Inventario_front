@@ -389,6 +389,16 @@
 
         try {
             let recordc = await pb.collection("movimientos").update(id, data);
+            if(cambioRemito){
+                let datadeta = {
+                    remito:remitoMov
+                }
+                for(let i = 0;i<detalles.length;i++){
+                    let fila = detalles[i]
+                    
+                    await pb.collection("detallemovimientos").update(fila.id, datadeta);
+                }
+            }
             Swal.fire(
                 "Éxito editar",
                 `Se logró editar el movimiento`,

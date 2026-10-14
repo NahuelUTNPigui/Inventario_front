@@ -106,27 +106,27 @@
         </thead>
         <tbody>
             {#each rows as t}
-                <tr>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                <tr class="h-px">
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.expand.movimiento?new Date(t.expand.movimiento.fecha).toLocaleDateString():""}`}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {t.expand.producto.nombre}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.cantidad}`}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.expand.movimiento.ingreso == 0 ? "Ingreso" : "Egreso"}`}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {t.remito || ""}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {t.expand?.lote?.codigo || ""}
+                    <td class={` text-base mx-1 px-4 ${pyfila}`}>
+                        {t.expand?.lote?.lote || ""}
                     </td>
                     <td
-                        class={`flex text-base  items-center justify-center gap-2 px-1 ${pyfila}`}
+                        class={` flex text-base  items-center justify-center gap-2 px-1 ${pyfila}`}
                     >
                         <button
                             onclick={() => openViewModal(t.movimiento)}

@@ -174,6 +174,7 @@
             ingreso: 0,
             codigo: makecodigo("mov", 3, true),
             precargado: false,
+            remito:remitolote
         };
         let detalle = {
             cantidad: cantidadlote,
@@ -182,7 +183,8 @@
             unidad: unidadlote,
             lote: "",
             movimiento: "",
-            historial:0
+            historial:0,
+            remito:remitolote
         };
         try {
             let recordc = await pb.collection("lotes").create(data);
@@ -311,7 +313,7 @@
     }
     async function getStock() {
         const recordsl = await pb.collection("lotes").getFullList({
-            filter: `active = true && producto.cliente = '${cliente}'`,
+            filter: `active = true && producto.cliente = '${cliente}' && cerrado=false`,
             expand: "producto,unidad",
             sort: "-fechaingreso",
         });

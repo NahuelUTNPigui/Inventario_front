@@ -1,16 +1,11 @@
 # Mejoras
-
-* editar nro remito
-* cuando agrego stock con movimientos agregar el atributo remito
-* Agregar remito en el modal de nuevo movimientos en detalle stock
-* corregir la variacion de altura de la tabla de stock en el cliente
 * Borro stock y sus movimientos. Si borro el último movimiento borro el stock? Te pregunta
 * Historial de stock no funciona
+* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
 * Restricción Vencimiento anterior al día
 * Eliminacion muñtiple de stocks y movimeintos
 * Agregar pedidos de clientes, son como movimientos pendientes
-
-
+* corregir la variacion de altura de la tabla de stock en el cliente
 
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
@@ -18,11 +13,6 @@
 * Precio por almacenamiento. Valor por posicion de pale
 * Precio por out. Valor por palet de salida
 * Todo es un precio frio y seco
-# Tareas
-* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
-
-* Pregunta básica cuantos pales de papa hay?
-
 
 
 # Largo plazo
@@ -45,7 +35,11 @@
 * Poder filtrar stock sin fecha de ingreso
 * Ordenar los movimientos por fecha y dentro por fecha de creación en el perfil de stock asi tienen sentido
 * Filtrar movimiento por stock?
+* Pregunta básica cuantos pales de papa hay?
 #  Listos
+* cuando agrego stock con movimientos agregar el atributo remito
+* Agregar remito en el modal de nuevo movimientos en detalle stock
+* editar nro remito
 * No te guarda el código de movimiento que  pusiste
 * Agrupar movimientos por producto / stock
 * exportar inicio
