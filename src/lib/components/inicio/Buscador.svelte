@@ -1,16 +1,19 @@
 <script>
     import Plus from "../svg/Plus.svelte";
+    import Exportar from "../Exportar.svelte";
     let {
         nivel = 0,
         buscar = $bindable(""),
         cliente = $bindable(""),
         clientes = [],
+        lotesrows = [],
         productos=[],
         filterUpdate = () => {},
         seleccionarCliente = () => {},
         nuevoProducto = () => {},
         nuevoIngreso = () => {},
-        nuevoLote=()=>{}
+        nuevoLote=()=>{},
+        prepararData=(item)=>{}
     } = $props();
     let botonRef = $state(null);
     // Se ejecuta automáticamente cuando el componente se monta
@@ -167,6 +170,12 @@
                     <Plus size="size-4" />
                     Nuevo stock
                 </button>
+                <Exportar
+                    data={lotesrows}
+                    titulo="Stock Egeo"
+                    {prepararData}
+                    sheetname="stock_inicio"
+                />
             </div>
         {/if}
     </div>

@@ -121,7 +121,9 @@
     let add = $state(false);
     let cargado = $state(false);
     let remitoMov = $state("");
-
+    // editar
+    let remitoViejo = $state("")
+    let cambioRemito = $derived(remitoMov != remitoViejo)
     //productos
     //nuevo producto
     let nombre = $state("");
@@ -197,7 +199,9 @@
         cliente = detallemovimiento.cliente;
         ingreso = detallemovimiento.ingreso;
         observacion = detallemovimiento.observacion;
-        remitoMov=detallemovimiento.remito
+        remitoMov = detallemovimiento.remito
+        remitoViejo = detallemovimiento.remito
+        
         let slug = page.params.slug;
         grupos = await pb.collection("grupos").getFullList({
             filter: `active = true`,
@@ -380,7 +384,9 @@
             codigo,
             fecha: fecha + " 03:00:00",
             observacion,
+            remito:remitoMov
         };
+
         try {
             let recordc = await pb.collection("movimientos").update(id, data);
             Swal.fire(
@@ -398,6 +404,7 @@
             volver();
         }
     }
+
     function volver() {
         goto("/movimientos");
     }
@@ -642,12 +649,20 @@
                     let filalote = fila.lote;
                     let loteid = "";
                     if (!fila.conlote) {
+                        
                         let pidx = productos.findIndex(p=>p.id==producto)
+                        
+                        let fecha_hoy = new Date()
+                        let dia = fecha_hoy.getDate()
+                        let mes = fecha_hoy.getMonth() + 1
+                        let año = fecha_hoy.getFullYear()
+                        let datecodigo = dia+"_"+mes+"_"+año+"-"
+                        let codigolote = `${productos[pidx].codigo} ${fila.lote.length>0?" - "+fila.lote:""}${fila.remito.length>0?" - "+fila.remito:""} ${datecodigo + " - "+makenumber(4)}`
                         let lotedata = {
                             cantidad: fila.cantidad,
                             producto: fila.producto,
                             unidad: fila.unidad,
-                            codigo: fila.lote.length>0?productos[pidx].codigo+"-"+fila.lote+"-"+fila.remito+"-"+makenumber(4):fila.codigo,
+                            codigo: codigolote,
                             active: true,
                             fechaingreso: fecha + " 03:00:00",
                             fechavencimiento: fila.fechavencimiento,
@@ -658,6 +673,8 @@
                         let recordlote = await pb
                             .collection("lotes")
                             .create(lotedata);
+                        
+                            
                         filalote = recordlote.id;
                         loteid = recordlote.id;
                     } else {

@@ -9,6 +9,7 @@
     import PocketBase from "pocketbase";
     import Swal from "sweetalert2";
     import estadoslote from "$lib/genericos/estadoslote";
+    
     import {
         addDays,
         dateDiffInDays,
@@ -258,7 +259,9 @@
         let s_mañana = formatearFecha(mañana);
 
         clientes = [];
-        const recordsc = await pb.collection("clienteslote").getFullList();
+        const recordsc = await pb.collection("clienteslote").getFullList({
+            expand:"producto,unidad"
+        });
         let recordu = await pb.collection("unidades").getFullList({
             filter:"active=true"
         });
@@ -351,6 +354,31 @@
             );
         }
     }
+    let estadosExcel = [
+        { id: 0, nombre: "Abierto" },
+        { id: 1, nombre: "Cerrado" },
+    ];
+    function prepararData(item){
+        return {
+            
+            CODIGO_PRODUCTO: item.expand ? item.expand.producto.codigo : "",
+            PRODUCTO: item.expand ? item.expand.producto.nombre : "",
+            CANTIDAD: item.cantidad,
+            UNIDAD: item.expand ? item.expand.unidad.nombre : "",
+            ESTADO: getNombreLista(item.cerrado, estadosExcel),
+
+            VENCIMIENTO:
+                item.fechavencimiento.length > 0
+                    ? new Date(item.fechavencimiento).toLocaleDateString()
+                    : "",
+            INGRESO:
+                item.fechaingreso.length > 0
+                    ? new Date(item.fechaingreso).toLocaleDateString()
+                    : "",
+            REMITO: item.remito,
+            LOTE: item.lote,
+        };
+    }
     function getStorage(){
         detalleInicio = storageInicio.load()
         cliente = detalleInicio.cliente
@@ -374,6 +402,8 @@
         {nuevoProducto}
         {nuevoIngreso}
         {nuevoLote}
+        {prepararData}
+        lotesrows={stockrows}
     />
     {#if cliente != ""}
         <!--Tabla-->

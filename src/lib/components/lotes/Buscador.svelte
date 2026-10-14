@@ -42,7 +42,8 @@
 
     function prepararData(item) {
         return {
-            CODIGO: item.codigo,
+            
+            CODIGO_PRODUCTO: item.expand ? item.expand.producto.codigo : "",
             PRODUCTO: item.expand ? item.expand.producto.nombre : "",
             CANTIDAD: item.cantidad,
             UNIDAD: item.expand ? item.expand.unidad.nombre : "",

@@ -85,8 +85,11 @@
                         <p
                             class="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate"
                         >
-                            
-                            {shorterWord(t.codigo, 40)}
+                            {t.cerrado == 1 ? "🔴" : ""}
+                            {`${shorterWord(
+                                t.expand ? t.expand.producto.codigo : "",
+                                30,
+                            )}`}
                         </p>
                     </div>
                 </div>
@@ -115,12 +118,16 @@
             </div>
 
             <!-- Grid de datos -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 text-sm">
+            <div
+                class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 text-sm"
+            >
                 <div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
                         Producto
                     </span>
-                    <p class="text-gray-900 dark:text-gray-100 font-medium truncate">
+                    <p
+                        class="text-gray-900 dark:text-gray-100 font-medium truncate"
+                    >
                         {t.expand?.producto?.nombre || "-"}
                     </p>
                 </div>
@@ -136,7 +143,9 @@
                     <span class="text-xs text-gray-500 dark:text-gray-400">
                         Unidad
                     </span>
-                    <p class="text-gray-900 dark:text-gray-100 font-medium truncate">
+                    <p
+                        class="text-gray-900 dark:text-gray-100 font-medium truncate"
+                    >
                         {t.expand?.unidad?.nombre || "-"}
                     </p>
                 </div>
@@ -144,8 +153,10 @@
                     <span class="text-xs text-gray-500 dark:text-gray-400">
                         Estado
                     </span>
-                    <p class="text-gray-900 dark:text-gray-100 font-medium truncate">
-                        {getNombreLista(t.cerrado,estadoslote)}
+                    <p
+                        class="text-gray-900 dark:text-gray-100 font-medium truncate"
+                    >
+                        {getNombreLista(t.cerrado, estadoslote)}
                     </p>
                 </div>
                 <div>
