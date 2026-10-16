@@ -1,5 +1,10 @@
 # Mejoras
-* Borro stock y sus movimientos. Si borro el último movimiento borro el stock? Te pregunta
+
+
+* Observaciones en detalles movimientos
+* Exportar movimientos
+
+* clickear en procesar en egreso no deshabilita el boton procesr
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
 * Restricción Vencimiento anterior al día
@@ -16,6 +21,9 @@
 
 
 # Largo plazo
+* Sacar scroll en cantidad
+* Crear productos múltiples
+* Borro stock y sus movimientos. Si borro el último movimiento borro el stock? Te pregunta. Ningun movimiento borra el stock
 * Stock con quiebre
 * Devoluciones como ingreso
 * Ordenes de movimiento. Movimientos potenciales

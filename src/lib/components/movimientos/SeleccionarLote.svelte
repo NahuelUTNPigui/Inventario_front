@@ -1,4 +1,5 @@
 <script>
+    import InputNoScroll from "../InputNoScroll.svelte";
     let {
         ingreso = 0,
         stockrows = [],
@@ -91,7 +92,11 @@
                 bind:value={selectedLote}
             >
                 {#each stockFilter as s}
-                    <option value={s.id}>{s.expand?.producto.nombre} {s.lote.length>0?" - " + s.lote:""} {s.remito.length>0?" - " + s.remito:""} - {s.codigo}</option>
+                    <option value={s.id}
+                        >{s.expand?.producto.nombre}
+                        {s.lote.length > 0 ? " - " + s.lote : ""}
+                        {s.remito.length > 0 ? " - " + s.remito : ""} - {s.codigo}</option
+                    >
                 {/each}
             </select>
         </div>
@@ -122,13 +127,13 @@
             >
                 Cantidad
             </label>
-            <input
+            <InputNoScroll
                 id="cantidadingreso"
-                type="number"
                 placeholder="Cantidad"
                 bind:value={cantidad}
-                class="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                clase="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
             />
+            
         </div>
 
         <button

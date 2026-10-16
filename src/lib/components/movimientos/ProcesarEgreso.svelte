@@ -3,6 +3,7 @@
         lote = $bindable([]),
         quitarLote = (id) => {},
         procesar = () => {},
+        procesando = false
     } = $props();
 </script>
 
@@ -40,8 +41,24 @@
                                 <p
                                     class="text-sm font-medium text-gray-900 dark:text-white"
                                 >
-                                    {l.codigo}
+                                    Producto: {l.nombre} - 
+                                    Unidad: {l.unidadnombre}
                                 </p>
+                                <p
+                                    class="text-sm font-medium text-gray-900 dark:text-white"
+                                >
+                                    Remito: {l.remito} - 
+                                    Lote: {l.nombrelote}
+                                </p>
+                                {#if l.fechavencimiento.length > 0}
+                                    <p
+                                        class="text-sm font-medium text-gray-900 dark:text-white"
+                                    >
+                                        Vencimiento: {new Date(
+                                            l.fechavencimiento,
+                                        ).toLocaleDateString()}
+                                    </p>
+                                {/if}
                             </div>
                             <span
                                 class="text-sm font-semibold text-green-600 dark:text-green-400"
@@ -52,8 +69,8 @@
                             <button
                                 onclick={() => quitarLote(l.idfila)}
                                 class="
-                                    cursor-pointer
-                                    text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
+                        cursor-pointer
+                        text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
                             >
                                 Eliminar
                             </button>
@@ -82,13 +99,15 @@
             <!-- Botón procesar -->
             <button
                 onclick={procesar}
-                class="
-                    cursor-pointer w-full
+                class={`
+                    ${procesando?"cursor-wait":"cursor-pointer"}
+                    w-full
                     dark:bg-red-900 dark:hover:bg-red-800
                     bg-red-900 hover:bg-red-800
                     text-white font-medium py-3 px-4 rounded-lg
                     transition-colors duration-200
-                "
+                `}
+                disabled={procesando}
             >
                 Procesar lotes
             </button>

@@ -90,7 +90,8 @@
                     "error",
                 );
             } finally {
-                volver();
+                nombre =""
+                codigo = makecodigo("prod")
             }
         }
     }
