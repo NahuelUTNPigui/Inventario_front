@@ -95,7 +95,7 @@
                     <option value={s.id}
                         >{s.expand?.producto.nombre}
                         {s.lote.length > 0 ? " - " + s.lote : ""}
-                        {s.remito.length > 0 ? " - " + s.remito : ""} - {s.codigo}</option
+                        {s.remito.length > 0 ? " - " + s.remito : ""}</option
                     >
                 {/each}
             </select>

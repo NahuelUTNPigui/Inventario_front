@@ -1,16 +1,12 @@
 # Mejoras
 
-
-* Observaciones en detalles movimientos
-* Exportar movimientos
-
-* clickear en procesar en egreso no deshabilita el boton procesr
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
 * Restricción Vencimiento anterior al día
 * Eliminacion muñtiple de stocks y movimeintos
 * Agregar pedidos de clientes, son como movimientos pendientes
 * corregir la variacion de altura de la tabla de stock en el cliente
+* mejorar cards de movimientos en perfil stock
 
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
@@ -21,6 +17,7 @@
 
 
 # Largo plazo
+* Editar cantidad en movimiento
 * Sacar scroll en cantidad
 * Crear productos múltiples
 * Borro stock y sus movimientos. Si borro el último movimiento borro el stock? Te pregunta. Ningun movimiento borra el stock
@@ -45,6 +42,9 @@
 * Filtrar movimiento por stock?
 * Pregunta básica cuantos pales de papa hay?
 #  Listos
+* Observaciones en detalles movimientos
+* Exportar movimientos
+* clickear en procesar en egreso no deshabilita el boton procesr
 * cuando agrego stock con movimientos agregar el atributo remito
 * Agregar remito en el modal de nuevo movimientos en detalle stock
 * editar nro remito

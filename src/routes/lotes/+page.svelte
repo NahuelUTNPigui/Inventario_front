@@ -70,6 +70,24 @@
     let detalleFiltos = $state(defaultFiltros);
     let storageFiltro = createStorageProxy("lotesFiltros", defaultFiltros);
     //fin storage
+    //seleccionados
+    let lotesSelect = $state({});
+    function clickFila(id) {
+        if (lotesSelect[id]) {
+            delete lotesSelect[id];
+        } else {
+            lotesSelect[id] = { id };
+        }
+    }
+    function enFila(id){
+        if(lotesSelect[id]){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+    //fin seleccionados
     function limpiarFiltros() {
         buscar = "";
         cliente = "";
@@ -244,9 +262,64 @@
         }).then(async (result) => {
             if (result.value) {
                 await eliminar(p_id);
+            }
+        });
+    }
+    async function multiEliminar() {
+        
+        Object.keys(lotesSelect).forEach(async (itemid) => {
+            let data = {
+                active: false,
+            };
+            let datamov = {
+                eliminado: true,
+            };
+            try {
+                let detalles = await pb
+                    .collection("detallemovimientos")
+                    .getFullList({ filter: `lote='${itemid}'` });
+                let setMov = new Set();
+                for (let i = 0; i < detalles.length; i++) {
+                    let fila = detalles[i];
+                    setMov.add(fila.movimiento);
+                    await pb
+                        .collection("detallemovimientos")
+                        .update(fila.id, datamov);
+                }
+                for (const mov of setMov) {
+                    await pb.collection("movimientos").update(mov, datamov);
+                }
+                let recordc = await pb
+                    .collection("lotes")
+                    .update(itemid, data);
+
+                
+            } catch (err) {
+                console.error(err);
+            }
+        });
+        
+    }
+    function openMultiDel() {
+        Swal.fire({
+            title: "Eliminar multiples lotes",
+            text: "¿Seguro que deseas eliminar los lotes seleccionados?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Si",
+            cancelButtonText: "No",
+        }).then(async (result) => {
+            if (result.value) {
+                await multiEliminar();
+                cargado = false
+                await getData();
+                filterUpdate();
+                
+                lotesSelect = {}
+                cargado = true
                 Swal.fire(
-                    "Éxito eliminar",
-                    "Se pudo eliminar el lote con éxito",
+                    "Operación completada",
+                    "Se realizó la eliminación múltiple",
                     "success",
                 );
             }
@@ -254,12 +327,12 @@
     }
     function reiniciar() {
         ordenVencimiento = false;
-        agrupado = false
+        agrupado = false;
         filterUpdate();
     }
     function ordenarPorVencimiento() {
         ordenVencimiento = true;
-        agrupado = false
+        agrupado = false;
         filterUpdate();
         lotesrows = lotesrows.filter(
             (item) => item.fechavencimiento.length > 0,
@@ -280,39 +353,38 @@
             }
         });
     }
-    function agruparPorProductos(){
-        agrupado = true
-        ordenVencimiento = false
-        filterUpdate()
-        let tablaProductos = {}
-        for(let i = 0;i<lotesrows.length;i++){
-            let fila = lotesrows[i]
-            if(tablaProductos[fila.producto]){
-                tablaProductos[fila.producto].cantidad += fila.cantidad
-            }
-            else{
-                tablaProductos[fila.producto]={
-                    codigo:"",
-                    id:fila.id,
-                    cantidad:fila.cantidad,
-                    expand:fila.expand,
-                    cerrado:"",
-                    fechavencimiento:"",
-                    fechaingreso:"",
-                    remito:"",
-                    lote:""
-                }
+    function agruparPorProductos() {
+        agrupado = true;
+        ordenVencimiento = false;
+        filterUpdate();
+        let tablaProductos = {};
+        for (let i = 0; i < lotesrows.length; i++) {
+            let fila = lotesrows[i];
+            if (tablaProductos[fila.producto]) {
+                tablaProductos[fila.producto].cantidad += fila.cantidad;
+            } else {
+                tablaProductos[fila.producto] = {
+                    codigo: "",
+                    id: fila.id,
+                    cantidad: fila.cantidad,
+                    expand: fila.expand,
+                    cerrado: "",
+                    fechavencimiento: "",
+                    fechaingreso: "",
+                    remito: "",
+                    lote: "",
+                };
             }
         }
-        lotesrows = []
-        Object.values(tablaProductos).forEach(item=>{
-            lotesrows.push(item)
-        })
+        lotesrows = [];
+        Object.values(tablaProductos).forEach((item) => {
+            lotesrows.push(item);
+        });
     }
-    function reiniciarStocks(){
-        agrupado = false
-        ordenVencimiento = false
-        filterUpdate()
+    function reiniciarStocks() {
+        agrupado = false;
+        ordenVencimiento = false;
+        filterUpdate();
     }
     async function getData() {
         const recordsl = await pb.collection("lotes").getFullList({
@@ -425,6 +497,14 @@
                     Reiniciar grupos
                 </button>
             {/if}
+            {#if Object.entries(lotesSelect).length > 0}
+                <button
+                    onclick={openMultiDel}
+                    class="hover:cursor-pointer mt-2 px-10 py-2 bg-[#A94442] text-white font-medium rounded-full shadow-sm hover:bg-red-800 transition-colors text-base"
+                >
+                    Eliminar ({Object.entries(lotesSelect).length})
+                </button>
+            {/if}
         </div>
     </div>
     {#if cargado}
@@ -447,6 +527,8 @@
                     {openDelModal}
                     {openViewModal}
                     {openEditModal}
+                    {clickFila}
+                    {enFila}
                 />
             </div>
         </div>
@@ -462,6 +544,8 @@
                 {openDelModal}
                 {openViewModal}
                 {openEditModal}
+                {clickFila}
+                {enFila}
             />
         </div>
     {:else}

@@ -4,6 +4,7 @@
     import Limpiar from "../svg/Limpiar.svelte";
     import { slide } from "svelte/transition";
     import estilos from "$lib/estilos";
+    import Exportar from "../Exportar.svelte";
     let {
         buscar = $bindable(""),
         remito = $bindable(""),
@@ -13,6 +14,7 @@
         tipo = $bindable(""),
         clientes = [],
         tipos = [],
+        data = [],
         filterUpdate = () => {},
         limpiarFiltros = () => {},
         nuevo = () => {},
@@ -27,6 +29,17 @@
             botonRef.focus();
         }
     });
+    function prepararData(t) {
+        return {
+            TIPO: `${t.expand.movimiento.ingreso == 0 ? "Ingreso" : "Egreso"}`,
+            FECHA: `${t.expand.movimiento ? new Date(t.expand.movimiento.fecha).toLocaleDateString() : ""}`,
+            PRODUCTO: t.expand.producto.nombre,
+            CANTIDAD: t.cantidad,
+            LOTE: t.expand?.lote?.lote || "",
+            REMITO: t.remito || "",
+            OBSERVACION: t.expand.movimiento.observacion,
+        };
+    }
 </script>
 
 <div class="container mx-auto py-1 px-4 max-w-7xl w-full xl:w-3/4">
@@ -141,6 +154,13 @@
                         <Filter size="size-4" />
                         Filtros
                     </button>
+            
+                    <Exportar
+                        {data}
+                        titulo="Movimientos Egeo"
+                        {prepararData}
+                        sheetname="productos"
+                    />
                 </div>
             {/if}
         </div>

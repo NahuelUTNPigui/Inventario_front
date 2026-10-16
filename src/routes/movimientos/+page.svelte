@@ -251,6 +251,7 @@
             bind:remito
             {clientes}
             {tipos}
+            data = {movimientosrows}
         />
     {:else}
         <Cargando />

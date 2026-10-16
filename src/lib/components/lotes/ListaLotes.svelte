@@ -15,6 +15,7 @@
         openDelModal = (_p) => {},
         clickTodos = () => {},
         clickFila = (id) => {},
+        enFila = (id) => {},
         todos = $bindable(false),
         pageSize = $bindable(15),
     } = $props();
@@ -38,48 +39,12 @@
             <!-- Cabecera con checkbox y código -->
             <div class="flex items-start justify-between gap-3 mb-3">
                 <div class="flex items-center gap-3 flex-1 min-w-0">
-                    <label
-                        class="hidden flex items-center justify-center cursor-pointer"
-                    >
-                        <!-- Input real (oculto pero funcional) -->
-                        <input
+                    <input
                             type="checkbox"
-                            checked={selecthash[t.id] ? true : false}
-                            onchange={() => clickFila(t.id)}
-                            class="peer sr-only"
+                            class="checkbox border-red-900 dark:border-red-400"
+                            onclick={() => clickFila(t.id)}
+                            value={enFila(t.id)}
                         />
-
-                        <!-- La caja circular personalizada -->
-                        <span
-                            class="
-                                w-5 h-5
-                                flex items-center justify-center
-                                rounded-full
-                                border-2 border-gray-300 dark:border-gray-500
-                                bg-white dark:bg-gray-800
-                                transition-all duration-200 ease-in-out
-                                peer-checked:bg-red-700
-                                peer-checked:border-red-700
-                                hover:border-red-500 dark:hover:border-red-400
-                            "
-                        >
-                            <!-- Icono de check (visible solo cuando está marcado) -->
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                stroke-width="3"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M5 13l4 4L19 7"
-                                />
-                            </svg>
-                        </span>
-                    </label>
 
                     <div class="flex-1 min-w-0">
                         <p

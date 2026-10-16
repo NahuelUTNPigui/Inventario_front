@@ -15,6 +15,7 @@
         openDelModal = (_p) => {},
         clickTodos = () => {},
         clickFila = (id) => {},
+        enFila = (id) => {},
         todos = $bindable(false),
         pageSize = $bindable(15),
     } = $props();
@@ -42,7 +43,15 @@
         class="table table-lg w-full bg-white dark:bg-slate-900 rounded-none"
     >
         <thead class={`${estilos.tableheader}  sticky top-0 z-5 shadow-sm`}>
-            <tr>
+            <tr
+                ><th
+                    class={`
+                        hidden
+                        ${estilos.tableth}   
+                    `}
+                >
+                    <div class="flex flex-row justify-between uppercase"></div>
+                </th>
                 <th
                     class={`
                         ${estilos.tableth}   
@@ -134,17 +143,22 @@
         <tbody>
             {#each rows as t}
                 <tr>
+                    <td class={`hidden text-base mx-1 px-4 ${pyfila}`}>
+                        <input
+                            type="checkbox"
+                            class="checkbox border-red-900 dark:border-red-400"
+                            onclick={() => clickFila(t.id)}
+                            value={enFila(t.id)}
+                        />
+                    </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {t.cerrado==1?"🔴":""}
+                        {t.cerrado == 1 ? "🔴" : ""}
                         {`${shorterWord(
                             t.expand ? t.expand.producto.codigo : "",
                             30,
                         )}`}
-                        
                     </td>
-                    <td
-                        colspan="2" 
-                    class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td colspan="2" class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${shorterWord(
                             t.expand ? t.expand.producto.nombre : "",
                             30,
