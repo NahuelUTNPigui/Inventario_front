@@ -46,6 +46,8 @@
             CODIGO_PRODUCTO: item.expand ? item.expand.producto.codigo : "",
             PRODUCTO: item.expand ? item.expand.producto.nombre : "",
             CANTIDAD: item.cantidad,
+            PENDIENTE: item.pendiente,
+            TOTAL: Number(item.cantidad) + Number(item.pendiente),
             UNIDAD: item.expand ? item.expand.unidad.nombre : "",
             ESTADO: getNombreLista(item.cerrado, estadosExcel),
 

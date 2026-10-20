@@ -35,6 +35,8 @@
             FECHA: `${t.expand.movimiento ? new Date(t.expand.movimiento.fecha).toLocaleDateString() : ""}`,
             PRODUCTO: t.expand.producto.nombre,
             CANTIDAD: t.cantidad,
+            PENDIENTE: t.pendiente,
+            TOTAL: Number(t.cantidad) + Number(t.pendiente),
             LOTE: t.expand?.lote?.lote || "",
             REMITO: t.remito || "",
             OBSERVACION: t.expand.movimiento.observacion,

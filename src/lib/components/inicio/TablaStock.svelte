@@ -51,8 +51,9 @@
                         ${estilos.tableth}   
                     `}
                 >
-                    <div class="flex flex-row justify-between uppercase">
-                        Cantidad
+                    <div class="flex flex-col justify-between uppercase">
+                        <span> Cantidad / </span>
+                        <span> Pendiente </span>
                     </div>
                 </th>
                 <th
@@ -73,7 +74,7 @@
                         Vencimiento
                     </div>
                 </th>
-                
+
                 <th
                     class={`
                     hidden
@@ -84,7 +85,7 @@
                         Destinatario
                     </div>
                 </th>
-                
+
                 <th class="text-base mx-1 px-1 text-center uppercase">
                     Acciones
                 </th>
@@ -100,14 +101,12 @@
                         )}`}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.cantidad}`}
+                        {t.cantidad} / {t.pendiente}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${
                             t.fechaingreso.length > 0
-                                ? new Date(
-                                      t.fechaingreso,
-                                  ).toLocaleDateString()
+                                ? new Date(t.fechaingreso).toLocaleDateString()
                                 : ""
                         }`}
                     </td>
@@ -145,3 +144,4 @@
     {totalPaginas}
     {onChangePageSize}
 />
+
