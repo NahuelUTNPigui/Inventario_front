@@ -12,8 +12,12 @@
         nombreunidad = $bindable(""),
         fechavencimiento = $bindable(""),
         lote = $bindable(""),
-        remito = $bindable("")
+        remito = $bindable(""),
+        ingreso = "",
     } = $props();
+    let vencimientopasado = $derived(
+        new Date(fechavencimiento) < new Date(ingreso),
+    );
     let cantidad = $state("");
     function agregar() {
         agregarLote(cantidad);
@@ -43,14 +47,12 @@
         Crear nuevo stock
     </h2>
     <div class="space-y-4">
-        
         <div>
             <label
                 for="Producto"
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
                 Producto
-                
             </label>
             <select
                 class="
@@ -82,6 +84,11 @@
                 bind:value={cantidad}
                 class="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
             />
+            {#if cantidad < 0}
+                <span class="text-sm text-red-600 dark:text-red-400"
+                    >La cantidad no puede ser negativa</span
+                >
+            {/if}
         </div>
         <div class="flex flex-col">
             <label
@@ -132,6 +139,11 @@
                     `}
                 bind:value={fechavencimiento}
             />
+            {#if vencimientopasado}
+                <span class="text-sm text-red-600 dark:text-red-400"
+                    >La fecha de vencimiento es anterior al ingreso</span
+                >
+            {/if}
         </div>
         <div>
             <label

@@ -10,7 +10,8 @@
     import PocketBase from "pocketbase";
     import ListaMovimientos from "$lib/components/movimientos/ListaMovimientos.svelte";
     import Cargando from "$lib/components/Cargando.svelte";
-
+    import { getDateCorrect } from "$lib/genericos/strings";
+    import estilos from "$lib/estilos";
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
 
@@ -44,7 +45,7 @@
         lote: "",
         edit: false,
         cliente: "",
-        remito:""
+        remito: "",
     };
     let detallemovimiento = $state(defaultmovimiento);
     let storageMovimiento = createStorageProxy(
@@ -87,10 +88,10 @@
                         .includes(buscar.toLocaleLowerCase()),
             );
         }
-        if(remito != ""){
-            movimientosrows = movimientosrows.filter(mov=>
-                mov.remito.includes(remito)
-            )
+        if (remito != "") {
+            movimientosrows = movimientosrows.filter((mov) =>
+                mov.remito.includes(remito),
+            );
         }
         if (fechadesde != "") {
             movimientosrows = movimientosrows.filter(
@@ -119,6 +120,22 @@
         storageMovimiento.save(defaultmovimiento);
         goto("/movimientos/0");
     }
+    function openEgresoModal(d_id) {
+        let d_idx = movimientos.findIndex((u) => u.id == d_id);
+
+        if (d_idx != -1) {
+            let m = movimientos[d_idx];
+            iddetalle = d_id;
+            idlotedetalle = m.lote;
+            productodetalle = m.expand.producto.nombre;
+            pendientedetalle = m.pendiente;
+            pendientelote = m.expand.lote.pendiente;
+            cantidaddetalle = m.cantidad;
+            cantidadlote = m.expand.lote.cantidad;
+            fechaegreso = m.expand.movimiento.fecha;
+            egresomov.showModal()
+        }
+    }
     function openEditModal(p_id) {
         let c_idx = movimientos.findIndex((u) => u.movimiento == p_id);
 
@@ -131,7 +148,7 @@
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
-                remito:m.remito,
+                remito: m.remito,
                 edit: true,
             };
             storageMovimiento.save(detallemovimiento);
@@ -150,7 +167,7 @@
                 fecha: c.fecha.length > 0 ? c.fecha.split(" ")[0] : "",
                 observacion: c.observacion,
                 ingreso: c.ingreso,
-                remito:m.remito,
+                remito: m.remito,
                 edit: false,
             };
             storageMovimiento.save(detallemovimiento);
@@ -226,15 +243,45 @@
         cargadoListas = true;
     }
     onMount(async () => {
-        detalleFiltos = storageFiltro.load()
-        cliente = detalleFiltos.cliente
-        tipo = detalleFiltos.tipo
-        fechadesde = detalleFiltos.fechadesde
-        fechahasta = detalleFiltos.fechahasta
+        detalleFiltos = storageFiltro.load();
+        cliente = detalleFiltos.cliente;
+        tipo = detalleFiltos.tipo;
+        fechadesde = detalleFiltos.fechadesde;
+        fechahasta = detalleFiltos.fechahasta;
         await getListas();
         await getData();
         filterUpdate();
     });
+    //edicion
+    let iddetalle = $state("");
+    let idlotedetalle = $state("");
+    let fechaegreso = $state("");
+    let productodetalle = $state("");
+    let cantidaddetalle = $state(0);
+    let pendientedetalle = $state(0);
+    let cantidadlote = $state(0);
+    let pendientelote = $state(0);
+    async function crearEgreso() {
+        let datalote = {
+            cantidad: cantidadlote - pendientedetalle,
+            pendiente: pendientelote - pendientedetalle,
+        };
+        let datadetalle = {
+            pendiente: 0,
+            cantidad: cantidaddetalle + pendientedetalle,
+        };
+        try {
+            await pb
+                .collection("detallemovimientos")
+                .update(iddetalle, datadetalle);
+            await pb.collection("lotes").update(idlotedetalle, datalote);
+            Swal.fire("Éxito egreso", "Se logró crear el egreso", "success");
+            await getData()
+            filterUpdate()
+        } catch (err) {
+            Swal.fire("Error egreso", "No se logró crear el egreso", "error");
+        }
+    }
 </script>
 
 <Navbar>
@@ -251,7 +298,7 @@
             bind:remito
             {clientes}
             {tipos}
-            data = {movimientosrows}
+            data={movimientosrows}
         />
     {:else}
         <Cargando />
@@ -276,6 +323,7 @@
                     {openDelModal}
                     {openViewModal}
                     {openEditModal}
+                    {openEgresoModal}
                 />
             </div>
         </div>
@@ -291,9 +339,109 @@
                 {openDelModal}
                 {openViewModal}
                 {openEditModal}
+                {openEgresoModal}
             />
         </div>
     {:else}
         <Cargando />
     {/if}
 </Navbar>
+<dialog id="egresomov" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Editar detalle</h3>
+        <div class="grid grid-cols-1 gap-1 lg:gap-6 mx-1 mb-2">
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="productodetalle" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
+                        Producto :{productodetalle}</span
+                    >
+                </label>
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="Fecha" class="label mb-0 pb-0">
+                    <span
+                        class="
+                    label-text tracking-wide
+                    text-md uppercase
+                    font-semibold dark:text-gray-400
+                    text-gray-500
+                    
+                "
+                    >
+                        Fecha movimiento</span
+                    >
+                </label>
+                <label
+                    for="ingreso"
+                    class={`text-lg tracking-wide ${estilos.labelcolor} py-0 my-0 px-3`}
+                >
+                    {getDateCorrect(fechaegreso)}
+                </label>
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="cantidaddetalle" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
+                        Cantidad</span
+                    >
+                </label>
+                <label class="input-group">
+                    <input
+                        id="cantidaddetalle"
+                        type="number"
+                        class={`input input-bordered w-full ${estilos.bgdark}`}
+                        bind:value={cantidaddetalle}
+                    />
+                </label>
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="cantidaddetalle" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
+                        Pendiente</span
+                    >
+                </label>
+                <label class="input-group">
+                    <input
+                        id="cantidaddetalle"
+                        type="number"
+                        class={`input input-bordered w-full ${estilos.bgdark}`}
+                        bind:value={pendientedetalle}
+                    />
+                </label>
+            </div>
+        </div>
+        <div class="modal-action">
+            <form method="dialog">
+                <button
+                    class="hover:cursor-pointer mt-2 px-10 py-2 bg-[#A94442] text-white font-medium rounded-full shadow-sm hover:bg-red-800 transition-colors text-base"
+                    >Cerrar</button
+                >
+                <button
+                    onclick={crearEgreso}
+                    class="hover:cursor-pointer mt-2 px-5 py-1 md:py-2 md:px-10 bg-[#115642] text-white font-medium rounded-full shadow-sm hover:bg-green-700 transition-colors text-base"
+                    >Crear Egreso</button
+                >
+            </form>
+        </div>
+    </div>
+</dialog>

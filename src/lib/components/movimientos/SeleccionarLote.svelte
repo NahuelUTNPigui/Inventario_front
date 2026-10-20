@@ -1,4 +1,5 @@
 <script>
+    import tipomovimiento from "$lib/genericos/tipomovimiento";
     import InputNoScroll from "../InputNoScroll.svelte";
     let {
         ingreso = 0,
@@ -6,12 +7,13 @@
         productosrows = [],
         selectedLote = $bindable(""),
 
-        agregarLote = (p_cantidad) => {},
+        agregarLote = (p_cantidad,p_pendiente) => {},
     } = $props();
     let prodSelected = $state("");
     let cantidad = $state("");
+    let pendiente = $state("");
     function agregar() {
-        agregarLote(cantidad);
+        agregarLote(cantidad,pendiente);
         cantidad = "";
     }
     function selectCantidad() {
@@ -19,6 +21,14 @@
         if (idx_lotes != -1) {
             let l = stockrows[idx_lotes];
             return "" + l.cantidad;
+        }
+        return "";
+    }
+    function selectPendiente() {
+        let idx_lotes = stockrows.findIndex((s) => s.id == selectedLote);
+        if (idx_lotes != -1) {
+            let l = stockrows[idx_lotes];
+            return "" + l.pendiente;
         }
         return "";
     }
@@ -31,6 +41,7 @@
         return "";
     }
     let cantidadActual = $derived(selectedLote == "" ? "" : selectCantidad());
+    let pendienteActual = $derived(selectedLote == "" ? "" : selectPendiente());
     let nombreLote = $derived(selectedLote == "" ? "" : selectLote());
     let stockFilter = $derived(
         prodSelected == ""
@@ -108,6 +119,12 @@
                 >
                     Stock actual: {cantidadActual}
                 </label>
+                <label
+                    for="Producto"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                    Pendiente actual: {pendienteActual}
+                </label>
             </div>
         {/if}
         {#if nombreLote != ""}
@@ -133,8 +150,33 @@
                 bind:value={cantidad}
                 clase="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
             />
-            
+            {#if cantidad < 0}
+                <span class="text-sm text-red-600 dark:text-red-400"
+                    >La cantidad no puede ser negativa</span
+                >
+            {/if}
         </div>
+        {#if ingreso == 1}
+            <div>
+                <label
+                    for="cantidadingreso"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                    Pendiente
+                </label>
+                <InputNoScroll
+                    id="cantidadingreso"
+                    placeholder="Cantidad"
+                    bind:value={pendiente}
+                    clase="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+                {#if pendiente < 0}
+                    <span class="text-sm text-red-600 dark:text-red-400"
+                        >El pendiente no puede ser negativa</span
+                    >
+                {/if}
+            </div>
+        {/if}
 
         <button
             onclick={agregar}

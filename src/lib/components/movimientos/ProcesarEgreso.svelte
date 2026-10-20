@@ -3,7 +3,7 @@
         lote = $bindable([]),
         quitarLote = (id) => {},
         procesar = () => {},
-        procesando = false
+        procesando = false,
     } = $props();
 </script>
 
@@ -15,16 +15,13 @@
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
             Lotes
         </h2>
-        <span
-            id="lotes-count"
-            class="text-sm text-gray-600 dark:text-gray-400"
+        <span id="lotes-count" class="text-sm text-gray-600 dark:text-gray-400"
             >{lote.length} lotes</span
         >
     </div>
     {#if lote.length == 0}
         <!-- Estado vacío -->
         <div id="empty-batch" class="block text-center py-8">
-            
             <p class="text-gray-500 dark:text-gray-400 text-sm">
                 El movimiento está vacío
             </p>
@@ -41,14 +38,12 @@
                                 <p
                                     class="text-sm font-medium text-gray-900 dark:text-white"
                                 >
-                                    Producto: {l.nombre} - 
-                                    Unidad: {l.unidadnombre}
+                                    Producto: {l.nombre} - Unidad: {l.unidadnombre}
                                 </p>
                                 <p
                                     class="text-sm font-medium text-gray-900 dark:text-white"
                                 >
-                                    Remito: {l.remito} - 
-                                    Lote: {l.nombrelote}
+                                    Remito: {l.remito} - Lote: {l.nombrelote}
                                 </p>
                                 {#if l.fechavencimiento.length > 0}
                                     <p
@@ -60,10 +55,16 @@
                                     </p>
                                 {/if}
                             </div>
-                            <span
-                                class="text-sm font-semibold text-green-600 dark:text-green-400"
-                                >{l.cantidad}</span
-                            >
+                            <div class="flex flex-col">
+                                <span
+                                    class="text-sm font-semibold text-green-600 dark:text-green-400"
+                                    >Movimiento: {l.cantidad}</span
+                                >
+                                <span
+                                    class="text-sm font-semibold text-green-600 dark:text-green-400"
+                                    >Pendiente: {l.pendiente}</span
+                                >
+                            </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-2">
                             <button
@@ -100,7 +101,7 @@
             <button
                 onclick={procesar}
                 class={`
-                    ${procesando?"cursor-wait":"cursor-pointer"}
+                    ${procesando ? "cursor-wait" : "cursor-pointer"}
                     w-full
                     dark:bg-red-900 dark:hover:bg-red-800
                     bg-red-900 hover:bg-red-800

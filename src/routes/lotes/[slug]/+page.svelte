@@ -62,6 +62,8 @@
     let vencimiento = $state("");
     let ingreso = $state("");
     let cierre = $state("");
+    let vencimientopasado = $derived(new Date(vencimiento) < new Date(ingreso))
+
     //Data viejo
 
     let cerradoviejo = $state(0);
@@ -453,9 +455,6 @@
             data.fechacierre =
                 new Date().toISOString().split("T")[0] + " 03:00:00";
         }
-        if (cambiarCantidad()) {
-            data.detallemovimiento = "";
-        }
         try {
             let recordc = await pb.collection("lotes").update(id, data);
             Swal.fire("Éxito editar", `Se logró editar el lote`, "success");
@@ -571,6 +570,7 @@
                     bind:lote
                     bind:cerradoviejo
                     bind:cantidadviejo
+                    {vencimientopasado}
                     {cierre}
                     {clientes}
                     {unidades}
@@ -598,13 +598,13 @@
                         <span
                             class="
                                 label-text tracking-wide
-                                text-md uppercase
+                                text-md 
                                 font-semibold text-gray-7 00 dark:text-gray-300
                             "
                         >
                             {cerrado == 1
                                 ? "Ya esta cerrado"
-                                : "Si se cierra el lote, queda a modo de historial"}</span
+                                : "Si se cierra el stock, queda a modo de historial"}</span
                         >
                     </label>
                     {#if cerrado == 0}

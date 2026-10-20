@@ -6,12 +6,14 @@
     import Pencil from "../svg/Pencil.svelte";
     import Plus from "../svg/Plus.svelte";
     import { shorterWord } from "$lib/genericos/strings";
+    import Egreso from "../svg/Egreso.svelte";
     let {
         movimientosrows = [],
         selecthash = {},
         openViewModal = (_p) => {},
         openEditModal = (_p) => {},
         openDelModal = (_p) => {},
+        openEgresoModal = (_p) => {},
         clickTodos = () => {},
         clickFila = (id) => {},
         todos = $bindable(false),
@@ -69,7 +71,7 @@
                     `}
                 >
                     <div class="flex flex-row justify-between uppercase">
-                        Cantidad
+                        Cantidad / Pendiente
                     </div>
                 </th>
                 <th
@@ -108,13 +110,13 @@
             {#each rows as t}
                 <tr class="h-px">
                     <td class={` text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.expand.movimiento?new Date(t.expand.movimiento.fecha).toLocaleDateString():""}`}
+                        {`${t.expand.movimiento ? new Date(t.expand.movimiento.fecha).toLocaleDateString() : ""}`}
                     </td>
                     <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {t.expand.producto.nombre}
                     </td>
                     <td class={` text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.cantidad}`}
+                        {t.cantidad}/{t.pendiente}
                     </td>
                     <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.expand.movimiento.ingreso == 0 ? "Ingreso" : "Egreso"}`}
@@ -125,21 +127,30 @@
                     <td class={` text-base mx-1 px-4 ${pyfila}`}>
                         {t.expand?.lote?.lote || ""}
                     </td>
-                    <td
-                        class={` flex text-base  items-center justify-center gap-2 px-1 ${pyfila}`}
-                    >
-                        <button
-                            onclick={() => openViewModal(t.movimiento)}
-                            class="hover:cursor-pointer hover:scale-105"
-                        >
-                            <Eye size="size-6" />
-                        </button>
-                        <button
-                            onclick={() => openEditModal(t.movimiento)}
-                            class="hover:cursor-pointer hover:scale-105"
-                        >
-                            <Pencil size="size-6" />
-                        </button>
+                    <td class={` text-base  px-1 ${pyfila}`}>
+                        <div class="flex items-center justify-center gap-2">
+                            {#if t.pendiente > 0}
+                                <button
+                                    onclick={() =>
+                                        openEgresoModal(t.id)}
+                                    class="hover:cursor-pointer hover:scale-105"
+                                >
+                                    <Egreso size="size-6" />
+                                </button>
+                            {/if}
+                            <button
+                                onclick={() => openViewModal(t.movimiento)}
+                                class="hover:cursor-pointer hover:scale-105"
+                            >
+                                <Eye size="size-6" />
+                            </button>
+                            <button
+                                onclick={() => openEditModal(t.movimiento)}
+                                class="hover:cursor-pointer hover:scale-105"
+                            >
+                                <Pencil size="size-6" />
+                            </button>
+                        </div>
                     </td>
                 </tr>
             {/each}

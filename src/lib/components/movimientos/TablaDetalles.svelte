@@ -1,7 +1,7 @@
 <script>
     import { getNombreLista } from "$lib/genericos/strings";
 
-    let { detalles = $bindable([]), quitarDetalle = (id) => {},unidades=[],productos=[] } = $props();
+    let { detalles = $bindable([]), quitarDetalle = (id) => {}, openDetalle = (id) => {},unidades=[],productos=[],crearEgreso=(p_id)=>{} } = $props();
 </script>
 
 <!-- Lote de Ingreso -->
@@ -34,7 +34,7 @@
                         
                         <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
-                            >Cantidad: {l.cantidad}  Unidad: {getNombreLista(l.unidad,unidades)}</span
+                            >Cantidad: {l.cantidad} Pendiente: {l.pendiente}  Unidad: {getNombreLista(l.unidad,unidades)}</span
                         >
                         <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
@@ -49,6 +49,29 @@
                                     text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300"
                         >
                             Eliminar
+                        </button>
+                        
+                        <button
+                            onclick={() => openDetalle(l)}
+                            class={`
+                                    ${l.expand.lote.detallemovimiento != l.id?"hidden":""}
+                                    cursor-pointer
+                                    text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300
+                                `}
+                        >
+                            Editar
+                        </button>
+                        
+                        <button
+                            onclick={()=>crearEgreso(l.id)}
+                            class={`
+                                    ${l.pendiente<=0?"hidden":""}
+                                    cursor-pointer
+                                    text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300
+                                `}
+                        >
+                            Egreso
+                                
                         </button>
                     </div>
                 </div>

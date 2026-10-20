@@ -1,13 +1,6 @@
 # Mejoras
-
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
-* Restricción Vencimiento anterior al día
-* Eliminacion muñtiple de stocks y movimeintos
-* Agregar pedidos de clientes, son como movimientos pendientes
-* corregir la variacion de altura de la tabla de stock en el cliente
-* mejorar cards de movimientos en perfil stock
-
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -17,18 +10,12 @@
 
 
 # Largo plazo
-* Editar cantidad en movimiento
+* Eliminacion muñtiple de stocks y movimeintos
 * Sacar scroll en cantidad
 * Crear productos múltiples
-* Borro stock y sus movimientos. Si borro el último movimiento borro el stock? Te pregunta. Ningun movimiento borra el stock
 * Stock con quiebre
 * Devoluciones como ingreso
-* Ordenes de movimiento. Movimientos potenciales
-* Permito editar productos y clientes en controles?
-* Exportar movimientos
 * Exportar detalle de movimiento
-
-
 * Carga múltiple de remitos / movimientos
 * Pedidos de egreso
 * No le envias el excel
@@ -41,7 +28,20 @@
 * Ordenar los movimientos por fecha y dentro por fecha de creación en el perfil de stock asi tienen sentido
 * Filtrar movimiento por stock?
 * Pregunta básica cuantos pales de papa hay?
+# Pendientes
+* Los movimientos pueden ser pendientes y lo aceptas. El movimiento se vuelve realizado y se actualiza la cantidad y pendiente del stock
+* El stock guardar los pedidos pendientes
+* stock actual, pendiente, total = (actual + pendiente)
+* agregar filtros pendientes
+
 #  Listos
+* Agregar pedidos de clientes, son como movimientos pendientes
+
+* corregir la variacion de altura de la tabla de stock en el cliente
+* mejorar cards de movimientos en perfil stock tiene que decir el remito
+* Solo se puede Editar el último movimiento
+* Impedir Movimientos negativos
+* Restricción Vencimiento anterior al día
 * Observaciones en detalles movimientos
 * Exportar movimientos
 * clickear en procesar en egreso no deshabilita el boton procesr

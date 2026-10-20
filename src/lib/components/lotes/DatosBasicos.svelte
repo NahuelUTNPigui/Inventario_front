@@ -21,6 +21,7 @@
         cliente = $bindable(""),
         remito = $bindable(""),
         lote = $bindable(""),
+        vencimientopasado = false,
         cierre = "",
         add = false,
         guardar = () => {},
@@ -271,6 +272,10 @@
                 {getDateCorrect(vencimiento)}
             </label>
         {/if}
+        {#if vencimientopasado}
+                        <span class="text-sm text-red-600 dark:text-red-400">La fecha de vencimiento es anterior al ingreso</span>
+                {/if}
+        
     </div>
     <div class="mb-1 lg:mb-0 flex flex-col">
         <label for="Cliente" class="label mb-0 pb-0">

@@ -106,6 +106,14 @@
                 </div>
                 <div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
+                        Pendiente
+                    </span>
+                    <p class="text-gray-900 dark:text-gray-100 font-medium">
+                        {t.pendiente ?? "-"}
+                    </p>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
                         Unidad
                     </span>
                     <p

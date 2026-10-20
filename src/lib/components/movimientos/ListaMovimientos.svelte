@@ -5,6 +5,7 @@
     import Trash from "../svg/Trash.svelte";
     import Pencil from "../svg/Pencil.svelte";
     import Plus from "../svg/Plus.svelte";
+    import Egreso from "../svg/Egreso.svelte";
     import { shorterWord } from "$lib/genericos/strings";
     let {
         movimientosrows = [],
@@ -12,14 +13,16 @@
         openViewModal = (_p) => {},
         openEditModal = (_p) => {},
         openDelModal = (_p) => {},
+        openEgresoModal=(_p)=>{},
         clickTodos = () => {},
         clickFila = (id) => {},
         todos = $bindable(false),
-        pageSize=$bindable(15)
+        pageSize = $bindable(15),
     } = $props();
 
     let pyfila = "py-1";
 </script>
+
 <!-- Cards -->
 <div class="flex flex-col gap-3">
     {#each movimientosrows as t}
@@ -44,6 +47,14 @@
 
                 <!-- Acciones -->
                 <div class="flex items-center gap-2 shrink-0">
+                    {#if t.pendiente > 0}
+                        <button
+                            onclick={() => openEgresoModal(t.id)}
+                            class="hover:cursor-pointer hover:scale-105"
+                        >
+                            <Egreso size="size-6" />
+                        </button>
+                    {/if}
                     <button
                         onclick={() => openViewModal(t.movimiento)}
                         class="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors hover:cursor-pointer hover:scale-105"
@@ -66,7 +77,7 @@
                         Fecha
                     </span>
                     <p class="text-gray-900 dark:text-gray-100 font-medium">
-                        {`${t.expand.movimiento?new Date(t.expand.movimiento.fecha).toLocaleDateString():""}`}
+                        {`${t.expand.movimiento ? new Date(t.expand.movimiento.fecha).toLocaleDateString() : ""}`}
                     </p>
                 </div>
                 <div>
@@ -74,7 +85,15 @@
                         Cantidad
                     </span>
                     <p class="font-medium">
-                        {t.cantidad||""}
+                        {t.cantidad || ""}
+                    </p>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        Pendiente
+                    </span>
+                    <p class="font-medium">
+                        {t.pendiente || ""}
                     </p>
                 </div>
                 <div>
@@ -90,7 +109,7 @@
                         Remito
                     </span>
                     <p class="font-medium">
-                        {t.remito ||""}
+                        {t.remito || ""}
                     </p>
                 </div>
                 <div>
@@ -98,7 +117,7 @@
                         Stock
                     </span>
                     <p class="font-medium">
-                        {t.expand?.lote?.codigo||""}
+                        {t.expand?.lote?.codigo || ""}
                     </p>
                 </div>
             </div>

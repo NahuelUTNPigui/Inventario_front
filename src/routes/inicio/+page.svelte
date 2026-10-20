@@ -75,6 +75,7 @@
     let lotelote = $state("");
     let vencimientolote = $state("");
     let ingresolote = $state("");
+    let vencimientopasado = $derived(new Date(vencimientolote) < new Date(ingresolote))
     //ruta
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
@@ -313,7 +314,7 @@
     }
     async function getStock() {
         const recordsl = await pb.collection("lotes").getFullList({
-            filter: `active = true && producto.cliente = '${cliente}' && cerrado=false`,
+            filter: `active = true && producto.cliente = '${cliente}' && cerrado=0`,
             expand: "producto,unidad",
             sort: "-fechaingreso",
         });
@@ -598,6 +599,9 @@
                     `}
                     bind:value={vencimientolote}
                 />
+                {#if vencimientopasado}
+                        <span class="text-sm text-red-600 dark:text-red-400">La fecha de vencimiento es anterior al ingreso</span>
+                {/if}
             </div>
             {#if cargado}
                 <div class="mb-1 lg:mb-0 flex flex-col">

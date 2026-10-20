@@ -76,8 +76,9 @@
                         ${estilos.tableth}   
                     `}
                 >
-                    <div class="flex flex-row justify-between uppercase">
-                        Cantidad
+                    <div class="flex flex-col justify-between uppercase">
+                        <span>Cantidad /</span>
+                        <span>Pendiente</span>
                     </div>
                 </th>
                 <th
@@ -165,7 +166,7 @@
                         )}`}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.cantidad}`}
+                        {t.cantidad} / {t.pendiente}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.expand ? t.expand.unidad.nombre : ""}`}
@@ -196,26 +197,30 @@
                         {`${t.lote}`}
                     </td>
                     <td
-                        class={`flex text-base  items-center justify-center gap-2 px-1 ${pyfila}`}
+                        class={`text-base   px-1 ${pyfila}`}
                     >
-                        <button
-                            onclick={() => openViewModal(t.id)}
-                            class="hover:cursor-pointer hover:scale-105"
+                        <div
+                            class="flex items-center justify-center gap-2"
                         >
-                            <Eye size="size-6" />
-                        </button>
-                        <button
-                            onclick={() => openEditModal(t.id)}
-                            class="hover:cursor-pointer hover:scale-105"
-                        >
-                            <Pencil size="size-6" />
-                        </button>
-                        <button
-                            onclick={() => openDelModal(t.id)}
-                            class="hidden hover:cursor-pointer hover:scale-105"
-                        >
-                            <Trash size="size-6" />
-                        </button>
+                            <button
+                                onclick={() => openViewModal(t.id)}
+                                class="hover:cursor-pointer hover:scale-105"
+                            >
+                                <Eye size="size-6" />
+                            </button>
+                            <button
+                                onclick={() => openEditModal(t.id)}
+                                class="hover:cursor-pointer hover:scale-105"
+                            >
+                                <Pencil size="size-6" />
+                            </button>
+                            <button
+                                onclick={() => openDelModal(t.id)}
+                                class="hidden hover:cursor-pointer hover:scale-105"
+                            >
+                                <Trash size="size-6" />
+                            </button>
+                        </div>
                     </td>
                 </tr>
             {/each}
