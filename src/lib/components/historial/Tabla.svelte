@@ -39,7 +39,7 @@
                     `}
                 >
                     <div class="flex flex-row justify-between uppercase">
-                        Codigo
+                        Codigo prod
                     </div>
                 </th>
                 <th
@@ -94,7 +94,10 @@
             {#each rows as t}
                 <tr>
                 <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.codigo}`}
+                        {`${shorterWord(
+                            t.expand ? t.expand.producto.codigo : "",
+                            30,
+                        )}`}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
                         {`${shorterWord(

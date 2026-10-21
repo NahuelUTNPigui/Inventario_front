@@ -90,6 +90,7 @@
         }
 
         historialrows = filas.map((h) => encontrarMovimiento(h, fechadesde));
+         
     }
 
     async function getData() {
@@ -191,6 +192,7 @@
                     movimientos: listamovs,
                     cantidad: lote.cantidad,
                     nombreproducto: lote.expand.producto.nombre,
+                    codigoproducto: lote.expand.producto.codigo,
                 };
                 let ultimos_idx = listamovs.length - 1;
                 let fechainicio = new Date(listamovs[0].fecha);
@@ -212,6 +214,7 @@
                     movimientos: listamovs,
                     cantidad: lote.cantidad,
                     nombreproducto: lote.expand.producto.nombre,
+                    codigoproducto: lote.expand.producto.codigo,
                 };
                 let ultimos_idx = listamovs.length - 1;
                 let fechainicio = new Date(lote.fechaingreso);
@@ -224,6 +227,7 @@
                 historial.push(filahistorial);
             }
         }
+        
 
     }
 </script>

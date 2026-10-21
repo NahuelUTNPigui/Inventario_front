@@ -86,8 +86,6 @@
 * Ocultar
 * Mantener la coherencia de los datos
 * Si en vez de eliminar el detalle o movimiento, lo que hago es crear un movimiento nuevo pero para que corrija la cantidad ( esta bien pero no)
-#Tareas 
-
 * Definir cual es el último movimiento del lote y poner lo arriba
 * Eliminar un movimiento rompe la coherencia de los datos
 # A la hora de eliminar movimentos

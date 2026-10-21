@@ -45,10 +45,11 @@
             >
                 <div>
                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                        Codigo
+                        Codigo producto
                     </span>
                     <p class="text-gray-900 dark:text-gray-100 font-medium">
-                        {t.codigo ?? "-"}
+                    
+                        {t.expand.producto.codigo ?? "-"}
                     </p>
                 </div>
                 <div>
