@@ -882,10 +882,10 @@
 
     async function editarDetalle() {
         if (cantidadcambiada) {
-            let antiingreso = ingreso == 0 ? -1 : 1;
+            let antiingreso = ingreso == 0 ? 1 : -1;
             let datastock = {
                 cantidad:
-                    cantidaddetallelote +
+                    cantidaddetallelote -
                     antiingreso * (cantidaddetalleviejo - cantidaddetalle),
                 pendiente:
                     pendientedetallelote +
@@ -999,9 +999,7 @@
                     "success",
                 );
                 await getData();
-                
             } catch (err) {
-                
                 Swal.fire(
                     "Error egreso",
                     "No se logró crear el egreso",
@@ -1231,28 +1229,30 @@
                     />
                 </label>
             </div>
-            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
-                <label for="cantidaddetalle" class="label mb-0 pb-0">
-                    <span
-                        class="
+            {#if ingreso != 0}
+                <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                    <label for="cantidaddetalle" class="label mb-0 pb-0">
+                        <span
+                            class="
                             label-text tracking-wide
                             text-md uppercase
                             font-semibold dark:text-gray-400
                             text-gray-500
                         "
-                    >
-                        Pendiente</span
-                    >
-                </label>
-                <label class="input-group">
-                    <input
-                        id="cantidaddetalle"
-                        type="number"
-                        class={`input input-bordered w-full ${estilos.bgdark}`}
-                        bind:value={pendientedetalle}
-                    />
-                </label>
-            </div>
+                        >
+                            Pendiente</span
+                        >
+                    </label>
+                    <label class="input-group">
+                        <input
+                            id="cantidaddetalle"
+                            type="number"
+                            class={`input input-bordered w-full ${estilos.bgdark}`}
+                            bind:value={pendientedetalle}
+                        />
+                    </label>
+                </div>
+            {/if}
         </div>
         <div class="modal-action">
             <form method="dialog">

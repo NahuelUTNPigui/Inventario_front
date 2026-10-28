@@ -70,6 +70,7 @@
 
     let cerradoviejo = $state(0);
     let cantidadviejo = $state(0);
+    let pendienteviejo = $state(0);
     //banderas
     let edit = $state(false);
     let add = $state(false);
@@ -373,6 +374,7 @@
 
             let detalle = {
                 cantidad: cantidad,
+                pendiente:pendiente,
                 cliente,
                 producto: producto,
                 unidad,
@@ -466,6 +468,7 @@
             cerrado,
             producto,
             cantidad,
+            pendiente,
             fechavencimiento:
                 vencimiento.length > 0 ? vencimiento + " 03:00:00" : "",
             fechaingreso: ingreso.length > 0 ? ingreso + " 03:00:00" : "",
@@ -593,7 +596,7 @@
                     bind:lote
                     bind:cerradoviejo
                     bind:cantidadviejo
-                    {pendiente}
+                    bind:pendiente
                     {vencimientopasado}
                     {cierre}
                     {clientes}

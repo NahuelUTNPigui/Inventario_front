@@ -192,7 +192,7 @@
         {/if}
     </div>
 {/if}
-<div
+<div    
     class={`mt-6 flex space-x-3 justify-end border-t border-gray-300 dark:border-gray-800 ${edit ? "hidden" : ""}`}
 >
     <button

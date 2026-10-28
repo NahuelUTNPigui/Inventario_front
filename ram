@@ -1,5 +1,7 @@
 # Mejoras
- 
+* filtros stock
+* filtros hsitorial
+* filtros movimientos
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
 

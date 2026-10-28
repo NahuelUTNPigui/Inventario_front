@@ -15,7 +15,7 @@
         cantidadviejo = $bindable(0),
         producto = $bindable(""),
         cantidad = $bindable(""),
-        pendiente = "",
+        pendiente = $bindable(""),
         unidad = $bindable(""),
         vencimiento = $bindable(""),
         ingreso = $bindable(""),
@@ -86,6 +86,7 @@
     let productoviejo = $state("");
 
     let unidadviejo = $state("");
+    let pendienteviejo = $state("");
     let clienteviejo = $state("");
     let vencimientoviejo = $state("");
     let ingresoviejo = $state("");
@@ -96,6 +97,7 @@
 
         productoviejo = producto;
         cantidadviejo = cantidad;
+        pendienteviejo = pendiente;
         unidadviejo = unidad;
         clienteviejo = cliente;
 
@@ -113,6 +115,7 @@
         codigo = codigoviejo;
         producto = productoviejo;
         cantidad = cantidadviejo;
+        pendiente = pendienteviejo
         unidad = unidadviejo;
         cliente = clienteviejo;
         vencimiento = vencimientoviejo;
@@ -187,7 +190,7 @@
             <label class="input-group">
                 <input
                     id="cantidad"
-                    type="text"
+                    type="number"
                     class={`input input-bordered w-full ${estilos.bgdark}`}
                     bind:value={cantidad}
                 />
@@ -213,9 +216,26 @@
                     text-gray-500
                 "
             >
-                Pendiente : {pendiente}</span
+                Pendiente </span
             >
         </label>
+        {#if edit}
+            <label class="input-group">
+                <input
+                    id="cantidad"
+                    type="number"
+                    class={`input input-bordered w-full ${estilos.bgdark}`}
+                    bind:value={pendiente}
+                />
+            </label>
+        {:else}
+            <label
+                for="rp"
+                class={`text-lg tracking-wide ${estilos.labelcolor} py-0 my-0 px-3`}
+            >
+                {shorterWord(pendiente)}
+            </label>
+        {/if}
     </div>
 
     <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">

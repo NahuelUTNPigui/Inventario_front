@@ -458,5 +458,23 @@
                 </div>
             </div>
         {/if}
+        <div    
+                class={`mt-1 flex space-x-3 justify-start border-t border-gray-300 dark:border-gray-800 `}
+            >
+            
+            <div
+            class={`
+                        mt-1
+                        hover:cursor-pointer
+                        border rounded-full px-3 py-1 text-md flex items-center gap-1
+                        border-gray-300 dark:border-gray-600
+                        bg-white    hover:bg-gray-300 dark:bg-transparent 
+                                    dark:hover:bg-gray-600  dark:text-white
+                        
+                    `}
+            >
+                Fecha desde : {fechadesde}
+            </div>
+        </div>
     </div>
 </div>

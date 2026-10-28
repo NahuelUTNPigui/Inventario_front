@@ -18,9 +18,15 @@
         data = [],
         enclientes = false,
     } = $props();
+    
     export function setFocus() {
         buttonRef.focus();
     }
+    $effect(() => {
+        if (buttonRef) {
+            buttonRef.focus();
+        }
+    });
     let openFilter = $state(false);
     function prepararData(item) {
         return {
@@ -133,7 +139,7 @@
                         bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
                         dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
                     `}
-                        
+
                     onclick={nuevoMultiples}
                 >
                     <Plus size="size-4" />

@@ -307,7 +307,7 @@
         <!--Tabla-->
         <div
             class={`
-                hidden w-full xl:w-3/4 md:grid
+                hidden w-full xl:w-full md:grid
                 mx-auto py-0 my-0 px-4 max-w-7xl  
             `}
         >
