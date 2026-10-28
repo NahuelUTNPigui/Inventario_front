@@ -161,7 +161,7 @@
                         {data}
                         titulo="Movimientos Egeo"
                         {prepararData}
-                        sheetname="productos"
+                        sheetname="movimientos"
                     />
                 </div>
             {/if}

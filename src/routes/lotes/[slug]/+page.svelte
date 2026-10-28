@@ -30,6 +30,7 @@
         cerrado: 0,
         producto: "",
         cantidad: "",
+        pendiente: "",
         unidad: "",
         cliente: "",
         vencimiento: "",
@@ -55,6 +56,7 @@
     let cerrado = $state(0);
     let producto = $state("");
     let cantidad = $state(0);
+    let pendiente = $state(0);
     let unidad = $state("");
     let cliente = $state("");
     let remito = $state("");
@@ -121,6 +123,7 @@
     let observacion = $state("");
     let codigomovimiento = $state("");
     let cantidadmov = $state(0);
+    let pendientemov = $state(0);
     let tipomov = $state(0);
     let remitomov = $state("")
     function openIngresoModal() {
@@ -136,6 +139,7 @@
         observacion = "";
         codigomovimiento = makecodigo("mov", 3, true);
         cantidadmov = 0;
+        pendientemov = 0;
         tipomov = 1;
         egresoLote.showModal();
     }
@@ -223,6 +227,7 @@
             let detalle = {
                 movimiento: recordmov.id,
                 cantidad: cantidadmov,
+                pendiente: pendientemov,
                 producto: producto,
                 unidad: unidad,
                 active: true,
@@ -236,8 +241,10 @@
                 .create(detalle);
             let lotedata = {
                 cantidad: cantidad - cantidadmov,
+                pendiente:pendiente + pendientemov,
                 detallemovimiento: recorddetalle.id,
             };
+            pendiente += pendientemov
             let recordlote = await pb.collection("lotes").update(id, lotedata);
             closeEgreso();
             cantidad = cantidad - cantidadmov;
@@ -275,6 +282,7 @@
         producto = detallelote.producto;
         cerrado = detallelote.cerrado;
         cantidad = detallelote.cantidad;
+        pendiente = detallelote.pendiente;
         unidad = detallelote.unidad;
         cliente = detallelote.cliente;
         vencimiento = detallelote.vencimiento;
@@ -436,6 +444,21 @@
             volver();
         }
     }
+    async function abrirLote() {
+        let data = {
+            cerrado:0,
+            fechacierre: new Date().toISOString().split("T")[0] + " 03:00:00",
+        };
+
+        try {
+            let recordc = await pb.collection("lotes").update(id, data);
+            Swal.fire("Éxito editar", `Se logró reabrir el lote`, "success");
+        } catch (err) {
+            Swal.fire("Error edición", `No se logró reabrir el lote`, "error");
+        } finally {
+            volver();
+        }
+    }
     async function editarLote() {
         let data = {
             codigo,
@@ -570,6 +593,7 @@
                     bind:lote
                     bind:cerradoviejo
                     bind:cantidadviejo
+                    {pendiente}
                     {vencimientopasado}
                     {cierre}
                     {clientes}
@@ -603,7 +627,7 @@
                             "
                         >
                             {cerrado == 1
-                                ? "Ya esta cerrado"
+                                ? "Ya esta cerrado, se puede reabrir"
                                 : "Si se cierra el stock, queda a modo de historial"}</span
                         >
                     </label>
@@ -620,6 +644,19 @@
                         >
                             Cerrar stock
                         </button>
+                    {:else}
+                    <button
+                            class={`
+                            hover:cursor-pointer 
+                            mt-2 px-5 py-1 md:py-2 md:px-10 
+                            bg-[#115642] text-white font-medium rounded-full shadow-sm 
+                            hover:bg-green-700 transition-colors text-base
+                            
+                        `}
+                            onclick={abrirLote}
+                        >
+                            Reabrir stock
+                        </button>
                     {/if}
                 </div>
             {:else}
@@ -632,7 +669,7 @@
     <div class="modal-box">
         <h3 class="text-lg font-bold">Nuevo ingreso</h3>
         <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
-            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+            <div class="hidden mb-1 lg:mb-0 col-span-2 lg:col-span-1">
                 <label for="nombre" class="label mb-0 pb-0">
                     <span
                         class="
@@ -768,7 +805,7 @@
     <div class="modal-box">
         <h3 class="text-lg font-bold">Nuevo egreso</h3>
         <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
-            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+            <div class="hidden mb-1 lg:mb-0 col-span-2 lg:col-span-1">
                 <label for="nombre" class="label mb-0 pb-0">
                     <span
                         class="
@@ -882,6 +919,28 @@
                         type="number"
                         class={`input input-bordered w-full ${estilos.bgdark}`}
                         bind:value={cantidadmov}
+                    />
+                </label>
+            </div>
+            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+                <label for="nombre" class="label mb-0 pb-0">
+                    <span
+                        class="
+                            label-text tracking-wide
+                            text-md uppercase
+                            font-semibold dark:text-gray-400
+                            text-gray-500
+                        "
+                    >
+                        Pendiente</span
+                    >
+                </label>
+                <label class="input-group">
+                    <input
+                        id="nombre"
+                        type="number"
+                        class={`input input-bordered w-full ${estilos.bgdark}`}
+                        bind:value={pendientemov}
                     />
                 </label>
             </div>

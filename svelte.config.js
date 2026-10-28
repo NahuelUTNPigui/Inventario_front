@@ -40,7 +40,9 @@ const config = {
 				"/movimientos",
 				"/movimientos/1",
 				"/productos",
+				"/productos/multiples",
 				"/productos/1",
+
 				"/unidades",
 				"/usuarios",
 				"/usuarios/1",

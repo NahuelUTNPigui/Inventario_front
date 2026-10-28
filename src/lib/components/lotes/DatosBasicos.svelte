@@ -15,6 +15,7 @@
         cantidadviejo = $bindable(0),
         producto = $bindable(""),
         cantidad = $bindable(""),
+        pendiente = "",
         unidad = $bindable(""),
         vencimiento = $bindable(""),
         ingreso = $bindable(""),
@@ -83,7 +84,7 @@
     );
     let codigoviejo = $state("");
     let productoviejo = $state("");
-    
+
     let unidadviejo = $state("");
     let clienteviejo = $state("");
     let vencimientoviejo = $state("");
@@ -202,6 +203,22 @@
     </div>
 
     <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+        <label for="rp" class="label mb-0 pb-0">
+            <span
+                class="
+
+                    label-text tracking-wide
+                    text-md uppercase
+                    font-semibold dark:text-gray-400
+                    text-gray-500
+                "
+            >
+                Pendiente : {pendiente}</span
+            >
+        </label>
+    </div>
+
+    <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
         <label for="ingreso" class="label mb-0 pb-0">
             <span
                 class="
@@ -273,9 +290,10 @@
             </label>
         {/if}
         {#if vencimientopasado}
-                        <span class="text-sm text-red-600 dark:text-red-400">La fecha de vencimiento es anterior al ingreso</span>
-                {/if}
-        
+            <span class="text-sm text-red-600 dark:text-red-400"
+                >La fecha de vencimiento es anterior al ingreso</span
+            >
+        {/if}
     </div>
     <div class="mb-1 lg:mb-0 flex flex-col">
         <label for="Cliente" class="label mb-0 pb-0">
@@ -427,7 +445,7 @@
             </label>
         {/if}
     </div>
-    <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+    <div class="hidden mb-1 lg:mb-0 col-span-2 lg:col-span-1">
         <label for="rp" class="label mb-0 pb-0">
             <span
                 class="

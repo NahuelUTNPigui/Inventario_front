@@ -40,6 +40,9 @@
         storageProducto.save(defaultproducto);
         goto("/productos/0");
     }
+    function openNewMultiples(){
+        goto("/productos/multiples");
+    }
     function openEditModal(p_id) {
         let c_idx = productos.findIndex((u) => u.id == p_id);
         if (c_idx != -1) {
@@ -180,6 +183,7 @@
             {limpiarFiltros}
             {filterUpdate}
             nuevo={openNew}
+            nuevoMultiples={openNewMultiples}
             bind:buscarcodigo
             bind:cliente
             {clientes}

@@ -45,6 +45,7 @@
         cerrado: 0,
         producto: "",
         cantidad: "",
+        pendiente: "",
         unidad: "",
         vencimiento: "",
         ingreso: "",
@@ -182,6 +183,7 @@
                 cerrado: c.cerrado,
                 producto: c.producto,
                 cantidad: c.cantidad,
+                pendiente: c.pendiente,
                 unidad: c.unidad,
                 remito: c.remito,
                 lote: c.lote,
@@ -213,6 +215,7 @@
                 cerrado: c.cerrado,
                 producto: c.producto,
                 cantidad: c.cantidad,
+                pendiente: c.pendiente,
                 unidad: c.unidad,
                 remito: c.remito,
                 lote: c.lote,
@@ -362,11 +365,13 @@
             let fila = lotesrows[i];
             if (tablaProductos[fila.producto]) {
                 tablaProductos[fila.producto].cantidad += fila.cantidad;
+                tablaProductos[fila.producto].pendiente += fila.pendiente;
             } else {
                 tablaProductos[fila.producto] = {
                     codigo: "",
                     id: fila.id,
                     cantidad: fila.cantidad,
+                    pendiente: fila.pendiente,
                     expand: fila.expand,
                     cerrado: "",
                     fechavencimiento: "",

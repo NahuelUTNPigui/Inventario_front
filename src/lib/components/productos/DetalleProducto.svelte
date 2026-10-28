@@ -7,7 +7,7 @@
     let innerHeight = $state(0);
     let esCelu = $derived(innerWidth <= 1100);
 
-    let { nombre, children, add = false } = $props();
+    let { nombre, children, add = false,multiples=false } = $props();
     function volver() {
         goto( "/productos");
     }
@@ -62,7 +62,7 @@
                             `}
                     >
                         
-                        {add?"Nuevo producto":nombre}
+                        {add?"Nuevo producto":multiples?"Multiples":nombre}
                     </h1>
             </div>
         </div>

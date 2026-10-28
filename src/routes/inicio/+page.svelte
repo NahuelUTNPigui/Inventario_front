@@ -52,6 +52,7 @@
         cerrado: 0,
         producto: "",
         cantidad: "",
+        pendiente: "",
         unidad: "",
         vencimiento: "",
         ingreso: "",
@@ -290,6 +291,7 @@
                 cerrado: c.cerrado,
                 producto: c.producto,
                 cantidad: c.cantidad,
+                pendiente: c.pendiente,
                 unidad: c.unidad,
                 cliente: c.expand ? c.expand.producto.cliente : c.cliente,
                 vencimiento:
@@ -663,7 +665,7 @@
                     {/each}
                 </select>
             </div>
-            <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+            <div class="hidden mb-1 lg:mb-0 col-span-2 lg:col-span-1">
                 <label for="remitolote" class="label mb-0 pb-0">
                     <span
                         class="

@@ -1,6 +1,9 @@
 # Mejoras
+ 
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
+
+
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -11,7 +14,7 @@
 
 # Largo plazo
 * Eliminacion muñtiple de stocks y movimeintos
-* Sacar scroll en cantidad
+
 * Crear productos múltiples
 * Stock con quiebre
 * Devoluciones como ingreso
@@ -33,10 +36,16 @@
 * El stock guardar los pedidos pendientes
 * stock actual, pendiente, total = (actual + pendiente)
 * agregar filtros pendientes
+* quitar Input del crear egreso ?? 
 
 #  Listos
+* Deben aparecer los filtros aplicados
+* Boton reabrir en lotes
+* Agregar pendiente en el perfil Stock
+* exportar movimientos dice productos en vez de movimientos
+* Quitar remito de stock
 * Agregar pedidos de clientes, son como movimientos pendientes
-
+* Sacar scroll en cantidad
 * corregir la variacion de altura de la tabla de stock en el cliente
 * mejorar cards de movimientos en perfil stock tiene que decir el remito
 * Solo se puede Editar el último movimiento
@@ -86,6 +95,8 @@
 * Ocultar
 * Mantener la coherencia de los datos
 * Si en vez de eliminar el detalle o movimiento, lo que hago es crear un movimiento nuevo pero para que corrija la cantidad ( esta bien pero no)
+#Tareas 
+
 * Definir cual es el último movimiento del lote y poner lo arriba
 * Eliminar un movimiento rompe la coherencia de los datos
 # A la hora de eliminar movimentos

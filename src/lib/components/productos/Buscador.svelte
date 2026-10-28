@@ -13,6 +13,7 @@
         filterUpdate = () => {},
         limpiarFiltros = () => {},
         nuevo = () => {},
+        nuevoMultiples = () => {},
         clientes = [],
         data = [],
         enclientes = false,
@@ -124,6 +125,19 @@
                 >
                     <Plus size="size-4" />
                     Nuevo
+                </button>
+                <button
+                    class={`
+                        hover:cursor-pointer
+                        border rounded-full px-3 py-1 text-md flex items-center gap-1
+                        bg-white  border-gray-300  hover:bg-gray-300 dark:bg-transparent 
+                        dark:hover:bg-gray-600 dark:border-gray-600 dark:text-white
+                    `}
+                        
+                    onclick={nuevoMultiples}
+                >
+                    <Plus size="size-4" />
+                    Nuevo multiples
                 </button>
                 <button
                     class={`

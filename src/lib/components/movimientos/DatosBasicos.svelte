@@ -42,8 +42,8 @@
 </script>
 
 <div class="grid grid-cols-2 gap-1 lg:gap-6 mx-1 mb-2">
-    <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
-        <label for="observacion" class="label mb-0 pb-0">
+    <div class="hidden mb-1 lg:mb-0 col-span-2 lg:col-span-1">
+        <label for="codigo" class="label mb-0 pb-0">
             <span
                 class="
                     label-text tracking-wide

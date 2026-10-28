@@ -120,6 +120,7 @@
                 </th>
                 <th
                     class={`
+                        hidden
                         ${estilos.tableth}   
                     `}
                 >
@@ -190,7 +191,7 @@
                                 : ""
                         }`}
                     </td>
-                    <td class={`text-base mx-1 px-4 ${pyfila}`}>
+                    <td class={`hidden text-base mx-1 px-4 ${pyfila}`}>
                         {`${t.remito}`}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>

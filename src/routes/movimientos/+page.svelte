@@ -395,16 +395,8 @@
                             text-gray-500
                         "
                     >
-                        Cantidad</span
+                        Cantidad: {cantidaddetalle}</span
                     >
-                </label>
-                <label class="input-group">
-                    <input
-                        id="cantidaddetalle"
-                        type="number"
-                        class={`input input-bordered w-full ${estilos.bgdark}`}
-                        bind:value={cantidaddetalle}
-                    />
                 </label>
             </div>
             <div class="mb-1 lg:mb-0 col-span-2 lg:col-span-1">
@@ -417,16 +409,8 @@
                             text-gray-500
                         "
                     >
-                        Pendiente</span
+                        Pendiente: {pendientedetalle}</span
                     >
-                </label>
-                <label class="input-group">
-                    <input
-                        id="cantidaddetalle"
-                        type="number"
-                        class={`input input-bordered w-full ${estilos.bgdark}`}
-                        bind:value={pendientedetalle}
-                    />
                 </label>
             </div>
         </div>

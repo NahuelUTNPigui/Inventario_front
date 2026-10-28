@@ -152,7 +152,9 @@
                             : "-"}
                     </p>
                 </div>
-                <div>
+                <div
+                    class="hidden"
+                >
                     <span class="text-xs text-gray-500 dark:text-gray-400">
                         Remito
                     </span>
