@@ -64,6 +64,10 @@
                                     class="text-sm font-semibold text-green-600 dark:text-green-400"
                                     >Pendiente: {l.pendiente}</span
                                 >
+                                <span
+                                    class="text-sm font-semibold text-green-600 dark:text-green-400"
+                                    >Devolución: {l.devolucion}</span
+                                >
                             </div>
                         </div>
                         <div class="flex justify-end gap-2 mt-2">

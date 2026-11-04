@@ -7,13 +7,14 @@
         productosrows = [],
         selectedLote = $bindable(""),
 
-        agregarLote = (p_cantidad,p_pendiente) => {},
+        agregarLote = (p_cantidad,p_pendiente,p_devolucion) => {},
     } = $props();
     let prodSelected = $state("");
     let cantidad = $state("");
     let pendiente = $state("");
+    let devolucion = $state(0)
     function agregar() {
-        agregarLote(cantidad,pendiente);
+        agregarLote(cantidad,pendiente,devolucion);
         cantidad = "";
     }
     function selectCantidad() {
@@ -159,20 +160,39 @@
         {#if ingreso == 1}
             <div>
                 <label
-                    for="cantidadingreso"
+                    for="pendienteegreso"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                     Pendiente
                 </label>
                 <InputNoScroll
-                    id="cantidadingreso"
-                    placeholder="Cantidad"
+                    id="pendienteegreso"
+                    placeholder="Pendiente"
                     bind:value={pendiente}
                     clase="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
                 />
                 {#if pendiente < 0}
                     <span class="text-sm text-red-600 dark:text-red-400"
                         >El pendiente no puede ser negativa</span
+                    >
+                {/if}
+            </div>
+            <div>
+                <label
+                    for="devolucionegreso"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                    Devoluciones
+                </label>
+                <InputNoScroll
+                    id="devolucionegreso"
+                    placeholder="Devolucion"
+                    bind:value={devolucion}
+                    clase="w-full px-3 py-2 bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white"
+                />
+                {#if devolucion < 0}
+                    <span class="text-sm text-red-600 dark:text-red-400"
+                        >La devolución no puede ser negativa</span
                     >
                 {/if}
             </div>

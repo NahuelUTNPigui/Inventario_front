@@ -72,7 +72,7 @@
     });
 </script>
 
-<div class={`container mx-auto py-1 max-w-7xl w-full `}>
+<div class={`container mx-auto py-1 w-full `}>
     <!--Header-->
     <div
         class={`

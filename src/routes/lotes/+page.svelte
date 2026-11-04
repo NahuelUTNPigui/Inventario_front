@@ -450,7 +450,7 @@
             data={lotesrows}
         />
     {/if}
-    <div class={`container mx-auto py-1 max-w-7xl w-full `}>
+    <div class={`container mx-auto py-1  w-full `}>
         <div class="flex flex-wrap gap-2">
             {#if !ordenVencimiento}
                 <button
@@ -517,7 +517,7 @@
         <div
             class={`
                 hidden w-full  xl:grid
-                mx-auto py-0 my-0 px-4 max-w-7xl  
+                mx-auto py-0 my-0 px-4
             `}
         >
             <div

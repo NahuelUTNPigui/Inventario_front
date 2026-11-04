@@ -69,6 +69,7 @@
     let unidades = $state([]);
     let stock = $state([]);
     let stockrows = $state([]);
+    let devoluciones = $state([])
     //ids
     let idlote = $state("");
     let idproducto = $state("");
@@ -89,6 +90,7 @@
     //Cantidad lote
     let cantidadlote = $state(0);
     let pendientelote = $state(0);
+    
     let cantidadlotenegativa = $derived(cantidadlote < 0);
     //lote individuaal
     let producto = $state("");
@@ -467,6 +469,7 @@
                     lote: "",
                     nombrelote: "",
                     pendiente,
+                    devolucion :0
                 };
                 detalles.push(fila);
             }
@@ -522,6 +525,7 @@
                     remito,
                     cliente,
                     nombrelote: lote,
+                    devolucion:0
                 };
                 detalles.push(fila);
             }
@@ -560,7 +564,7 @@
             malverificadolote = true;
         }
     }
-    function seleccionarLoteMovimiento(p_cantidad, p_pendiente = 0) {
+    function seleccionarLoteMovimiento(p_cantidad, p_pendiente = 0,p_devolucion=0) {
         if (p_cantidad < 0) {
             Swal.fire(
                 "Cantidad negativa",
@@ -617,7 +621,9 @@
                     remito: filastock.remito,
                     cliente,
                     nombrelote: filastock.lote,
+                    devolucion:p_devolucion
                 };
+                devoluciones.push(fila)
                 detalles.push(fila);
             }
         }
@@ -724,6 +730,7 @@
                 await getStocks();
                 stockrows = stock.filter((s) => s.cliente == cliente);
                 detalles = [];
+                devoluciones = []
                 fecha = "";
                 fechavencimiento = "";
                 observacion = "";
@@ -754,16 +761,16 @@
                     .create(movimiento);
                 for (let i = 0; i < detalles.length; i++) {
                     let fila = detalles[i];
+                    
                     let lotedata = {
-                        cantidad: fila.cantidadlote - fila.cantidad,
+                        cantidad: fila.cantidadlote - fila.cantidad + fila.devolucion,
                         pendiente: fila.pendientelote + fila.pendiente,
                     };
+                    
                     if (lotedata.cantidad <= 0 && cerrarLotes) {
                         lotedata.cerrado = 1;
                     }
-                    let recordlote = await pb
-                        .collection("lotes")
-                        .update(fila.idfila, lotedata);
+                    
                     let detalle = {
                         movimiento: recordmov.id,
                         cantidad: fila.cantidad,
@@ -779,6 +786,39 @@
                     let recorddetalle = await pb
                         .collection("detallemovimientos")
                         .create(detalle);
+                    
+                    lotedata.detallemovimiento = recorddetalle.id
+                    let recordlote = await pb
+                        .collection("lotes")
+                        .update(fila.idfila, lotedata);
+                }
+                movimiento.ingreso = 0
+                movimiento.codigo = "devolucion: " +movimiento.codigo
+                let recorddev = await pb
+                    .collection("movimientos")
+                    .create(movimiento);
+                for (let i = 0; i < devoluciones.length; i++) {
+                    let fila = devoluciones[i];
+                    let lotedata = {
+                        cantidad: fila.cantidadlote - fila.cantidad + fila.devolucion,
+                        
+                    };
+                    
+                    let detalle = {
+                        movimiento: recorddev.id,
+                        cantidad: fila.devolucion,
+                        producto: fila.producto,
+                        unidad: fila.unidad,
+                        active: true,
+                        lote: fila.idfila,
+                        cliente: fila.cliente,
+                        historial: lotedata.cantidad,
+                        remito: remitoMov,
+                        pendiente: 0,
+                    };
+                    let recorddetalle = await pb
+                        .collection("detallemovimientos")
+                        .create(detalle);
                     let datalotedetalle = {
                         detallemovimiento: recorddetalle.id,
                     };
@@ -789,6 +829,7 @@
                 await getStocks();
                 stockrows = stock.filter((s) => s.cliente == cliente);
                 detalles = [];
+                devoluciones = []
                 selectedLote = "";
                 codigoproducto = "";
                 idproducto = "";

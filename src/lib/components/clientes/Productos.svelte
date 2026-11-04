@@ -137,10 +137,14 @@
         //await getData();
         filterUpdate();
     });
+    function openNewMultiples(){
+        goto("/productos/multiples");
+    }
 </script>
 
 <Buscador
     enclientes={true}
+    nuevoMultiples={openNewMultiples}
     bind:this={buscadorRef}
     bind:buscar
     bind:buscarcodigo

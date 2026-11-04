@@ -58,7 +58,23 @@
     function volver() {
         goto("/productos");
     }
+    async function getProductoByName() {
+        let lista = await pb.collection("productos").getList(1,1,{
+            filter:`nombre='${nombre}'`
+        })
+        if(lista.totalItems >0){
+            return lista.items[0]
+        }
+        else{
+            return {
+                id:"",
+                nombre:""
+            }
+        }
+        
+    }
     async function guardarProducto() {
+
         if(nombre.length == 0){
             Swal.fire("Error nombre","Debe escribir un nombre","error")
             return
@@ -67,9 +83,16 @@
             Swal.fire("Error cliente","Debe seleccionar un cliente","error")
             return
         }
+
         if (id.length > 0 && !add) {
+
             await editarProducto();
         } else {
+            let repetido = await getProductoByName()
+            if(repetido.id != ""){
+            Swal.fire("Nombre repetido", `Ya existe otro producto con ese nombre`, "info");
+            return
+        }
             let data = {
                 nombre,
                 cliente,
@@ -96,11 +119,16 @@
         }
     }
     async function editarProducto() {
+        let repetido = await getProductoByName()
         let data = {
             nombre,
             codigo,
             cliente,
         };
+        if(repetido.id != id && repetido.id != ""){
+            Swal.fire("Nombre repetido", `Ya existe otro producto con ese nombre`, "info");
+            return
+        }
         try {
             let recordc = await pb.collection("productos").update(id, data);
             Swal.fire("Éxito editar", `Se logró editar el producto`, "success");

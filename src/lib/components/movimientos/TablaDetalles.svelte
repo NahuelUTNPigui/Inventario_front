@@ -1,7 +1,14 @@
 <script>
     import { getNombreLista } from "$lib/genericos/strings";
 
-    let { detalles = $bindable([]), quitarDetalle = (id) => {}, openDetalle = (id) => {},unidades=[],productos=[],crearEgreso=(p_id)=>{} } = $props();
+    let {
+        detalles = $bindable([]),
+        quitarDetalle = (id) => {},
+        openDetalle = (id) => {},
+        unidades = [],
+        productos = [],
+        crearEgreso = (p_id) => {},
+    } = $props();
 </script>
 
 <!-- Lote de Ingreso -->
@@ -23,25 +30,31 @@
         <div class="space-y-3 mb-4">
             {#each detalles as l}
                 <!-- Producto agregado -->
-                <div class="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                <div class="flex justify-between items-start mb-2">
-                    <span
+                <div class=" p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div
+                        class="flex  justify-between items-start mb-2"
+                    >
+                        <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
-                            >Producto: {getNombreLista(l.producto,productos)}</span
+                            >Producto: {getNombreLista(
+                                l.producto,
+                                productos,
+                            )}</span
                         >
-                </div>
+                    </div>  
                     <div class="flex justify-between items-start mb-2">
-                        
                         <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
-                            >Cantidad: {l.cantidad} Pendiente: {l.pendiente}  Unidad: {getNombreLista(l.unidad,unidades)}</span
+                            >Cantidad: {l.cantidad} Pendiente: {l.pendiente} Unidad:
+                            {getNombreLista(l.unidad, unidades)}</span
                         >
                         <span
                             class="text-sm font-semibold text-green-600 dark:text-green-400"
-                            >Remito stock: {l.expand?.lote.remito} -  Numero de Lote: {l.expand?.lote.lote}</span
+                            >Remito stock: {l.expand?.lote.remito} - Numero de Lote:
+                            {l.expand?.lote.lote}</span
                         >
                     </div>
-                    <div class="flex justify-end gap-2 mt-2">
+                    <div class="flex  justify-start md:justify-end gap-2 mt-2">
                         <button
                             onclick={() => quitarDetalle(l.id)}
                             class="
@@ -50,28 +63,27 @@
                         >
                             Eliminar
                         </button>
-                        
+
                         <button
                             onclick={() => openDetalle(l)}
                             class={`
-                                    ${l.expand.lote.detallemovimiento != l.id?"hidden":""}
+                                    ${l.expand.lote.detallemovimiento != l.id ? "hidden" : ""}
                                     cursor-pointer
                                     text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300
                                 `}
                         >
                             Editar
                         </button>
-                        
+
                         <button
-                            onclick={()=>crearEgreso(l.id)}
+                            onclick={() => crearEgreso(l.id)}
                             class={`
-                                    ${l.pendiente<=0?"hidden":""}
+                                    ${l.pendiente <= 0 ? "hidden" : ""}
                                     cursor-pointer
                                     text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300
                                 `}
                         >
                             Egreso
-                                
                         </button>
                     </div>
                 </div>
@@ -91,7 +103,5 @@
                 </span>
             </div>
         </div>
-
-        
     </div>
 </div>

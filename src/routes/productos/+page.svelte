@@ -16,6 +16,7 @@
 
     let cargado = $state(false);
     let cargadoListas = $state(false);
+
     //filtros
     let buscar = $state("");
     let buscarcodigo = $state("");
@@ -23,7 +24,7 @@
     let clientes = $state([]);
     let productos = $state([]);
     let productosrows = $state([]);
-
+    //Storage
     let defaultproducto = {
         id: "",
         nombre: "",
@@ -36,6 +37,12 @@
         "detalleproducto",
         defaultproducto,
     );
+    let defaultFiltros = {
+        cliente: ""
+    };
+    let detalleFiltos = $state(defaultFiltros);
+    let storageFiltro = createStorageProxy("productosFiltros", defaultFiltros);
+    //fin storage
     function openNew() {
         storageProducto.save(defaultproducto);
         goto("/productos/0");
@@ -117,9 +124,14 @@
         buscar = "";
         buscarcodigo = "";
         cliente = "";
+        detalleFiltos = storageFiltro
+        storageFiltro.save(detalleFiltos);
         filterUpdate();
+
     }
     function filterUpdate() {
+        detalleFiltos.cliente = cliente
+        storageFiltro.save(detalleFiltos);
         productosrows = productos;
         if (buscar != "") {
             productosrows = productosrows.filter((t) =>
@@ -170,6 +182,8 @@
         cargadoListas = true;
     }
     onMount(async () => {
+        detalleFiltos = storageFiltro.load();
+        cliente = detalleFiltos.cliente;
         await getData();
         await getListas();
         filterUpdate();

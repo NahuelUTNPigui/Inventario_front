@@ -1,4 +1,10 @@
 # Mejoras
+
+* Poner editar detalles en crear movimientos
+* Como cargar pendientes
+* LImpiar pendientes
+
+* Se ve chico stock en la compu
 * filtros stock
 * filtros hsitorial
 * filtros movimientos
@@ -14,9 +20,11 @@
 * Todo es un precio frio y seco
 
 
+
 # Largo plazo
 * Eliminacion muñtiple de stocks y movimeintos
-
+* Borrar fecha de vencimientos
+* Se ve raro el detalle de movimientos en el celu
 * Crear productos múltiples
 * Stock con quiebre
 * Devoluciones como ingreso
@@ -41,6 +49,11 @@
 * quitar Input del crear egreso ?? 
 
 #  Listos
+* Devoluciones en movimientos
+* guardar filtros en prodiutpos
+* No permitir productos repetidos
+* Boton de multiples en detalle de cliente
+* Deshabilitar el boton guardar en multiples productos
 * Deben aparecer los filtros aplicados
 * Boton reabrir en lotes
 * Agregar pendiente en el perfil Stock

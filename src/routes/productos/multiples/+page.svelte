@@ -22,7 +22,10 @@
     let esCelu = $derived(innerWidth <= 1250);
 
     let clientes = $state([]);
-    let productospending = $state([]);
+    let productosegeo = $state([]);
+
+    //guardando
+    let guardando = $state(false);
     //Data
     let productos = $state([]);
     let id = $state("");
@@ -76,9 +79,9 @@
             nombre,
             codigo,
         };
-        nombre = ""
-        codigo = ""
-        inputRef.focus()
+        nombre = "";
+        codigo = makecodigo("prod");
+        inputRef.focus();
         productos.push(data);
     }
     function eliminarProducto(p_id) {
@@ -103,17 +106,37 @@
                 codigo,
             };
             productos[p_idx] = p;
-            inputRef.focus()
+            inputRef.focus();
         }
+    }
+    async function getAllProductosEgeo() {
+        const recordsc = await pb.collection("productos").getFullList({
+            filter: `active = true`,
+        });
+        productosegeo = recordsc;
+    }
+    function getProductoByName(p_nombre) {
+        let p_idx = productosegeo.findIndex((p) => p.nombre == p_nombre);
 
+        if (p_idx != -1) {
+            return productosegeo[p_idx];
+        } else {
+            return {
+                id: "",
+                nombre: "",
+            };
+        }
     }
     async function guardarProductos() {
-        
+        await getAllProductosEgeo();
+        guardando = true;
         if (cliente.length == 0) {
             Swal.fire("Error cliente", "Debe seleccionar un cliente", "error");
             return;
         }
-        let productosid = [] 
+
+        let productosid = [];
+        let productosrepetidos = [];
         for (let j = 0; j < productos.length; j++) {
             let fila = productos[j];
             let data = {
@@ -123,12 +146,14 @@
                 active: true,
             };
             try {
-                
-                await pb.collection("productos").create(data);
-                
-                productosid.push(fila.tempid)
-                
-                
+                let repetido = getProductoByName(fila.nombre);
+                if (repetido.id != "") {
+                    productosrepetidos.push(repetido);
+                } else {
+                    await pb.collection("productos").create(data);
+
+                    productosid.push(fila.tempid);
+                }
             } catch (err) {
                 console.log(err);
                 Swal.fire(
@@ -138,12 +163,22 @@
                 );
             }
         }
-        productos = productos.filter(p=>!productosid.includes(p.tempid))
-        Swal.fire(
-            "Productos procesados",
-            "Se terminó de registrar los procesos",
-            "success",
-        );
+        productos = productos.filter((p) => !productosid.includes(p.tempid));
+        if (productosrepetidos.length > 0) {
+            Swal.fire(
+                "Productos procesados",
+                "Se terminó de registrar los procesos pero hubo productos nombre repetidos",
+                "success",
+            );
+        } else {
+            Swal.fire(
+                "Productos procesados",
+                "Se terminó de registrar los procesos",
+                "success",
+            );
+        }
+
+        guardando = false;
     }
 
     onMount(async () => {
@@ -190,11 +225,11 @@
                     <label for="nombre" class="label mb-0 pb-0">
                         <span
                             class="
-                    label-text tracking-wide
-                    text-md uppercase
-                    font-semibold dark:text-gray-400
-                    text-gray-500
-                "
+                                label-text tracking-wide
+                                text-md uppercase
+                                font-semibold dark:text-gray-400
+                                text-gray-500
+                            "
                         >
                             Nombre</span
                         >
@@ -214,11 +249,11 @@
                     <label for="rp" class="label mb-0 pb-0">
                         <span
                             class="
-                    label-text tracking-wide
-                    text-md uppercase
-                    font-semibold dark:text-gray-400
-                    text-gray-500
-                "
+                                label-text tracking-wide
+                                text-md uppercase
+                                font-semibold dark:text-gray-400
+                                text-gray-500
+                            "
                         >
                             Código</span
                         >
@@ -259,18 +294,26 @@
                 </button>
                 <button
                     class={`
-                        hover:cursor-pointer 
+                        ${
+                            guardando
+                                ? "hover:cursor-wait"
+                                : productos.length == 0
+                                  ? "hover:cursor-not-allowed"
+                                  : "hover:cursor-pointer"
+                        }
+
                         mt-2 px-5 py-1 md:py-2 md:px-10 
                         bg-[#115642] text-white font-medium rounded-full shadow-sm 
                         hover:bg-green-700 transition-colors text-base  
                     `}
+                    disabled={guardando || productos.length == 0}
                     onclick={guardarProductos}
                 >
                     Guardar productos
                 </button>
             </div>
             <table
-                class="mt-1     table table-lg w-full bg-white dark:bg-slate-900 rounded-none"
+                class="mt-1 table table-lg w-full bg-white dark:bg-slate-900 rounded-none"
             >
                 <thead
                     class={`${estilos.tableheader}  sticky top-0 z-5 shadow-sm`}
