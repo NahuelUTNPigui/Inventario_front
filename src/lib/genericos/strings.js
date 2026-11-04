@@ -102,3 +102,13 @@ export function formatearFecha(fecha) {
     const dia = String(fecha.getDate()).padStart(2, '0');
     return `${año}-${mes}-${dia}`;
 };
+//La fecha viene con el formato año-mes-dia
+export function getNombreFecha(fecha){
+    if(fecha.length==0){
+        return "" 
+        
+    }
+    else{
+        return  new Date(fecha+" 03:00:00").toLocaleDateString()
+    }
+}

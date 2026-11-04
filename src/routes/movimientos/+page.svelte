@@ -10,7 +10,8 @@
     import PocketBase from "pocketbase";
     import ListaMovimientos from "$lib/components/movimientos/ListaMovimientos.svelte";
     import Cargando from "$lib/components/Cargando.svelte";
-    import { getDateCorrect } from "$lib/genericos/strings";
+    import { getDateCorrect, getNombreLista } from "$lib/genericos/strings";
+    import FilterPill from "$lib/components/FilterPill.svelte";
     import estilos from "$lib/estilos";
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
@@ -133,7 +134,7 @@
             cantidaddetalle = m.cantidad;
             cantidadlote = m.expand.lote.cantidad;
             fechaegreso = m.expand.movimiento.fecha;
-            egresomov.showModal()
+            egresomov.showModal();
         }
     }
     function openEditModal(p_id) {
@@ -276,12 +277,34 @@
                 .update(iddetalle, datadetalle);
             await pb.collection("lotes").update(idlotedetalle, datalote);
             Swal.fire("Éxito egreso", "Se logró crear el egreso", "success");
-            await getData()
-            filterUpdate()
+            await getData();
+            filterUpdate();
         } catch (err) {
             Swal.fire("Error egreso", "No se logró crear el egreso", "error");
         }
     }
+    function getNombreCliente(p_cliente) {
+        let c_idx = clientes.findIndex((c) => c.id == p_cliente);
+        if (c_idx != -1) {
+            return clientes[c_idx].nombre;
+        } else {
+            return "";
+        }
+    }
+    let nombrecliente = $derived(
+        cliente == "" ? "" : getNombreCliente(cliente),
+    );
+    let nombretipo = $derived(getNombreLista(tipo, tipos));
+    let nombrefechadesde = $derived(
+        fechadesde.length > 0
+            ? new Date(fechadesde + " 03:00:00").toLocaleDateString()
+            : "",
+    );
+    let nombrefechahasta = $derived(
+        fechahasta.length > 0
+            ? new Date(fechahasta + " 03:00:00").toLocaleDateString()
+            : "",
+    );
 </script>
 
 <Navbar>
@@ -300,6 +323,18 @@
             {tipos}
             data={movimientosrows}
         />
+        <div class={`container mx-auto py-1 w-full `}>
+            <div
+                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 my-2"
+            >
+                <FilterPill etiqueta="Fecha desde:" valor={nombrefechadesde} />
+                <FilterPill etiqueta="Fecha hasta:" valor={nombrefechahasta} />
+
+                <FilterPill etiqueta="Cliente:" valor={nombrecliente} />
+                <FilterPill etiqueta="Remito:" valor={remito} />
+                <FilterPill etiqueta="Tipo movimiento:" valor={nombretipo} />
+            </div>
+        </div>
     {:else}
         <Cargando />
     {/if}

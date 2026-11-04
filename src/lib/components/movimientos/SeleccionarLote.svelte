@@ -16,6 +16,8 @@
     function agregar() {
         agregarLote(cantidad,pendiente,devolucion);
         cantidad = "";
+        pendiente = ""
+        devolucion = 0
     }
     function selectCantidad() {
         let idx_lotes = stockrows.findIndex((s) => s.id == selectedLote);

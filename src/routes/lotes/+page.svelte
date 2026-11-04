@@ -10,6 +10,8 @@
     import { onMount } from "svelte";
     import PocketBase from "pocketbase";
     import ListaLotes from "$lib/components/lotes/ListaLotes.svelte";
+    import FilterPill from "$lib/components/FilterPill.svelte";
+    import { getNombreFecha, getNombreLista } from "$lib/genericos/strings";
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
 
@@ -80,12 +82,11 @@
             lotesSelect[id] = { id };
         }
     }
-    function enFila(id){
-        if(lotesSelect[id]){
-            return true
-        }
-        else{
-            return false
+    function enFila(id) {
+        if (lotesSelect[id]) {
+            return true;
+        } else {
+            return false;
         }
     }
     //fin seleccionados
@@ -269,7 +270,6 @@
         });
     }
     async function multiEliminar() {
-        
         Object.keys(lotesSelect).forEach(async (itemid) => {
             let data = {
                 active: false,
@@ -292,16 +292,11 @@
                 for (const mov of setMov) {
                     await pb.collection("movimientos").update(mov, datamov);
                 }
-                let recordc = await pb
-                    .collection("lotes")
-                    .update(itemid, data);
-
-                
+                let recordc = await pb.collection("lotes").update(itemid, data);
             } catch (err) {
                 console.error(err);
             }
         });
-        
     }
     function openMultiDel() {
         Swal.fire({
@@ -314,12 +309,12 @@
         }).then(async (result) => {
             if (result.value) {
                 await multiEliminar();
-                cargado = false
+                cargado = false;
                 await getData();
                 filterUpdate();
-                
-                lotesSelect = {}
-                cargado = true
+
+                lotesSelect = {};
+                cargado = true;
                 Swal.fire(
                     "Operación completada",
                     "Se realizó la eliminación múltiple",
@@ -427,6 +422,16 @@
         await getListas();
         filterUpdate();
     });
+    let nombrecliente = $derived(
+        cliente == "" ? "" : getNombreLista(cliente, clientes),
+    );
+    let nombrefechadesde = $derived(getNombreFecha(fechadesde));
+    let nombrefechahasta = $derived(getNombreFecha(fechahasta));
+    let nombrefechadesdevenc = $derived(getNombreFecha(fechadesdevenc));
+    let nombrefechahastavenc = $derived(getNombreFecha(fechahastavenc));
+    let nombreestado = $derived(
+        estado == "" ? "" : getNombreLista(estado, estados),
+    );
 </script>
 
 <Navbar>
@@ -449,9 +454,31 @@
             {estados}
             data={lotesrows}
         />
+        <div class={`container mx-auto py-1 w-full `}>
+            <div
+                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 my-2"
+            >
+                <FilterPill etiqueta="Estado:" valor={nombreestado} />
+                <FilterPill etiqueta="Fecha desde :" valor={nombrefechadesde} />
+                <FilterPill etiqueta="Fecha hasta :" valor={nombrefechahasta} />
+                <FilterPill
+                    etiqueta="Fecha desde venc : "
+                    valor={nombrefechadesdevenc}
+                />
+                <FilterPill
+                    etiqueta="Fecha hasta venc :"
+                    valor={nombrefechahastavenc}
+                />
+                <FilterPill etiqueta="Cliente:" valor={nombrecliente} />
+                <FilterPill etiqueta="Remito:" valor={remito} />
+                <FilterPill etiqueta="Código:" valor={codigo} />
+                <FilterPill etiqueta="Lote:" valor={lote} />
+            </div>
+        </div>
     {/if}
+
     <div class={`container mx-auto py-1  w-full `}>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2 justify-end">
             {#if !ordenVencimiento}
                 <button
                     class={`

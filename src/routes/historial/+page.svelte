@@ -7,6 +7,8 @@
     import { onMount } from "svelte";
     import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
     import Cargando from "$lib/components/Cargando.svelte";
+    import FilterPill from "$lib/components/FilterPill.svelte";
+
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
 
@@ -62,9 +64,7 @@
             filas = filas.filter((h) => h.cliente == cliente);
         }
         if (remito.length > 0) {
-
             filas = filas.filter((h) =>
-                
                 h.remito
                     .toLocaleLowerCase()
                     .includes(remito.toLocaleLowerCase()),
@@ -90,7 +90,6 @@
         }
 
         historialrows = filas.map((h) => encontrarMovimiento(h, fechadesde));
-         
     }
 
     async function getData() {
@@ -227,9 +226,18 @@
                 historial.push(filahistorial);
             }
         }
-        
-
     }
+    function getNombreCliente(p_cliente) {
+        let c_idx = clientes.findIndex((c) => c.id == p_cliente);
+        if (c_idx != -1) {
+            return clientes[c_idx].nombre;
+        } else {
+            return "";
+        }
+    }
+    let nombrecliente = $derived(
+        cliente == "" ? "" : getNombreCliente(cliente),
+    );
 </script>
 
 <Navbar>
@@ -245,6 +253,21 @@
             {clientes}
             data={historialrows}
         />
+        <div class={`container mx-auto py-1 w-full `}>
+            <div
+                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 my-2"
+            >
+                <FilterPill
+                    etiqueta="Fecha :"
+                    valor={new Date(
+                        fechadesde + " 03:00:00",
+                    ).toLocaleDateString()}
+                />
+                <FilterPill etiqueta="Cliente:" valor={nombrecliente} />
+                <FilterPill etiqueta="Remito:" valor={remito} />
+                <FilterPill etiqueta="Lote:" valor={lote} />
+            </div>
+        </div>
     {:else}
         <Cargando />
     {/if}
