@@ -1,5 +1,4 @@
 # Mejoras
-
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
 
@@ -14,7 +13,7 @@
 
 # Largo plazo
 * Poner editar detalles en crear movimientos
-
+* Puede llegar roto la mercaderias
 * Eliminacion muñtiple de stocks y movimeintos
 * Borrar fecha de vencimientos
 * Se ve raro el detalle de movimientos en el celu
@@ -123,5 +122,11 @@
 
 
 
-
-
+# Historial
+* Creo que desde perfil de lote no se crea bien el detalle de movimietno
+1) Traigo todos los lotes que ingresaron despues de la fecha desde
+2) Filtros por nombre de producto, cliente, remito, lote, fecha desde
+2) Junto todos los movimientos del lote
+3) Creo los bloques de lotes
+4) Tomar en cuenta la fecha de cierre
+5) Los muestro

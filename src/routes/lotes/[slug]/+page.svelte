@@ -64,7 +64,7 @@
     let vencimiento = $state("");
     let ingreso = $state("");
     let cierre = $state("");
-    let vencimientopasado = $derived(new Date(vencimiento) < new Date(ingreso))
+    let vencimientopasado = $derived(new Date(vencimiento) < new Date(ingreso));
 
     //Data viejo
 
@@ -126,7 +126,7 @@
     let cantidadmov = $state(0);
     let pendientemov = $state(0);
     let tipomov = $state(0);
-    let remitomov = $state("")
+    let remitomov = $state("");
     function openIngresoModal() {
         fechamovimiento = "";
         observacion = "";
@@ -161,7 +161,7 @@
             observacion,
             ingreso: 0,
             codigo: codigomovimiento,
-            remito:remitomov,
+            remito: remitomov,
             precargado: false,
         };
         try {
@@ -177,7 +177,7 @@
                 active: true,
                 lote: id,
                 cliente: cliente,
-                remito:remitomov,
+                remito: remitomov,
                 historial: cantidad,
             };
 
@@ -192,6 +192,7 @@
             closeIngreso();
             cantidad = cantidad + cantidadmov;
             await movimientoRef.getData();
+            saveLocalData()
             Swal.fire(
                 "Éxito movimiento",
                 "Se pudo crear el ingreso",
@@ -218,7 +219,7 @@
             ingreso: 1,
             codigo: codigomovimiento,
             precargado: false,
-            remito:remitomov,
+            remito: remitomov,
         };
         try {
             let recordmov = await pb
@@ -235,21 +236,22 @@
                 lote: id,
                 cliente: cliente,
                 historial: cantidad,
-                remito:remitomov,
+                remito: remitomov,
             };
             let recorddetalle = await pb
                 .collection("detallemovimientos")
                 .create(detalle);
             let lotedata = {
                 cantidad: cantidad - cantidadmov,
-                pendiente:pendiente + pendientemov,
+                pendiente: pendiente + pendientemov,
                 detallemovimiento: recorddetalle.id,
             };
-            pendiente += pendientemov
+            pendiente += pendientemov;
             let recordlote = await pb.collection("lotes").update(id, lotedata);
             closeEgreso();
             cantidad = cantidad - cantidadmov;
             await movimientoRef.getData();
+            saveLocalData()
             Swal.fire("Éxito movimiento", "Se pudo crear el egreso", "success");
         } catch (err) {
             console.error(err);
@@ -274,7 +276,26 @@
         });
         productos = recordp;
     }
-
+    function saveLocalData() {
+        detallelote = {
+            id: id,
+            codigo,
+            cerrado,
+            producto,
+            cantidad,
+            pendiente,
+            unidad,
+            remito,
+            lote,
+            cliente,
+            vencimiento:
+                vencimiento.length > 0 ? vencimiento.split(" ")[0] : "",
+            ingreso: ingreso.length > 0 ? ingreso.split(" ")[0] : "",
+            cierre: cierre.length > 0 ? cierre.split(" ")[0] : "",
+            edit,
+        };
+        storageLote.save(detallelote);
+    }
     async function getData() {
         detallelote = storageLote.load();
 
@@ -369,19 +390,19 @@
                 ingreso: 0,
                 codigo: makecodigo("mov", 3, true),
                 precargado: false,
-                remito
+                remito,
             };
 
             let detalle = {
                 cantidad: cantidad,
-                pendiente:pendiente,
+                pendiente: pendiente,
                 cliente,
                 producto: producto,
                 unidad,
                 lote: "",
                 movimiento: "",
                 historial: 0,
-                remito
+                remito,
             };
             let data = {
                 codigo,
@@ -433,12 +454,14 @@
     }
     async function cerrarLote() {
         let data = {
-            cerrado:1,
+            cerrado: 1,
             fechacierre: new Date().toISOString().split("T")[0] + " 03:00:00",
         };
-
+        cerrado = 1
+        cierre = new Date().toISOString().split("T")[0]
         try {
             let recordc = await pb.collection("lotes").update(id, data);
+            saveLocalData()
             Swal.fire("Éxito editar", `Se logró cerrar el lote`, "success");
         } catch (err) {
             Swal.fire("Error edición", `No se logró cerrar el lote`, "error");
@@ -448,12 +471,14 @@
     }
     async function abrirLote() {
         let data = {
-            cerrado:0,
+            cerrado: 0,
             fechacierre: new Date().toISOString().split("T")[0] + " 03:00:00",
         };
-
+        cierre = ""
+        cerrado = 0
         try {
             let recordc = await pb.collection("lotes").update(id, data);
+            saveLocalData()
             Swal.fire("Éxito editar", `Se logró reabrir el lote`, "success");
         } catch (err) {
             Swal.fire("Error edición", `No se logró reabrir el lote`, "error");
@@ -483,6 +508,7 @@
         }
         try {
             let recordc = await pb.collection("lotes").update(id, data);
+            saveLocalData()
             Swal.fire("Éxito editar", `Se logró editar el lote`, "success");
         } catch (err) {
             Swal.fire("Error edición", `No se logró editar el lote`, "error");
@@ -495,19 +521,23 @@
             active: false,
         };
         let datamov = {
-            eliminado:true
-        }
+            eliminado: true,
+        };
         try {
-            let detalles = await pb.collection("detallemovimientos").getFullList({filter:`lote='${id}'`})
-            let setMov = new Set()
+            let detalles = await pb
+                .collection("detallemovimientos")
+                .getFullList({ filter: `lote='${id}'` });
+            let setMov = new Set();
             let recordc = await pb.collection("lotes").update(id, data);
-            for(let i = 0;i<detalles.length;i++){
-                let fila = detalles[i]
-                setMov.add(fila.movimiento)
-                await pb.collection("detallemovimientos").update(fila.id,datamov)
+            for (let i = 0; i < detalles.length; i++) {
+                let fila = detalles[i];
+                setMov.add(fila.movimiento);
+                await pb
+                    .collection("detallemovimientos")
+                    .update(fila.id, datamov);
             }
-            for(const mov of setMov){
-                await pb.collection("movimientos").update(mov,datamov)
+            for (const mov of setMov) {
+                await pb.collection("movimientos").update(mov, datamov);
             }
             Swal.fire("Éxito eliminar", `Se logró eliminar el lote`, "success");
             volver();
@@ -625,7 +655,7 @@
                         <span
                             class="
                                 label-text tracking-wide
-                                text-md 
+                                text-md
                                 font-semibold text-gray-7 00 dark:text-gray-300
                             "
                         >
@@ -648,7 +678,7 @@
                             Cerrar stock
                         </button>
                     {:else}
-                    <button
+                        <button
                             class={`
                             hover:cursor-pointer 
                             mt-2 px-5 py-1 md:py-2 md:px-10 
