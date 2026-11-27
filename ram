@@ -1,4 +1,11 @@
 # Mejoras
+* Eliminar movimientois es lento
+* Elimino movimienti y el lote aparecer
+* desegrensar un pendiente, deshacer accion
+* Guardar ingreso y egreso al mismo tiempo, cons 2 remitos distintos
+* Ingreso duplicado pero el segundo cero, capaz double clickear
+* Egresar y cerrar el movimiento 
+
 
 * Historial de stock no funciona
 * Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos

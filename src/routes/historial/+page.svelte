@@ -142,6 +142,7 @@
                 let m = {
                     fecha: fecha,
                     cantidad: movimiento.historial,
+                    //Esto me hace ruido
                     created: movimiento.created,
                 };
                 let idlote = movimiento.lote;
@@ -149,6 +150,7 @@
                 if (tablalotes[idlote]) {
                     if (tablalotes[idlote].movimientos[m.fecha]) {
                         let fila = tablalotes[idlote].movimientos[m.fecha];
+                        //Aca esta el error
                         if (fila.created < m.created) {
                             tablalotes[idlote].movimientos[m.fecha] = { ...m };
                         }
