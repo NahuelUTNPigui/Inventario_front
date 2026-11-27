@@ -5,7 +5,7 @@
     import Lista from "$lib/components/historial/Lista.svelte";
     import PocketBase from "pocketbase";
     import { onMount } from "svelte";
-    import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
+
     import Cargando from "$lib/components/Cargando.svelte";
     import FilterPill from "$lib/components/FilterPill.svelte";
 
@@ -35,12 +35,22 @@
             cantidad: fila.cantidad,
             codigo: fila.codigo,
         };
-        let idx_fecha = fila.movimientos.findIndex(
-            (item) => new Date(item.fecha) >= new Date(fechaLimite),
+
+
+        let idx_fecha_may = fila.movimientos.findIndex(
+            (item) => new Date(item.fecha) > new Date(fechaLimite+" 03:00:00"),
         );
-        if (idx_fecha != -1) {
-            result.cantidad = fila.movimientos[idx_fecha].cantidad;
+        let idx_fecha_eq = fila.movimientos.findIndex(
+            (item) => new Date(item.fecha) == new Date(fechaLimite),
+        );
+        if (idx_fecha_eq != -1) {
+            let mov = fila.movimientos[idx_fecha_eq];
+            result.cantidad = mov.historial + mov.cantidad;
+        } else if (idx_fecha_may != -1) {
+            let mov = fila.movimientos[idx_fecha_may - 1];
+            result.cantidad = mov.historial + mov.cantidad;
         }
+
         return result;
     }
     function limpiarFiltros() {
@@ -75,15 +85,19 @@
                 h.lote.toLocaleLowerCase().includes(lote.toLocaleLowerCase()),
             );
         }
+        //Tenes un bloque de bloquecitos. El bloque largo es el lote con fecha inicion y fecha fin
+        // Si la fecha desde esta entre ese rango entonces debe haber un bloque pequeño que lo represente
         if (fechadesde.length > 0) {
-            let fechaFilter = new Date(fechadesde);
-            let expiryDate2 = new Date(
-                fechaFilter.setHours(fechaFilter.getHours() + 4),
+            let datedesde = new Date(fechadesde);
+            let datedesdecorregido = new Date(
+                datedesde.setHours(datedesde.getHours() + 4),
             );
+            //Esto no lo entiendo
             filas = filas.filter((h) => {
-                let fechaValidacion = h.inicio <= expiryDate2;
+                let fechaValidacion = h.inicio <= datedesdecorregido;
                 if (h.fin != "") {
-                    fechaValidacion = fechaValidacion && h.fin > expiryDate2;
+                    fechaValidacion =
+                        fechaValidacion && h.fin > datedesdecorregido;
                 }
                 return fechaValidacion;
             });
@@ -102,7 +116,8 @@
         });
         const recordsm = await pb.collection("detallemovimientos").getFullList({
             expand: "movimiento",
-            filter: `movimiento.active = true`,
+            //filter: `movimiento.active = true && eliminado = false`,
+            filter: `eliminado = false`,
         });
 
         movimientos = recordsm.map((c) => ({ ...c }));
@@ -134,25 +149,36 @@
 
     function procesarDatos() {
         let tablalotes = {};
+        //movimientos
         for (let i = 0; i < movimientos.length; i++) {
             let movimiento = movimientos[i];
             let fecha = movimiento.expand.movimiento.fecha;
-
+            let ingresofactor =
+                movimiento.expand.movimiento.ingreso == 0 ? 1 : -1;
             if (fecha) {
                 let m = {
                     fecha: fecha,
-                    cantidad: movimiento.historial,
-                    //Esto me hace ruido
+                    cantidad: ingresofactor * movimiento.cantidad,
+                    historial: movimiento.historial,
                     created: movimiento.created,
+                    ingreso: movimiento.ingreso,
                 };
                 let idlote = movimiento.lote;
 
                 if (tablalotes[idlote]) {
                     if (tablalotes[idlote].movimientos[m.fecha]) {
                         let fila = tablalotes[idlote].movimientos[m.fecha];
-                        //Aca esta el error
+                        //Para mi aca se convinan
                         if (fila.created < m.created) {
-                            tablalotes[idlote].movimientos[m.fecha] = { ...m };
+                            tablalotes[idlote].movimientos[m.fecha] = {
+                                ...fila,
+                                cantidad: m.cantidad + fila.cantidad,
+                            };
+                        } else {
+                            tablalotes[idlote].movimientos[m.fecha] = {
+                                ...m,
+                                cantidad: m.cantidad + fila.cantidad,
+                            };
                         }
                     } else {
                         tablalotes[idlote].movimientos[fecha] = {
@@ -164,21 +190,22 @@
                         lote: {},
                         movimientos: {},
                     };
+
                     tablalotes[idlote].movimientos[fecha] = {
                         ...m,
                     };
                 }
             }
         }
-
+        //lotes
         for (let i = 0; i < lotes.length; i++) {
             let lote = lotes[i];
             let idlote = lote.id;
             let listamovs = [];
             if (tablalotes[idlote]) {
                 let tablamovimientos = tablalotes[idlote].movimientos;
-                Object.entries(tablamovimientos).forEach((fila) => {
-                    listamovs.push(fila[1]);
+                Object.values(tablamovimientos).forEach((mov) => {
+                    listamovs.push(mov);
                 });
                 listamovs.sort((a, b) =>
                     new Date(a.fecha) < new Date(b.fecha) ? -1 : 1,
@@ -195,7 +222,7 @@
                     nombreproducto: lote.expand.producto.nombre,
                     codigoproducto: lote.expand.producto.codigo,
                 };
-                let ultimos_idx = listamovs.length - 1;
+
                 let fechainicio = new Date(listamovs[0].fecha);
                 let fechafin =
                     lote.fechacierre.length > 0
@@ -217,8 +244,9 @@
                     nombreproducto: lote.expand.producto.nombre,
                     codigoproducto: lote.expand.producto.codigo,
                 };
-                let ultimos_idx = listamovs.length - 1;
+
                 let fechainicio = new Date(lote.fechaingreso);
+                //fecha fin puede ser un string o un date, eso siempre trae problemass
                 let fechafin =
                     lote.fechacierre.length > 0
                         ? new Date(lote.fechacierre)
@@ -255,7 +283,7 @@
             {clientes}
             data={historialrows}
         />
-        <div class={`container mx-auto py-1 w-full `}>
+        <div class={`container mx-auto py-1 max-w-7xl w-full `}>
             <div
                 class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 my-2"
             >

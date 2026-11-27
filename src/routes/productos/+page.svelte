@@ -10,6 +10,7 @@
     import { onMount } from "svelte";
     import ListaProductos from "$lib/components/productos/ListaProductos.svelte";
     import Cargando from "$lib/components/Cargando.svelte";
+    import FilterPill from "$lib/components/FilterPill.svelte";
 
     let ruta = import.meta.env.VITE_RUTA;
     const pb = new PocketBase(ruta);
@@ -164,6 +165,17 @@
             );
         cargado = true;
     }
+    function getNombreCliente(p_cliente) {
+        let c_idx = clientes.findIndex((c) => c.id == p_cliente);
+        if (c_idx != -1) {
+            return clientes[c_idx].nombre;
+        } else {
+            return "";
+        }
+    }
+    let nombrecliente = $derived(
+        cliente == "" ? "" : getNombreCliente(cliente),
+    );
     async function getListas() {
         clientes = [];
         const recordsc = await pb.collection("clientes").getFullList({
@@ -203,6 +215,15 @@
             {clientes}
             data={productosrows}
         />
+        
+        <div class={`container mx-auto py-1 px-4 max-w-7xl w-full xl:w-3/4 `}>
+            <div
+                class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1 my-2"
+            >
+            <FilterPill etiqueta="Cliente:" valor={nombrecliente} />
+            </div>
+        </div>
+        
     {:else}
         <Cargando />
     {/if}

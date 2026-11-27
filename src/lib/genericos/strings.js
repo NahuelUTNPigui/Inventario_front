@@ -112,3 +112,8 @@ export function getNombreFecha(fecha){
         return  new Date(fecha+" 03:00:00").toLocaleDateString()
     }
 }
+
+export function maxString(palabra,maxlen=15){
+    var result = palabra.slice(0, maxlen) + (palabra.length > maxlen ? "..." : "");
+    return result
+}

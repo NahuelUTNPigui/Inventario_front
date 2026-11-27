@@ -1,15 +1,5 @@
 # Mejoras
-* Eliminar movimientois es lento
-* Elimino movimienti y el lote aparecer
-* desegrensar un pendiente, deshacer accion
-* Guardar ingreso y egreso al mismo tiempo, cons 2 remitos distintos
-* Ingreso duplicado pero el segundo cero, capaz double clickear
-* Egresar y cerrar el movimiento 
-
-
-* Historial de stock no funciona
-* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
-
+* cuando hago el movimiento en lotes mostrar la cantidad actual y avisar y no permitir que va a quedar en negativo
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -20,8 +10,9 @@
 
 
 # Largo plazo
+* cuando apriete ctrl +f me lleve al buscador
 * Poner editar detalles en crear movimientos
-
+* Puede llegar roto la mercaderias
 * Eliminacion muñtiple de stocks y movimeintos
 * Borrar fecha de vencimientos
 * Se ve raro el detalle de movimientos en el celu
@@ -49,6 +40,9 @@
 * quitar Input del crear egreso ?? 
 
 #  Listos
+* Historial de stock no funciona
+* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
+
 * Se ve chico stock en la compu
 * filtros stock
 * filtros hsitorial
@@ -130,5 +124,11 @@
 
 
 
-
-
+# Historial
+* Creo que desde perfil de lote no se crea bien el detalle de movimietno
+1) Traigo todos los lotes que ingresaron despues de la fecha desde
+2) Filtros por nombre de producto, cliente, remito, lote, fecha desde
+2) Junto todos los movimientos del lote
+3) Creo los bloques de lotes
+4) Tomar en cuenta la fecha de cierre
+5) Los muestro
