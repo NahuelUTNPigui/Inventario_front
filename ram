@@ -1,7 +1,5 @@
 # Mejoras
-* Historial de stock no funciona
-* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
-
+* cuando hago el movimiento en lotes mostrar la cantidad actual y avisar y no permitir que va a quedar en negativo
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -12,6 +10,7 @@
 
 
 # Largo plazo
+* cuando apriete ctrl +f me lleve al buscador
 * Poner editar detalles en crear movimientos
 * Puede llegar roto la mercaderias
 * Eliminacion muñtiple de stocks y movimeintos
@@ -41,6 +40,9 @@
 * quitar Input del crear egreso ?? 
 
 #  Listos
+* Historial de stock no funciona
+* Revisar el historial del inventario porque ahora con el nuevo atributo historial del detalle podes evitar calculos
+
 * Se ve chico stock en la compu
 * filtros stock
 * filtros hsitorial

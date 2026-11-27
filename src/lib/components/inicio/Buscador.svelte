@@ -73,13 +73,14 @@
                         border-gray-300 dark:border-gray-600
                         rounded-md px-3 py-1.5 text-sm
                         focus:outline-none focus:ring-1 focus:ring-gray-700 focus:border-gray-700
+                        hover:cursor-pointer
                     "
                     bind:value={cliente}
                     onchange={seleccionarCliente}
                 >
-                    <option value="">Elegir cliente</option>
+                    <option value="" class="hover:cursor-pointer">Elegir cliente</option>
                     {#each clientes as s}
-                        <option value={s.id}>{s.nombre}</option>
+                        <option value={s.id} class="hover:cursor-pointer">{s.nombre}</option>
                     {/each}
                 </select>
             </div>
@@ -92,28 +93,28 @@
                 <!-- Input de búsqueda -->
                 <div
                     class={`
-                  flex items-center flex-1
-                  shadow-2xl
-                  rounded-full p-3
-                
-                  bg-white dark:bg-gray-900
-                  shadow-[0_4px_8px_-2px_rgba(0,0,0,0.2)]
-                  dark:shadow-[0_4px_8px_-2px_rgba(255,255,255,0.1)]
-                `}
+                        flex items-center flex-1
+                        shadow-2xl
+                        rounded-full p-3
+                        
+                        bg-white dark:bg-gray-900
+                        shadow-[0_4px_8px_-2px_rgba(0,0,0,0.2)]
+                        dark:shadow-[0_4px_8px_-2px_rgba(255,255,255,0.1)]
+                    `}
                 >
                     <input
                         type="text"
                         placeholder="Buscar stock ..."
                         class={`
-                    shadow-2xl
-                    dark:placeholder-gray-500 
-                    dark:text-gray-100
-                    placeholder-gray-600 text-gray-800
-                    
-                    w-full bg-transparent focus:outline-none
-                    border border-transparent
-                    
-                `}
+                            shadow-2xl
+                            dark:placeholder-gray-500 
+                            dark:text-gray-100
+                            placeholder-gray-600 text-gray-800
+                            
+                            w-full bg-transparent focus:outline-none
+                            border border-transparent
+                            
+                        `}
                         bind:value={buscar}
                         oninput={filterUpdate}
                     />

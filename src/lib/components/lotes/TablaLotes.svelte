@@ -5,7 +5,7 @@
     import Trash from "../svg/Trash.svelte";
     import Pencil from "../svg/Pencil.svelte";
     import Plus from "../svg/Plus.svelte";
-    import { getNombreLista, shorterWord } from "$lib/genericos/strings";
+    import { getNombreLista, maxString, shorterWord } from "$lib/genericos/strings";
     import estadoslote from "$lib/genericos/estadoslote";
     let {
         lotesrows = [],
@@ -192,10 +192,10 @@
                         }`}
                     </td>
                     <td class={`hidden text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.remito}`}
+                        {`${maxString(t.remito)}`}
                     </td>
                     <td class={`text-base mx-1 px-4 ${pyfila}`}>
-                        {`${t.lote}`}
+                        {`${maxString(t.lote,15)}`}
                     </td>
                     <td
                         class={`text-base   px-1 ${pyfila}`}
