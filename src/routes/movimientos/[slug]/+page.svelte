@@ -208,9 +208,9 @@
         remitoViejo = detallemovimiento.remito;
 
         let slug = page.params.slug;
-        grupos = await pb.collection("grupos").getFullList({
-            filter: `active = true`,
-        });
+        //grupos = await pb.collection("grupos").getFullList({
+        //    filter: `active = true`,
+        //});
 
         await getStocks();
         unidades = await pb.collection("unidades").getFullList({
@@ -291,7 +291,7 @@
             }
 
             await pb.collection("movimientos").update(id, dataeliminar);
-            await getData();
+            //await getData();
             volver();
             Swal.fire(
                 "Éxito eliminar",

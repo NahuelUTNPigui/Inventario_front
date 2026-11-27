@@ -1,5 +1,12 @@
 # Mejoras
-* cuando hago el movimiento en lotes mostrar la cantidad actual y avisar y no permitir que va a quedar en negativo
+* Eliminar movimientos es lento
+* Elimino movimiento y el lote aparecer
+* desengresar pendientes, deshacer acciones
+* Guardar ingreso y egreso al mismo tiempo, cons 2 remitos distintos
+* Ingreso duplicado pero el segundo cero, capaz double clickear
+* Egresar y cerrar el movimiento 
+* ctrl + f en los buscaodres
+* El buscador por nombre de productos se ve chico 
 # Tarifario
 * Precio por ingresar mercaderia. Valor por pale
 * Precio por picking. Valor por armar pedidos, pedido,lote,pale
@@ -10,6 +17,7 @@
 
 
 # Largo plazo
+* cuando hago el movimiento en lotes mostrar la cantidad actual y avisar y no permitir que va a quedar en negativo
 * cuando apriete ctrl +f me lleve al buscador
 * Poner editar detalles en crear movimientos
 * Puede llegar roto la mercaderias
